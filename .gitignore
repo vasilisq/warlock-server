@@ -1,2 +1,5 @@
-node_modules
+node_modules/
 .idea
+build/
+npm-debug.log
+yarn-error.log
