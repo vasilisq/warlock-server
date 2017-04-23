@@ -3,14 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.js"></script>
-    <script>
-        var socket = io('http://localhost:8080');
-        socket.emit('move', { x: 1, y: 1 });
-        socket.on('moved', function (data) {
-            console.log('New position:', data);
-        });
-    </script>
 </head>
 <body>
     <div id="app"></div>
