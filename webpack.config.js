@@ -50,7 +50,12 @@ module.exports = {
   performance: {
     hints: false
   },
-  devtool: 'source-map'
+  devtool: 'source-map',
+  plugins: [
+    new webpack.ProvidePlugin({
+      '$': 'jquery'
+    })
+  ]
 }
 
 if (process.env.NODE_ENV === 'production') {
