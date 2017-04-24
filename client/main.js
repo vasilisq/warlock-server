@@ -4,14 +4,33 @@ import Konva from 'konva'
 import io from 'socket.io-client'
 
 let socket = io('http://localhost:8080'),
-stage,
-layer;
+    stage,
+    layer;
 const size = 30;
 
 new Vue({
     el: '#app',
     render: h => h(App)
 });
+
+//TODO: создать для инстанса игрока отдельный компонент или класс
+// и переместить туда эту функцию
+function drawPlayer(id, { __x: x = 0, __y: y = 0 }, size = 30) {
+    layer.findOne('#object' + id) || 
+        layer.add(
+            new Konva.Rect({
+                x: x,
+                y: y,
+                width: size,
+                height: size,
+                fill: '#0f0',
+                stroke: 'black',
+                strokeWidth: 4,
+                id: 'object' + id
+            })
+        );
+    layer.draw();
+}
 
 stage = new Konva.Stage({
     container: 'canvas-container',
@@ -22,24 +41,15 @@ layer = new Konva.Layer();
 stage.add(layer);
 
 socket.on('players', function(players) {
-    // TODO: Нарисовать игроков
     console.log(players);
+    players.forEach( (item) => {
+        drawPlayer(item.__id, item.__position, item.__dimensions);
+    });
 });
 
 socket.on('connected', function(data) {
     console.log('Connected new user:', data);
-    let box = new Konva.Rect({
-        x: data.x || 0,
-        y: data.x || 0,
-        width: 30,
-        height: 30,
-        fill: '#0f0',
-        stroke: 'black',
-        strokeWidth: 4,
-        id: 'object' + data.id
-    });
-    layer.add(box);
-    layer.draw();
+    drawPlayer(data.id, {});
 })
 
 socket.on('moved', function(data) {
