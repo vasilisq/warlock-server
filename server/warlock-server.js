@@ -1,11 +1,12 @@
 let Vector2 = require('./vector2');
 let Player = require('./player');
+let EntityManager = require('./entity-manager');
 
 module.exports = class WarlockServer {
     constructor(io) {
         this.__idSequence = 0;
         this.__io = io;
-        this.__players = new Map();
+        this.__entityMgr = new EntityManager();
 
         this.__io.on('connection', (socket) => {
             this.handleConnection(socket);
@@ -15,13 +16,14 @@ module.exports = class WarlockServer {
     handleConnection(socket) {
         this.__idSequence += 1;
         let currentPlayer = new Player(this.__idSequence);
-        // Add current player to stack
-        this.__players.set(currentPlayer.id, currentPlayer);
+
+        // Add current player to scene
+        this.__entityMgr.add('player' + currentPlayer.id, currentPlayer);
 
         this.__io.emit('connected', {id: currentPlayer.id});
 
         // Transmit players list
-        socket.emit('players', Array.from(this.__players.values()));
+        socket.emit('players', this.__entityMgr.getAllBeginningWith('player'));
 
         socket.on('move', (move) => {
             currentPlayer.move(
@@ -41,8 +43,8 @@ module.exports = class WarlockServer {
 
             this.__io.emit('disconnected', {id: currentPlayer.id});
 
-            // Remove player from stack
-            this.__players.delete(currentPlayer.id);
+            // Remove player from scene
+            this.__entityMgr.remove('player' + currentPlayer.id);
         });
     }
 };
