@@ -8,11 +8,32 @@ module.exports = class EntityManager {
     }
 
     get(name) {
-        this.__entities.get(name);
+        return this.__entities.get(name);
     }
 
     remove(name) {
         this.__entities.delete(name);
+    }
+
+    move(name, direction, factor) {
+        let movingOne = this.__entities.get(name);
+        let collisionDetected = false;
+
+        // Проверяем на коллизию со всеми сущностями
+        // TODO: Брать ближайшие в радиусе
+        Array.from(this.__entities.values()).some((entity) => {
+            if (movingOne !== entity && movingOne.movePossibleAgainst(entity, direction, factor)) {
+                // TODO: On collide event
+                collisionDetected = true;
+                return true;
+            }
+        });
+
+        if(!collisionDetected) {
+            movingOne.move(direction, factor);
+        }
+
+        this.__entities.set(name, movingOne);
     }
 
     /**

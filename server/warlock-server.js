@@ -15,36 +15,37 @@ module.exports = class WarlockServer {
 
     handleConnection(socket) {
         this.__idSequence += 1;
-        let currentPlayer = new Player(this.__idSequence);
+        let currentPlayerId = this.__idSequence;
+        let playerEntityName = 'player' + currentPlayerId;
 
         // Add current player to scene
-        this.__entityMgr.add('player' + currentPlayer.id, currentPlayer);
+        this.__entityMgr.add(playerEntityName, new Player(currentPlayerId));
 
-        this.__io.emit('connected', {id: currentPlayer.id});
+        this.__io.emit('connected', {id: currentPlayerId});
 
         // Transmit players list
         socket.emit('players', this.__entityMgr.getAllBeginningWith('player'));
 
         socket.on('move', (move) => {
-            currentPlayer.move(
-                new Vector2(move.x, move.y)
-            );
+            this.__entityMgr.move(playerEntityName, new Vector2(move.x, move.y), 10);
 
             this.__io.emit(
                 'moved',
-                {id: currentPlayer.id, x: currentPlayer.x, y: currentPlayer.y}
+                {
+                    id: currentPlayerId,
+                    x: this.__entityMgr.get(playerEntityName).x,
+                    y: this.__entityMgr.get(playerEntityName).y
+                }
             );
-
-            console.log('Move:', {id: currentPlayer.id, x: currentPlayer.x, y: currentPlayer.y});
         });
 
         socket.on('disconnect', (reason) => {
-            console.log('Player', currentPlayer.id, 'disconnected, reason:', reason);
+            console.log('Player', currentPlayerId, 'disconnected, reason:', reason);
 
-            this.__io.emit('disconnected', {id: currentPlayer.id});
+            this.__io.emit('disconnected', {id: currentPlayerId});
 
             // Remove player from scene
-            this.__entityMgr.remove('player' + currentPlayer.id);
+            this.__entityMgr.remove(playerEntityName);
         });
     }
 };

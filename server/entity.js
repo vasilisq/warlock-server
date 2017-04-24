@@ -11,6 +11,21 @@ module.exports = class Entity {
         this.y = this.y + (direction.y * factor);
     }
 
+    /**
+     * Возможно ли движение относительно данной сущности
+     *
+     * @param entity
+     * @param direction
+     * @param factor
+     * @returns {boolean}
+     */
+    movePossibleAgainst(entity, direction, factor) {
+        return (this.x + direction.x * factor) < entity.x + entity.dimensions &&
+            (this.x + direction.x * factor) + this.dimensions > entity.x &&
+            (this.y + direction.y * factor) < entity.y + entity.dimensions &&
+            this.dimensions + (this.y + direction.y * factor) > entity.y;
+    }
+
     get x() {
         return this.__position.x;
     }
