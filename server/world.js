@@ -1,23 +1,20 @@
 module.exports = class World extends Entity {
 	constructor(dimensions) {
 		super(dimensions);
-		this.__width = 1000;
-		this.__height = 1000;
 	}
 
-	get width() {
-		return this.__width;
-	}
-
-	set width(value) {
-		this.__width = value;
-	}
-
-	get height() {
-		return this.__height;
-	}
-
-	set height(value) {
-		this.__height = value;
-	}
+	/**
+     * Возможно ли движение относительно данной сущности
+     *
+     * @param entity - сущность, которая проверяется
+     * @param direction - направление этой сущности
+     * @param factor - коэф. скорости сущности
+     * @returns {boolean}
+     */
+	movePossibleAgainst(entity, direction, factor) {
+	        return (entity.x + direction.x * factor) < (this.x + this.dimensions / 2) &&
+	            (entity.x + direction.x * factor) > (this.x - this.dimensions / 2) &&
+	            (entity.y + direction.y * factor) < (this.y + this.dimensions / 2) &&
+	            (entity.y + direction.y * factor) > (this.y - this.dimensions / 2);
+	    }
 };
