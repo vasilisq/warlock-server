@@ -21,6 +21,11 @@ stage = new Konva.Stage({
 layer = new Konva.Layer();
 stage.add(layer);
 
+socket.on('players', function(players) {
+    // TODO: Нарисовать игроков
+    console.log(players);
+});
+
 socket.on('connected', function(data) {
     console.log('Connected new user:', data);
     let box = new Konva.Rect({
@@ -39,7 +44,7 @@ socket.on('connected', function(data) {
 
 socket.on('moved', function(data) {
     console.log('New position:', data);
-    layer.findOne('#object' + data.id).move({ x: data.x, y: data.y });
+    layer.findOne('#object' + data.id).setAbsolutePosition({ x: data.x, y: data.y });
     layer.draw();
 });
 
