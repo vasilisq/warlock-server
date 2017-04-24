@@ -39,7 +39,7 @@ socket.on('connected', function(data) {
 
 socket.on('moved', function(data) {
     console.log('New position:', data);
-    layer.findOne('#object' + data.id).move({ x: data.x, y: data.y });
+    layer.findOne('#object' + data.id).setAbsolutePosition({ x: data.x, y: data.y });
     layer.draw();
 });
 
