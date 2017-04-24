@@ -21,6 +21,11 @@ stage = new Konva.Stage({
 layer = new Konva.Layer();
 stage.add(layer);
 
+socket.on('players', function(players) {
+    // TODO: Нарисовать игроков
+    console.log(players);
+});
+
 socket.on('connected', function(data) {
     console.log('Connected new user:', data);
     let box = new Konva.Rect({
