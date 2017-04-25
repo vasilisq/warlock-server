@@ -9,7 +9,10 @@ module.exports = class WarlockServer {
         this.__io = io;
         this.__entityMgr = new EntityManager();
 
-        this.__entityMgr.add('world', new World());
+        // add world-entity to EntityManager
+        let world = new World();
+        world.move(new Vector2(1, 1), world.dimensions / 2 );
+        this.__entityMgr.add('world', world);
 
         this.__io.on('connection', (socket) => {
             this.handleConnection(socket);
