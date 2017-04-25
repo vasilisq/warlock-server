@@ -1,3 +1,5 @@
+let World = require('./world');
+
 module.exports = class EntityManager {
     constructor() {
         this.__entities = new Map();
@@ -23,12 +25,13 @@ module.exports = class EntityManager {
         // TODO: Брать ближайшие в радиусе
         Array.from(this.__entities.values()).some((entity) => {
             if (movingOne !== entity) { 
-                if(movingOne.movePossibleAgainst(entity, direction, factor)) {
-                    // TODO: On collide event
-                    collisionDetected = true;
-                    return true;
-                }
-                if(entity instanceof World && entity.movePossibleAgainst(movingOne, direction, factor)) {
+                if(entity instanceof World) { 
+                    if(entity.movePossibleAgainst(movingOne, direction, factor)) {
+                        // TODO: On collide event
+                        collisionDetected = true;
+                        return true;
+                    }
+                } else if(movingOne.movePossibleAgainst(entity, direction, factor)) {
                     // TODO: On collide event
                     collisionDetected = true;
                     return true;

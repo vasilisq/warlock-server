@@ -1,6 +1,11 @@
+let Entity = require('./entity');
+
+// Размеры мира
+const WORLD_SIZE = 800;
+
 module.exports = class World extends Entity {
-	constructor(dimensions) {
-		super(dimensions);
+	constructor() {
+		super(WORLD_SIZE);
 	}
 
 	/**
