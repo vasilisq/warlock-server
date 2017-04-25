@@ -11,6 +11,10 @@ module.exports = class Entity {
         this.y = this.y + (direction.y * factor);
     }
 
+    think(deltaT) {
+
+    }
+
     /**
      * Возможно ли движение относительно данной сущности
      *

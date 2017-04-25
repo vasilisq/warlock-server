@@ -1,6 +1,27 @@
 module.exports = class EntityManager {
     constructor() {
         this.__entities = new Map();
+
+        this.startTicking();
+    }
+
+    startTicking() {
+        const DELTA_T_SLOWDOWN_COEFFICIENT = 10000000;
+
+        let onTick = (previousT) => {
+            let now = process.hrtime()[1];
+            let deltaT = now - previousT;
+
+            this.__entities.forEach((entity) => {
+                entity.think(deltaT / DELTA_T_SLOWDOWN_COEFFICIENT);
+            });
+
+            setImmediate(() => {
+                onTick(process.hrtime()[1]);
+            });
+        };
+
+        onTick(process.hrtime()[1]);
     }
 
     add(name, entity) {
