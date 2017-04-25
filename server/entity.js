@@ -4,11 +4,27 @@ module.exports = class Entity {
     constructor(dimensions) {
         this.__position = new Vector2(0, 0);
         this.__dimensions = dimensions; // Размер объекта
+        this.__id = this.server.entityMgr.incrementSequenceOf(this);
+
+        // Регистрируем обьект
+        this.server.entityMgr.add(this);
     }
 
     move(direction, factor = 1) {
+        if (!this.server.entityMgr.movePossible(this, direction, factor))
+            return;
+
         this.x = this.x + (direction.x * factor);
         this.y = this.y + (direction.y * factor);
+    }
+
+    /**
+     * Физическая логика обрабатывается здесь
+     *
+     * @param deltaT
+     */
+    think(deltaT) {
+
     }
 
     /**
@@ -20,8 +36,8 @@ module.exports = class Entity {
      * @returns {boolean}
      */
     movePossibleAgainst(entity, direction, factor) {
-        return Math.abs(entity.x + direction.x * factor - this.x) < (this.dimensions/2 + entity.dimensions/2) &&
-            Math.abs(entity.y + direction.y * factor - this.y) < (this.dimensions/2 + entity.dimensions/2);
+        return Math.abs(entity.x + direction.x * factor - this.x) < (this.dimensions / 2 + entity.dimensions / 2) &&
+            Math.abs(entity.y + direction.y * factor - this.y) < (this.dimensions / 2 + entity.dimensions / 2);
     }
 
     get x() {
@@ -50,5 +66,17 @@ module.exports = class Entity {
 
     get dimensions() {
         return this.__dimensions;
+    }
+
+    get server() {
+        return require('./warlock-server');
+    }
+
+    get id() {
+        return this.__id;
+    }
+
+    get name() {
+        return this.constructor.name.toLowerCase() + this.__id;
     }
 };

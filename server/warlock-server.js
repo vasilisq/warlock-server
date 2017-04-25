@@ -1,58 +1,53 @@
-let Vector2 = require('./vector2');
 let Player = require('./player');
 let EntityManager = require('./entity-manager');
+let app = require('http').createServer(require('./static-handler'));
+let io = require('socket.io')(app);
 let World = require('./world');
 
-module.exports = class WarlockServer {
+class WarlockServer {
     constructor(io) {
-        this.__idSequence = 0;
         this.__io = io;
         this.__entityMgr = new EntityManager();
-
-        // add world-entity to EntityManager
-        let world = new World();
-        world.x = world.dimensions / 2;
-        world.y = world.dimensions / 2;
-        this.__entityMgr.add('world', world);
 
         this.__io.on('connection', (socket) => {
             this.handleConnection(socket);
         });
+
+        app.listen(8080);
     }
 
     handleConnection(socket) {
-        this.__idSequence += 1;
-        let currentPlayerId = this.__idSequence;
-        let playerEntityName = 'player' + currentPlayerId;
-
         // Add current player to scene
-        this.__entityMgr.add(playerEntityName, new Player(currentPlayerId));
-
-        this.__io.emit('connected', {id: currentPlayerId});
+        let currentPlayer = new Player(socket);
 
         // Transmit players list
         socket.emit('players', this.__entityMgr.getAllBeginningWith('player'));
 
-        socket.on('move', (move) => {
-            this.__entityMgr.move(playerEntityName, new Vector2(move.x, move.y), 10);
-
-            this.__io.emit(
-                'moved',
-                {
-                    id: currentPlayerId,
-                    x: this.__entityMgr.get(playerEntityName).x,
-                    y: this.__entityMgr.get(playerEntityName).y
-                }
-            );
-        });
-
         socket.on('disconnect', (reason) => {
-            console.log('Player', currentPlayerId, 'disconnected, reason:', reason);
+            console.log('Player', currentPlayer.id, 'disconnected, reason:', reason);
 
-            this.__io.emit('disconnected', {id: currentPlayerId});
+            this.broadcast('disconnected', {id: currentPlayer.id});
 
             // Remove player from scene
-            this.__entityMgr.remove(playerEntityName);
+            this.__entityMgr.remove(currentPlayer);
         });
     }
-};
+
+    initiateMap() {
+        let world = new World();
+        world.x = world.dimensions / 2;
+        world.y = world.dimensions / 2;
+    }
+
+    broadcast(event, data) {
+        this.__io.emit(event, data);
+    }
+
+    get entityMgr() {
+        return this.__entityMgr;
+    }
+}
+
+let server = new WarlockServer(io);
+module.exports = server;
+server.initiateMap();
