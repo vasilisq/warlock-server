@@ -1,8 +1,6 @@
-let app = require('http').createServer(function (data) {
-
-});
+let app = require('http').createServer(require('./server/static-handler'));
 let io = require('socket.io')(app);
-let fs = require('fs');
+
 let WarlockServer = require('./server/warlock-server');
 const server = new WarlockServer(io);
 
