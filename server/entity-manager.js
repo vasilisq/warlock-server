@@ -1,4 +1,5 @@
 let World = require('./world');
+let Entity = require('./entity');
 
 module.exports = class EntityManager {
     constructor() {
@@ -26,20 +27,15 @@ module.exports = class EntityManager {
         onTick(process.hrtime()[1]);
     }
 
-    add(name, entity) {
-        this.__entities.set(name, entity);
+    add(entity) {
+        this.__entities.set(entity.name, entity);
     }
 
-    get(name) {
-        return this.__entities.get(name);
+    remove(entity) {
+        this.__entities.delete(entity.name);
     }
 
-    remove(name) {
-        this.__entities.delete(name);
-    }
-
-    move(name, direction, factor) {
-        let movingOne = this.__entities.get(name);
+    movePossible(movingOne, direction, factor) {
         let collisionDetected = false;
 
         // Проверяем на коллизию со всеми сущностями
@@ -52,11 +48,7 @@ module.exports = class EntityManager {
             }
         });
 
-        if(!collisionDetected) {
-            movingOne.move(direction, factor);
-        }
-
-        this.__entities.set(name, movingOne);
+        return !collisionDetected;
     }
 
     /**

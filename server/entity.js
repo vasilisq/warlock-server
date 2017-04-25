@@ -1,12 +1,19 @@
 let Vector2 = require('./vector2');
 
 module.exports = class Entity {
-    constructor(dimensions) {
+    constructor(name, dimensions) {
         this.__position = new Vector2(0, 0);
         this.__dimensions = dimensions; // Размер объекта
+        this.__name = name;
+
+        // Регистрируем обьект
+        this.server.entityMgr.add(this);
     }
 
     move(direction, factor = 1) {
+        if (!this.server.entityMgr.movePossible(this, direction, factor))
+            return;
+
         this.x = this.x + (direction.x * factor);
         this.y = this.y + (direction.y * factor);
     }
@@ -24,8 +31,8 @@ module.exports = class Entity {
      * @returns {boolean}
      */
     movePossibleAgainst(entity, direction, factor) {
-        return Math.abs(entity.x + direction.x * factor - this.x) < (this.dimensions/2 + entity.dimensions/2) &&
-            Math.abs(entity.y + direction.y * factor - this.y) < (this.dimensions/2 + entity.dimensions/2);
+        return Math.abs(entity.x + direction.x * factor - this.x) < (this.dimensions / 2 + entity.dimensions / 2) &&
+            Math.abs(entity.y + direction.y * factor - this.y) < (this.dimensions / 2 + entity.dimensions / 2);
     }
 
     get x() {
@@ -58,5 +65,9 @@ module.exports = class Entity {
 
     get server() {
         return require('./warlock-server');
+    }
+
+    get name() {
+        return this.__name;
     }
 };
