@@ -17,9 +17,9 @@ module.exports = class World extends Entity {
      * @returns {boolean}
      */
 	movePossibleAgainst(entity, direction, factor) {
-	        return (entity.x + direction.x * factor) < (this.x + this.dimensions / 2) &&
-	            (entity.x + direction.x * factor) > (this.x - this.dimensions / 2) &&
-	            (entity.y + direction.y * factor) < (this.y + this.dimensions / 2) &&
-	            (entity.y + direction.y * factor) > (this.y - this.dimensions / 2);
+	        return (entity.x + direction.x * factor) > (this.x + this.dimensions / 2) ||
+	            (entity.x + direction.x * factor) < (this.x - this.dimensions / 2) ||
+	            (entity.y + direction.y * factor) > (this.y + this.dimensions / 2) ||
+	            (entity.y + direction.y * factor) < (this.y - this.dimensions / 2);
 	    }
 };
