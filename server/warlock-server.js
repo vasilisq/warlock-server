@@ -3,12 +3,19 @@ let Player = require('./player');
 let EntityManager = require('./entity-manager');
 let app = require('http').createServer(require('./static-handler'));
 let io = require('socket.io')(app);
+let World = require('./world');
 
 class WarlockServer {
     constructor(io) {
         this.__idSequence = 0;
         this.__io = io;
         this.__entityMgr = new EntityManager();
+
+        // add world-entity to EntityManager
+        let world = new World();
+        world.x = world.dimensions / 2;
+        world.y = world.dimensions / 2;
+        this.__entityMgr.add('world', world);
 
         this.__io.on('connection', (socket) => {
             this.handleConnection(socket);

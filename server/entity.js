@@ -24,10 +24,8 @@ module.exports = class Entity {
      * @returns {boolean}
      */
     movePossibleAgainst(entity, direction, factor) {
-        return (this.x + direction.x * factor) < entity.x + entity.dimensions &&
-            (this.x + direction.x * factor) + this.dimensions > entity.x &&
-            (this.y + direction.y * factor) < entity.y + entity.dimensions &&
-            this.dimensions + (this.y + direction.y * factor) > entity.y;
+        return Math.abs(entity.x + direction.x * factor - this.x) < (this.dimensions/2 + entity.dimensions/2) &&
+            Math.abs(entity.y + direction.y * factor - this.y) < (this.dimensions/2 + entity.dimensions/2);
     }
 
     get x() {
