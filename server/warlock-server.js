@@ -11,7 +11,8 @@ module.exports = class WarlockServer {
 
         // add world-entity to EntityManager
         let world = new World();
-        world.move(new Vector2(1, 1), world.dimensions / 2 );
+        world.x = world.dimensions / 2;
+        world.y = world.dimensions / 2;
         this.__entityMgr.add('world', world);
 
         this.__io.on('connection', (socket) => {
