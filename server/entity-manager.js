@@ -4,10 +4,14 @@ let Entity = require('./entity');
 module.exports = class EntityManager {
     constructor() {
         this.__entities = new Map();
+        this.__sequences = new Map();
 
         this.startTicking();
     }
 
+    /**
+     * Вызываем think у всех сущностей, считая dT
+     */
     startTicking() {
         const DELTA_T_SLOWDOWN_COEFFICIENT = 10000000;
 
@@ -28,6 +32,7 @@ module.exports = class EntityManager {
     }
 
     add(entity) {
+        console.log(entity.name);
         this.__entities.set(entity.name, entity);
     }
 
@@ -41,7 +46,7 @@ module.exports = class EntityManager {
         // Проверяем на коллизию со всеми сущностями
         // TODO: Брать ближайшие в радиусе
         Array.from(this.__entities.values()).some((entity) => {
-            if (movingOne !== entity && entity.movePossibleAgainst(movingOne,direction, factor)) { 
+            if (movingOne !== entity && entity.movePossibleAgainst(movingOne, direction, factor)) {
                 // TODO: On collide event
                 collisionDetected = true;
                 return true;
@@ -60,12 +65,31 @@ module.exports = class EntityManager {
     getAllBeginningWith(string) {
         let all = [];
 
-        this.__entities.forEach(function(entity, name) {
-            if(name.substr(0, string.length) === string) {
+        this.__entities.forEach(function (entity, name) {
+            if (name.substr(0, string.length) === string) {
                 all.push(entity);
             }
         });
 
         return all;
+    }
+
+    /**
+     * Auto-increment для имен сущностей
+     *
+     * @param entity
+     * @returns int
+     */
+    incrementSequenceOf(entity) {
+        let sequenceName = entity.constructor.name.toLowerCase();
+
+        if (this.__sequences.has(sequenceName)) {
+            let newSequenceValue = this.__sequences.get(sequenceName) + 1;
+            this.__sequences.set(sequenceName, newSequenceValue);
+            return newSequenceValue;
+        }
+
+        this.__sequences.set(sequenceName, 1);
+        return 1;
     }
 };

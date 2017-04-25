@@ -7,14 +7,15 @@ const PLAYER_SIZE = 30;
 const PLAYER_MOVE_SPEED = 10;
 
 module.exports = class Player extends Entity {
-    constructor(id, playerSocket) {
-        super('player' + id, PLAYER_SIZE);
-        this.__id = id;
+    constructor(playerSocket) {
+        super(PLAYER_SIZE);
 
         this.server.broadcast('connected', {id: this.__id});
 
         // Subscribe to player's events
-        playerSocket.on('move', (move) => { this.move(new Vector2(move.x, move.y)); });
+        playerSocket.on('move', (move) => {
+            this.move(new Vector2(move.x, move.y));
+        });
     }
 
     move(direction) {
@@ -25,9 +26,5 @@ module.exports = class Player extends Entity {
             x: this.x,
             y: this.y
         });
-    }
-
-    get id() {
-        return this.__id;
     }
 };

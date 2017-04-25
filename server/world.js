@@ -5,7 +5,7 @@ const WORLD_SIZE = 1000;
 
 module.exports = class World extends Entity {
     constructor() {
-        super('world', WORLD_SIZE);
+        super(WORLD_SIZE);
     }
 
     /**

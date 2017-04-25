@@ -1,10 +1,10 @@
 let Vector2 = require('./vector2');
 
 module.exports = class Entity {
-    constructor(name, dimensions) {
+    constructor(dimensions) {
         this.__position = new Vector2(0, 0);
         this.__dimensions = dimensions; // Размер объекта
-        this.__name = name;
+        this.__id = this.server.entityMgr.incrementSequenceOf(this);
 
         // Регистрируем обьект
         this.server.entityMgr.add(this);
@@ -18,6 +18,11 @@ module.exports = class Entity {
         this.y = this.y + (direction.y * factor);
     }
 
+    /**
+     * Физическая логика обрабатывается здесь
+     *
+     * @param deltaT
+     */
     think(deltaT) {
 
     }
@@ -67,7 +72,11 @@ module.exports = class Entity {
         return require('./warlock-server');
     }
 
+    get id() {
+        return this.__id;
+    }
+
     get name() {
-        return this.__name;
+        return this.constructor.name.toLowerCase() + this.__id;
     }
 };

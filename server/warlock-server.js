@@ -1,4 +1,3 @@
-let Vector2 = require('./vector2');
 let Player = require('./player');
 let EntityManager = require('./entity-manager');
 let app = require('http').createServer(require('./static-handler'));
@@ -7,7 +6,6 @@ let World = require('./world');
 
 class WarlockServer {
     constructor(io) {
-        this.__idSequence = 0;
         this.__io = io;
         this.__entityMgr = new EntityManager();
 
@@ -19,19 +17,16 @@ class WarlockServer {
     }
 
     handleConnection(socket) {
-        this.__idSequence += 1;
-        let currentPlayerId = this.__idSequence;
-
         // Add current player to scene
-        let currentPlayer = new Player(currentPlayerId, socket);
+        let currentPlayer = new Player(socket);
 
         // Transmit players list
         socket.emit('players', this.__entityMgr.getAllBeginningWith('player'));
 
         socket.on('disconnect', (reason) => {
-            console.log('Player', currentPlayerId, 'disconnected, reason:', reason);
+            console.log('Player', currentPlayer.id, 'disconnected, reason:', reason);
 
-            this.broadcast('disconnected', {id: currentPlayerId});
+            this.broadcast('disconnected', {id: currentPlayer.id});
 
             // Remove player from scene
             this.__entityMgr.remove(currentPlayer);
