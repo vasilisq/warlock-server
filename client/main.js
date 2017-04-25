@@ -5,7 +5,8 @@ import io from 'socket.io-client'
 
 let socket = io('http://localhost:8080'),
     stage,
-    layer;
+    layer,
+    currentLocation = {}; //temp
 const size = 30;
 
 new Vue({
@@ -32,6 +33,18 @@ function drawPlayer(id, { __x: x = 0, __y: y = 0 }, size = 30) {
     layer.draw();
 }
 
+// TODO вынести методом в инстанс Playera?
+function calcSkillVector(point1, point2) {
+    let rx = Math.abs(point1.x - point2.x),
+        ry = Math.abs(point1.y - point2.y),
+        r = Math.sqrt(Math.pow(rx, 2) + Math.pow(ry, 2));
+
+    return {
+        a: rx / r,
+        b: ry / r
+    }
+}
+
 stage = new Konva.Stage({
     container: 'canvas-container',
     width: window.innerWidth,
@@ -56,6 +69,8 @@ socket.on('moved', function(data) {
     console.log('New position:', data);
     layer.findOne('#object' + data.id).setAbsolutePosition({ x: data.x, y: data.y });
     layer.draw();
+    currentLocation.x = data.x;
+    currentLocation.y = data.y;
 });
 
 socket.on('disconnected', function(data) {
@@ -72,4 +87,23 @@ window.addEventListener('keypress', function(e) {
         case 'KeyD': socket.emit('move', { x: 1, y: 0}); break;
     }
     layer.draw();
+});
+
+stage.on('contentClick', function(e) {
+    let data = calcSkillVector(currentLocation, stage.getPointerPosition());
+    //если левая кнопка мышки
+    if (e.evt.button == 0 ) {
+        socket.emit('left', data);
+    // если правая
+    } else if (e.evt.button == 2) {
+        socket.emit('right', data);
+    }
+});
+
+$('#canvas-container').on('contextmenu', function(e) {
+    e.preventDefault();
+});
+
+$('#canvas-container').on('click', function(e) {
+    e.preventDefault();
 });
