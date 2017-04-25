@@ -57,4 +57,8 @@ module.exports = class Entity {
     get dimensions() {
         return this.__dimensions;
     }
+
+    get server() {
+        return require('./warlock-server');
+    }
 };
