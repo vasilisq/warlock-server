@@ -24,18 +24,10 @@ module.exports = class EntityManager {
         // Проверяем на коллизию со всеми сущностями
         // TODO: Брать ближайшие в радиусе
         Array.from(this.__entities.values()).some((entity) => {
-            if (movingOne !== entity) { 
-                if(entity instanceof World) { 
-                    if(entity.movePossibleAgainst(movingOne, direction, factor)) {
-                        // TODO: On collide event
-                        collisionDetected = true;
-                        return true;
-                    }
-                } else if(movingOne.movePossibleAgainst(entity, direction, factor)) {
-                    // TODO: On collide event
-                    collisionDetected = true;
-                    return true;
-                }
+            if (movingOne !== entity && entity.movePossibleAgainst(movingOne,direction, factor)) { 
+                // TODO: On collide event
+                collisionDetected = true;
+                return true;
             }
         });
 
