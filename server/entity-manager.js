@@ -34,7 +34,6 @@ module.exports = class EntityManager {
     }
 
     add(entity) {
-        console.log(entity.name);
         this.__entities.set(entity.name, entity);
     }
 
