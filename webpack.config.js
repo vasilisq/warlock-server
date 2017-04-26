@@ -1,5 +1,7 @@
-var path = require('path')
-var webpack = require('webpack')
+var path = require('path'),
+    webpack = require('webpack'),
+    ExtractTextPlugin = require('extract-text-webpack-plugin'),
+    OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 module.exports = {
     entry: './client/main.js',
@@ -10,27 +12,31 @@ module.exports = {
     },
     module: {
         rules: [
-        {
-            test: /\.vue$/,
-            loader: 'vue-loader',
-            options: {
-                loaders: {
+            {
+                test: /\.vue$/,
+                loader: 'vue-loader',
+                options: {
+                    loaders: {
+                        css: ExtractTextPlugin.extract({
+                            use: 'css-loader',
+                            fallback: 'vue-style-loader'
+                        })
+                    }
+                }
+            },
+            {
+                test: /\.js$/,
+                loader: 'babel-loader',
+                include: path.join(__dirname, 'client'),
+                exclude: /node_modules/
+            },
+            {
+                test: /\.(png|jpg|gif|svg)$/,
+                loader: 'file-loader',
+                options: {
+                    name: '[name].[ext]?[hash]'
                 }
             }
-        },
-        {
-            test: /\.js$/,
-            loader: 'babel-loader',
-            include: path.join(__dirname, 'client'),
-            exclude: /node_modules/
-        },
-        {
-            test: /\.(png|jpg|gif|svg)$/,
-            loader: 'file-loader',
-            options: {
-                name: '[name].[ext]?[hash]'
-            }
-        }
         ]
     },
     resolve: {
@@ -52,9 +58,10 @@ module.exports = {
     },
     devtool: 'source-map',
     plugins: [
-    new webpack.ProvidePlugin({
-        '$': 'jquery'
-    })
+        new webpack.ProvidePlugin({
+            '$': 'jquery'
+        }),
+        new ExtractTextPlugin('style.css')
     ]
 }
 
@@ -74,6 +81,11 @@ if (process.env.NODE_ENV === 'production') {
         }),
         new webpack.LoaderOptionsPlugin({
             minimize: true
+        }),
+        new OptimizeCssAssetsPlugin({
+            cssProcessorOptions: {
+                safe: true
+            }
         })
-        ])
+    ])
 }
