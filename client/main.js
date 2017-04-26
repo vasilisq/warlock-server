@@ -110,16 +110,13 @@ socket.on('missileStartMove', function(data) {
     });
     layer.add(skill);
 
-    let anim = new Konva.Animation(function(frame) {
-        console.log(frame);
-    }, layer);
-    /*skill.timerId = setInterval(function() {
+    skill.timerId = setInterval(function() {
         skill.move({
             x: data.directions.a * data.speed,
             y: data.directions.b * data.speed,
         });
         layer.draw();
-    }, data.deltaT);*/
+    }, data.deltaT);
 });
 
 /**
