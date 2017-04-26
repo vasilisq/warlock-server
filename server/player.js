@@ -1,5 +1,6 @@
 let Vector2 = require('./vector2');
 let Entity = require('./entity');
+let Missile = require('./missile');
 
 // Размеры игрока
 const PLAYER_SIZE = 30;
@@ -18,11 +19,11 @@ module.exports = class Player extends Entity {
         });
 
         playerSocket.on('left', (data) => {
-            // TODO: обработка левого клика
+            new Missile(new Vector2(data.a, data.b), this);
         });
 
         playerSocket.on('right', (data) => {
-            // TODO: обработка правого клика
+            new Missile(new Vector2(data.a, data.b), this);
         });
     }
 
