@@ -110,6 +110,8 @@ module.exports = class EntityManager {
             if (entity instanceof Missile) {
                 this.remove(entity);
             }
+
+            // TODO: сообщить клиенту, что missile столкнулся
         }
     }
 };
