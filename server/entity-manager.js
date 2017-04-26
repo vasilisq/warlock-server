@@ -1,5 +1,7 @@
 let World = require('./world');
 let Entity = require('./entity');
+let Player = require('./player');
+let Missile = require('./missile');
 
 module.exports = class EntityManager {
     constructor() {
@@ -47,7 +49,8 @@ module.exports = class EntityManager {
         // TODO: Брать ближайшие в радиусе
         Array.from(this.__entities.values()).some((entity) => {
             if (movingOne !== entity && entity.movePossibleAgainst(movingOne, direction, factor)) {
-                // TODO: On collide event
+                onCollide(movingOne, entity);
+
                 collisionDetected = true;
                 return true;
             }
@@ -91,5 +94,22 @@ module.exports = class EntityManager {
 
         this.__sequences.set(sequenceName, 1);
         return 1;
+    }
+
+    /**
+     * Метод обработки коллизий
+     * @param movingOne
+     * @param entity
+     */
+    onCollide(movingOne, entity) {
+        // если движущаяся сущность - ракета --- удаляем
+        if (movingOne instanceof Missile) { 
+            this.remove(movingOne);
+
+            // если вторая сущность тоже ракета --- удаляем обе (столкновение ракет)
+            if (entity instanceof Missile) {
+                this.remove(entity);
+            }
+        }
     }
 };
