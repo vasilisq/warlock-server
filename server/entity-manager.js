@@ -49,7 +49,7 @@ module.exports = class EntityManager {
         // TODO: Брать ближайшие в радиусе
         Array.from(this.__entities.values()).some((entity) => {
             if (movingOne !== entity && entity.movePossibleAgainst(movingOne, direction, factor)) {
-                onCollide(movingOne, entity);
+                this.onCollide(movingOne, entity);
 
                 collisionDetected = true;
                 return true;
@@ -104,10 +104,13 @@ module.exports = class EntityManager {
     onCollide(movingOne, entity) {
         // если движущаяся сущность - ракета --- удаляем
         if (movingOne instanceof Missile) { 
+            console.log(movingOne.name + " remove");
             this.remove(movingOne);
+            console.log(entity.name + " ops");
 
             // если вторая сущность тоже ракета --- удаляем обе (столкновение ракет)
             if (entity instanceof Missile) {
+                console.log(entity.name + " remove");
                 this.remove(entity);
             }
 

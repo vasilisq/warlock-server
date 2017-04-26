@@ -11,14 +11,11 @@ module.exports = class Missile extends Entity {
         this.__direction = direction;
 
         // TODO: переписать расчёт стартовой позиции
-        this.x = parent.x + parent.dimensions * 2 * this.__direction.x;
-        this.y = parent.y + parent.dimensions * 2 * this.__direction.y;
+        //this.x = parent.x + parent.dimensions * 2 * this.__direction.x;
+        //this.y = parent.y + parent.dimensions * 2 * this.__direction.y;
+        this.x = 50;
+        this.y = 50;
 
-        this.server.broadcast('moved', {
-            id: this.id,
-            x: this.x,
-            y: this.y
-        });
     }
 
     /**
@@ -28,6 +25,6 @@ module.exports = class Missile extends Entity {
      */
     think(deltaT) {
         super.move(this.__direction, MISSILE_SPEED * deltaT);
-
+        console.log(this.name + ' x:' + this.x + ' y:' + this.y);
     }
 }
