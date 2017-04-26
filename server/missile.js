@@ -10,8 +10,8 @@ module.exports = class Missile extends Entity {
 
         this.__direction = direction;
 
-        this.position = new Vector2(parent.x + parent.dimensions * this.__direction, 
-            parent.y + parent.dimensions * this.__direction);
+        this.x = parent.x + parent.dimensions * this.__direction.x;
+        this.y = parent.y + parent.dimensions * this.__direction.y;
 
         this.server.broadcast('moved', {
             id: this.id,
