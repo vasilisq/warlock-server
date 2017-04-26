@@ -30,9 +30,9 @@ module.exports = class Missile extends Entity {
     }
 
     onCollide(entity) {
-        if(entity instanceof World) {
+        if (entity instanceof World) {
             console.log(this.name + ' removed by ' + entity.name);
             this.server.entityMgr.remove(this);
         }
     }
-}
+};
