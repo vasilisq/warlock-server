@@ -16,6 +16,14 @@ module.exports = class Player extends Entity {
         playerSocket.on('move', (move) => {
             this.move(new Vector2(move.x, move.y));
         });
+
+        playerSocket.on('left', (data) => {
+            // TODO: обработка левого клика
+        });
+
+        playerSocket.on('right', (data) => {
+            // TODO: обработка правого клика
+        });
     }
 
     move(direction) {
