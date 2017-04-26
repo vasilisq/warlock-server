@@ -1,5 +1,6 @@
 let Entity = require('./entity');
 let Vector2 = require('./vector2');
+let World = require('./world');
 
 const MISSILE_SIZE = 15;
 const MISSILE_SPEED = 30;
@@ -26,5 +27,12 @@ module.exports = class Missile extends Entity {
     think(deltaT) {
         super.move(this.__direction, MISSILE_SPEED * deltaT);
         console.log(this.name + ' x:' + this.x + ' y:' + this.y);
+    }
+
+    onCollide(entity) {
+        if(entity instanceof World) {
+            console.log(this.name + ' removed by ' + entity.name);
+            this.server.entityMgr.remove(this);
+        }
     }
 }
