@@ -49,6 +49,11 @@ function calcSkillVector(point1, point2) {
     }
 }
 
+// TODO вынести в инстанс Missile
+function calcNewMissilePosition() {
+
+}
+
 stage = new Konva.Stage({
     container: 'canvas-container',
     width: window.innerWidth,
@@ -83,19 +88,50 @@ socket.on('disconnected', function(data) {
     layer.draw();
 });
 
-socket.on('collision', function(data) {
-    layer.add(
-        new Konva.Rect({
-            x: data.x,
-            y: data.y,
-            width: 40,
-            height: 40,
-            fill: '#ff0619',
-            stroke: 'black',
-            strokeWidth: 4,
+/**
+* Обработка события начала движения ракеты
+*
+* @param data {Object}
+* @param data.position {Object} начальное положения ракеты
+* @param data.position.x {Number}
+* @param data.position.y {Number}
+* @param data.id {Number}
+* @param data.speed {Number}
+* @param data.deltaT {Number} время в !милисекундах!
+* @param data.directions {Object}
+* @param data.directions.a {Number}
+* @param data.directions.b {Number}
+* @param data.size {Number}
+*/
+socket.on('missileStartMove', function(data) {
+    let skill = new Konva.Rect({
+        x: data.x || 0,
+        y: data.y || 0,
+        width: 15,
+        height: 15,
+        fill: '#f00',
+        id: 'missile' + data.id,
+    });
+    layer.add(skill);
 
-        })
-    );
+    skill.timerId = setInterval(function() {
+        skill.move({
+            x: data.directions.a * data.speed,
+            y: data.directions.b * data.speed,
+        });
+        layer.draw();
+    }, data.deltaT);
+});
+
+/**
+* Обработка окончания движения (столкновение, коллизия, выход за карту и т д)
+*
+* @param data.id {Number} id объекта Missile
+*/
+socket.on('missileEndMove', function(data) {
+    let skill = layer.findOne('#missile' + data.id);
+    clearInterval(skill.timerId);
+    skill.remove();
     layer.draw();
 });
 

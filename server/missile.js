@@ -17,6 +17,8 @@ module.exports = class Missile extends Entity {
         this.x = parent.x + parent.dimensions * 2 * this.__direction.x;
         this.y = parent.y + parent.dimensions * 2 * this.__direction.y;
         this.timeout = null;
+        this.server.broadcast('missileStartMove', {id: this.id, x: this.x, y: this.y,
+            dirx: this.__direction.x, diry: this.__direction.y, speed: MISSILE_SPEED});
 
     }
 
@@ -38,7 +40,7 @@ module.exports = class Missile extends Entity {
 
     onCollide(entity) {
         console.log(entity.name, 'removed by', this.name);
-            this.server.broadcast('collision', this.__position);
+        this.server.broadcast('missileStartMove', {id: this.id, x: this.x, y: this.y});
             this.server.entityMgr.remove(entity);
 
     }
