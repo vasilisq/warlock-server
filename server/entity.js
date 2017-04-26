@@ -79,4 +79,13 @@ module.exports = class Entity {
     get name() {
         return this.constructor.name.toLowerCase() + this.__id;
     }
+
+    /**
+     * обработка коллизий движущейся сущностью
+     *
+     * @param entity - сущность, с которой произошло столкновение
+     */
+    onCollide(entity) {
+        
+    }
 };
