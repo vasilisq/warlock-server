@@ -1,5 +1,6 @@
 let Vector2 = require('./vector2');
 let Entity = require('./entity');
+let Missile = require('./missile');
 
 // Размеры игрока
 const PLAYER_SIZE = 30;
@@ -15,6 +16,14 @@ module.exports = class Player extends Entity {
         // Subscribe to player's events
         playerSocket.on('move', (move) => {
             this.move(new Vector2(move.x, move.y));
+        });
+
+        playerSocket.on('left', (data) => {
+            new Missile(new Vector2(data.a, data.b), this);
+        });
+
+        playerSocket.on('right', (data) => {
+            new Missile(new Vector2(data.a, data.b), this);
         });
     }
 

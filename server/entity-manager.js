@@ -1,5 +1,7 @@
 let World = require('./world');
 let Entity = require('./entity');
+let Player = require('./player');
+let Missile = require('./missile');
 
 module.exports = class EntityManager {
     constructor() {
@@ -47,7 +49,8 @@ module.exports = class EntityManager {
         // TODO: Брать ближайшие в радиусе
         Array.from(this.__entities.values()).some((entity) => {
             if (movingOne !== entity && entity.movePossibleAgainst(movingOne, direction, factor)) {
-                // TODO: On collide event
+                movingOne.onCollide(entity);
+
                 collisionDetected = true;
                 return true;
             }
