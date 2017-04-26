@@ -6,7 +6,7 @@ import io from 'socket.io-client'
 let socket = io('http://localhost:8080'),
     stage,
     layer,
-    currentLocation = {}; //temp
+    currentLocation = {x: 0, y: 0}; //temp
 const size = 30;
 
 new Vue({
@@ -35,10 +35,14 @@ function drawPlayer(id, { __x: x = 0, __y: y = 0 }, size = 30) {
 
 // TODO вынести методом в инстанс Playera?
 function calcSkillVector(point1, point2) {
-    let rx = Math.abs(point1.x - point2.x),
-        ry = Math.abs(point1.y - point2.y),
+    let rx = (point1.x - point2.x) * -1,
+        ry = (point1.y - point2.y),
         r = Math.sqrt(Math.pow(rx, 2) + Math.pow(ry, 2));
 
+    console.log({
+        a: rx / r,
+        b: ry / r
+    });
     return {
         a: rx / r,
         b: ry / r
@@ -76,6 +80,22 @@ socket.on('moved', function(data) {
 socket.on('disconnected', function(data) {
     console.log('Disconnected:', data);
     layer.findOne('#object' + data.id).remove();
+    layer.draw();
+});
+
+socket.on('collision', function(data) {
+    layer.add(
+        new Konva.Rect({
+            x: data.x,
+            y: data.y,
+            width: 40,
+            height: 40,
+            fill: '#ff0619',
+            stroke: 'black',
+            strokeWidth: 4,
+
+        })
+    );
     layer.draw();
 });
 

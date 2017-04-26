@@ -11,11 +11,12 @@ module.exports = class Missile extends Entity {
 
         this.__direction = direction;
 
+        console.log(this.__direction);
+
         // TODO: переписать расчёт стартовой позиции
-        //this.x = parent.x + parent.dimensions * 2 * this.__direction.x;
-        //this.y = parent.y + parent.dimensions * 2 * this.__direction.y;
-        this.x = 50;
-        this.y = 50;
+        this.x = parent.x + parent.dimensions * 2 * this.__direction.x;
+        this.y = parent.y + parent.dimensions * 2 * this.__direction.y;
+        this.timeout = null;
 
     }
 
@@ -26,13 +27,19 @@ module.exports = class Missile extends Entity {
      */
     think(deltaT) {
         super.move(this.__direction, MISSILE_SPEED * deltaT);
-        console.log(this.name + ' x:' + this.x + ' y:' + this.y);
+
+        if(this.timeout === null)
+        this.timeout = setTimeout(() => {
+            this.server.broadcast('missile_move', {id: this.id, x:this.x, y:this.y});
+            console.log(this.name + ' x:' + this.x + ' y:' + this.y);
+            this.timeout = null;
+        }, 1000);
     }
 
     onCollide(entity) {
-        if (entity instanceof World) {
-            console.log(this.name + ' removed by ' + entity.name);
-            this.server.entityMgr.remove(this);
-        }
+        console.log(entity.name, 'removed by', this.name);
+            this.server.broadcast('collision', this.__position);
+            this.server.entityMgr.remove(entity);
+
     }
 };
