@@ -5,6 +5,7 @@ module.exports = class Entity {
         this.__position = new Vector2(0, 0);
         this.__dimensions = dimensions; // Размер объекта
         this.__id = this.server.entityMgr.incrementSequenceOf(this);
+        this.__health = 100;
 
         // Регистрируем обьект
         this.server.entityMgr.add(this);
@@ -80,6 +81,14 @@ module.exports = class Entity {
         return this.constructor.name.toLowerCase() + this.__id;
     }
 
+    get health() {
+        return this.__health;
+    }
+
+    set health(hp) {
+        this.health = hp;
+    }
+
     /**
      * обработка коллизий движущейся сущностью
      *
@@ -97,5 +106,14 @@ module.exports = class Entity {
     destruct(killer) {
         this.server.entityMgr.remove(this);
         console.log(this.name, 'removed by', killer.name, 'at', this.x, ';', this.y);
+    }
+
+    /**
+     * нанесение урона сущности
+     *
+     * @param damage
+     */
+    doDamage(damage) {
+        this.__health -= damage;
     }
 };
