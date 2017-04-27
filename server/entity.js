@@ -88,4 +88,13 @@ module.exports = class Entity {
     onCollide(entity) {
 
     }
+
+    /**
+     * удаление сущности
+     *
+     * @param killer
+     */
+    destruct(killer) {
+        this.server.entityMgr.remove(this);
+    }
 };
