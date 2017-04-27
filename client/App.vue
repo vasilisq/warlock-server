@@ -43,4 +43,8 @@
     a {
         color: #42b983;
     }
+
+    #canvas-container {
+        border: 1px solid #2c3e50;
+    }
 </style>
