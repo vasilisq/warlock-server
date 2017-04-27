@@ -5,6 +5,7 @@ module.exports = class Entity {
         this.__position = new Vector2(0, 0);
         this.__dimensions = dimensions; // Размер объекта
         this.__id = this.server.entityMgr.incrementSequenceOf(this);
+        this.__speed = 0; // Скорость перемещения
 
         // Регистрируем обьект
         this.server.entityMgr.add(this);
@@ -78,6 +79,14 @@ module.exports = class Entity {
 
     get name() {
         return this.constructor.name.toLowerCase() + this.__id;
+    }
+
+    get speed() {
+        return this.__speed;
+    }
+
+    set speed(value) {
+        this.__speed = value;
     }
 
     /**
