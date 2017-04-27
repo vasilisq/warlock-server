@@ -11,12 +11,24 @@ module.exports = class Missile extends Entity {
 
         this.__direction = direction;
 
-        // TODO: переписать расчёт стартовой позиции
-        //this.x = parent.x + parent.dimensions * 2 * this.__direction.x;
-        //this.y = parent.y + parent.dimensions * 2 * this.__direction.y;
-        this.x = 50;
-        this.y = 50;
+        console.log(this.__direction);
 
+        // TODO: переписать расчёт стартовой позиции
+        this.x = parent.x + parent.dimensions * 2 * this.__direction.x;
+        this.y = parent.y + parent.dimensions * 2 * this.__direction.y;
+
+        this.server.broadcast('missileStartMove', {
+            id: this.id,
+            x: this.x,
+            y: this.y,
+            dimensions: MISSILE_SIZE,
+            direction: {
+                x: this.__direction.x,
+                y: this.__direction.y
+            },
+            speed: MISSILE_SPEED,
+            dT: this.server.entityMgr.lastDt
+        });
     }
 
     /**
@@ -26,13 +38,16 @@ module.exports = class Missile extends Entity {
      */
     think(deltaT) {
         super.move(this.__direction, MISSILE_SPEED * deltaT);
-        console.log(this.name + ' x:' + this.x + ' y:' + this.y);
     }
 
     onCollide(entity) {
-        if (entity instanceof World) {
-            console.log(this.name + ' removed by ' + entity.name);
-            this.server.entityMgr.remove(this);
-        }
+        console.log(this.name, 'removed by', entity.name, 'at', this.x, ';', this.y);
+        this.server.broadcast('missileEndMove', {
+            id: this.id,
+            x: this.x,
+            y: this.y
+        });
+
+        this.server.entityMgr.remove(this);
     }
 };

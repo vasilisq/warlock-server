@@ -6,7 +6,7 @@ import io from 'socket.io-client'
 let socket = io('http://localhost:8080'),
     stage,
     layer,
-    currentLocation = {}; //temp
+    currentLocation = {x: 0, y: 0}; //temp
 const size = 30;
 
 new Vue({
@@ -35,8 +35,8 @@ function drawPlayer(id, { __x: x = 0, __y: y = 0 }, size = 30) {
 
 // TODO вынести методом в инстанс Playera?
 function calcSkillVector(point1, point2) {
-    let rx = Math.abs(point1.x - point2.x),
-        ry = Math.abs(point1.y - point2.y),
+    let rx = (point1.x - point2.x) * -1,
+        ry = (point1.y - point2.y) * -1,
         r = Math.sqrt(Math.pow(rx, 2) + Math.pow(ry, 2));
 
     return {
@@ -101,22 +101,27 @@ socket.on('disconnected', function(data) {
 */
 socket.on('missileStartMove', function(data) {
     let skill = new Konva.Rect({
-        x: data.position.x || 0,
-        y: data.position.y || 0,
-        width: data.size || 15,
-        height: data.size || 15,
+        x: data.x || 0,
+        y: data.y || 0,
+        width: data.dimensions,
+        height: data.dimensions,
         fill: '#f00',
         id: 'missile' + data.id,
     });
     layer.add(skill);
 
-    skill.timerId = setInterval(function() {
-        skill.move({
-            x: data.directions.a * data.speed,
-            y: data.directions.b * data.speed,
-        });
+    skill.timerId = setInterval(() => {
+        let x = data.direction.x * data.speed * data.dT * 100, // todo: ????
+            y = data.direction.y * data.speed * data.dT * 100;
+
+            skill.move({
+                x: x,
+                y: y,
+            });
+
         layer.draw();
-    }, data.deltaT);
+    }, 1); // todo: recalc dt
+
 });
 
 /**
@@ -125,10 +130,13 @@ socket.on('missileStartMove', function(data) {
 * @param data.id {Number} id объекта Missile
 */
 socket.on('missileEndMove', function(data) {
+    console.log('missile', data.id,' died');
     let skill = layer.findOne('#missile' + data.id);
-    clearInterval(skill.timerId);
-    skill.remove();
-    layer.draw();
+    if(skill) {
+        clearInterval(skill.timerId);
+        skill.remove();
+        layer.draw();
+    }
 });
 
 window.addEventListener('keypress', function(e) {
