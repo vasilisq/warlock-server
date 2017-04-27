@@ -41,10 +41,18 @@ module.exports = class Player extends Entity {
     doDamage(damage, damager) {
         super.destruct(damage, damager);
 
-        this.server.broadcast('playerWasDamaged', {
+        this.server.broadcast('playerDamaged', {
             id: this.id,
             damage: damage,
             hp: this.health
+        });
+    }
+
+    destruct(killer) {
+        super.destruct(killer);
+        
+        this.server.broadcast('playerDied', {
+            id: this.id
         });
     }
 };
