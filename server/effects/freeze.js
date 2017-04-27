@@ -14,6 +14,6 @@ module.exports = class Freeze extends Effect {
     }
 
     effect() {
-        
+
     }
 };
