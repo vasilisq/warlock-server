@@ -4,7 +4,7 @@
  * @type {Freeze}
  */
 
-let Effect = require('../effect');
+let Effect = require('../core/effect');
 
 const FREEZE_DURATION = 5;
 const FREEZE_SLOW_FACTOR = 2;

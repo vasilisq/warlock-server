@@ -1,8 +1,8 @@
-let Player = require('./player');
-let EntityManager = require('./entity-manager');
-let app = require('http').createServer(require('./static-handler'));
+let Player = require('./entities/player');
+let EntityManager = require('./core/entity-manager');
+let app = require('http').createServer(require('./core/static-handler'));
 let io = require('socket.io')(app);
-let World = require('./world');
+let World = require('./entities/world');
 
 class WarlockServer {
     constructor(io) {

@@ -1,10 +1,15 @@
 let Entity = require('./entity');
 let Vector2 = require('./vector2');
-let World = require('./world');
+let World = require('../entities/world');
 
 const MISSILE_SIZE = 15;
 const MISSILE_SPEED = 30;
 
+/**
+ * Базовый класс для скиллов
+ *
+ * @type {Missile}
+ */
 module.exports = class Missile extends Entity {
     constructor(direction, parent) {
         super(MISSILE_SIZE);
