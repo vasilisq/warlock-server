@@ -113,7 +113,11 @@ module.exports = class Entity {
      *
      * @param damage
      */
-    doDamage(damage) {
+    doDamage(damage, damager) {
         this.__health -= damage;
+
+        if(this.__health <= 0) {
+            this.destruct(damager);
+        }
     }
 };
