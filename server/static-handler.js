@@ -21,11 +21,14 @@ module.exports = function (request, response) {
             break;
         case '/favicon.ico':
             return fileResponse('static/favicon.ico');
-        case '/build/build.js':
-            return fileResponse('build/build.js');
         default:
-            response.writeHead(404);
-            response.end('Not found');
+            // Match build directory
+            if (request.url.match(new RegExp(/^\/build\/(.*)+/g))) {
+                return fileResponse('.' + request.url);
+            } else {
+                response.writeHead(404);
+                response.end('Not found');
+            }
             break;
     }
 };
