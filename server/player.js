@@ -1,6 +1,7 @@
 let Vector2 = require('./vector2');
 let Entity = require('./entity');
 let Missile = require('./missile');
+let Freeze = require('./effects/freeze');
 
 // Размеры игрока
 const PLAYER_SIZE = 30;
@@ -11,7 +12,9 @@ const PLAYER_START_HEALTH = 30;
 module.exports = class Player extends Entity {
     constructor(playerSocket) {
         super(PLAYER_SIZE);
+
         this.__health = PLAYER_START_HEALTH;
+        this.speed = PLAYER_MOVE_SPEED;
 
         this.server.broadcast('connected', {id: this.__id});
 
@@ -30,7 +33,7 @@ module.exports = class Player extends Entity {
     }
 
     move(direction) {
-        super.move(direction, PLAYER_MOVE_SPEED);
+        super.move(direction, this.speed);
 
         this.server.broadcast('moved', {
             id: this.id,
