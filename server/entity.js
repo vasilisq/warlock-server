@@ -5,6 +5,7 @@ module.exports = class Entity {
         this.__position = new Vector2(0, 0);
         this.__dimensions = dimensions; // Размер объекта
         this.__id = this.server.entityMgr.incrementSequenceOf(this);
+        this.__effects = [];
 
         // Регистрируем обьект
         this.server.entityMgr.add(this);
@@ -87,5 +88,9 @@ module.exports = class Entity {
      */
     onCollide(entity) {
 
+    }
+
+    applyEffect(effect) {
+        this.__effects.push(effect);
     }
 };
