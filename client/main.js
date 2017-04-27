@@ -20,8 +20,8 @@ function drawPlayer(id, { __x: x = 0, __y: y = 0 }, size = 30) {
     layer.findOne('#object' + id) || 
         layer.add(
             new Konva.Rect({
-                x: x,
-                y: y,
+                x: x - size * 0.5,
+                y: y - size * 0.5,
                 width: size,
                 height: size,
                 fill: '#0f0',
@@ -37,11 +37,13 @@ function drawPlayer(id, { __x: x = 0, __y: y = 0 }, size = 30) {
 function calcSkillVector(point1, point2) {
     let rx = Math.abs(point1.x - point2.x),
         ry = Math.abs(point1.y - point2.y),
-        r = Math.sqrt(Math.pow(rx, 2) + Math.pow(ry, 2));
+        r = Math.sqrt(Math.pow(rx, 2) + Math.pow(ry, 2)),
+        a = point1.x - point2.x < 0 ? 1 : -1,
+        b = point1.y - point2.y < 0 ? 1 : -1;
 
     return {
-        a: rx / r,
-        b: ry / r
+        a: a * rx / r,
+        b: b * ry / r
     }
 }
 
@@ -68,14 +70,21 @@ socket.on('players', function(players) {
 socket.on('connected', function(data) {
     console.log('Connected new user:', data);
     drawPlayer(data.id, {});
+    currentLocation = {
+        x: data.x || 0,
+        y: data.y || 0
+    };
 })
+
 
 socket.on('moved', function(data) {
     console.log('New position:', data);
-    layer.findOne('#object' + data.id).setAbsolutePosition({ x: data.x, y: data.y });
+    layer.findOne('#object' + data.id).setAbsolutePosition({ x: data.x - size * 0.5, y: data.y - size * 0.5 });
     layer.draw();
-    currentLocation.x = data.x;
-    currentLocation.y = data.y;
+    currentLocation = {
+        x: data.x || 0,
+        y: data.y || 0
+    };
 });
 
 socket.on('disconnected', function(data) {
@@ -143,6 +152,7 @@ window.addEventListener('keypress', function(e) {
 
 stage.on('contentClick', function(e) {
     let data = calcSkillVector(currentLocation, stage.getPointerPosition());
+    console.log(data);
     //если левая кнопка мышки
     if (e.evt.button == 0 ) {
         socket.emit('left', data);
