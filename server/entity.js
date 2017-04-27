@@ -1,11 +1,13 @@
 let Vector2 = require('./vector2');
 
+const ENTITY_START_HEALTH = 10;
+
 module.exports = class Entity {
     constructor(dimensions) {
         this.__position = new Vector2(0, 0);
         this.__dimensions = dimensions; // Размер объекта
         this.__id = this.server.entityMgr.incrementSequenceOf(this);
-        this.__health = 100;
+        this.__health = ENTITY_START_HEALTH;
 
         // Регистрируем обьект
         this.server.entityMgr.add(this);

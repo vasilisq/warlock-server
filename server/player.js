@@ -6,11 +6,12 @@ let Missile = require('./missile');
 const PLAYER_SIZE = 30;
 // Скорость бега
 const PLAYER_MOVE_SPEED = 10;
+const PLAYER_START_HEALTH = 30;
 
 module.exports = class Player extends Entity {
     constructor(playerSocket) {
         super(PLAYER_SIZE);
-        this.__health = 30;
+        this.__health = PLAYER_START_HEALTH;
 
         this.server.broadcast('connected', {id: this.__id});
 
