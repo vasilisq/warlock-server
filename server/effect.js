@@ -21,7 +21,7 @@ module.exports = class Effect {
         this.effect();
         setTimeout(() => {
             this.endEffect();
-        }, this.__duration);
+        }, this.__duration * 1000);
     }
 
     /**

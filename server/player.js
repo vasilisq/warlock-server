@@ -1,6 +1,7 @@
 let Vector2 = require('./vector2');
 let Entity = require('./entity');
 let Missile = require('./missile');
+let Freeze = require('./effects/freeze');
 
 // Размеры игрока
 const PLAYER_SIZE = 30;
