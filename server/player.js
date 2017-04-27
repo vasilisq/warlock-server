@@ -10,6 +10,7 @@ const PLAYER_MOVE_SPEED = 10;
 module.exports = class Player extends Entity {
     constructor(playerSocket) {
         super(PLAYER_SIZE);
+        this.__health = 30;
 
         this.server.broadcast('connected', {id: this.__id});
 
@@ -34,6 +35,16 @@ module.exports = class Player extends Entity {
             id: this.id,
             x: this.x,
             y: this.y
+        });
+    }
+
+    doDamage(damage, damager) {
+        super.destruct(damage, damager);
+
+        this.server.broadcast('playerWasDamaged', {
+            id: this.id,
+            damage: damage,
+            hp: this.health
         });
     }
 };
