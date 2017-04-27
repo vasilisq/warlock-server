@@ -87,10 +87,6 @@ module.exports = class Entity {
         return this.__health;
     }
 
-    set health(hp) {
-        this.__health = hp;
-    }
-
     /**
      * обработка коллизий движущейся сущностью
      *
