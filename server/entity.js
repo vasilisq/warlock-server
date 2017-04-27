@@ -86,7 +86,7 @@ module.exports = class Entity {
     }
 
     set health(hp) {
-        this.health = hp;
+        this.__health = hp;
     }
 
     /**
@@ -113,7 +113,7 @@ module.exports = class Entity {
      *
      * @param damage
      */
-    doDamage(damage, damager) {
+    hurt(damage, damager) {
         this.__health -= damage;
 
         if(this.__health <= 0) {

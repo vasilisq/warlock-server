@@ -38,7 +38,7 @@ module.exports = class Player extends Entity {
         });
     }
 
-    doDamage(damage, damager) {
+    hurt(damage, damager) {
         super.destruct(damage, damager);
 
         this.server.broadcast('playerDamaged', {
