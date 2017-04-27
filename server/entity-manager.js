@@ -7,6 +7,7 @@ module.exports = class EntityManager {
     constructor() {
         this.__entities = new Map();
         this.__sequences = new Map();
+        this.__lastDt = 0;
 
         this.startTicking();
     }
@@ -15,13 +16,16 @@ module.exports = class EntityManager {
      * Вызываем think у всех сущностей, считая dT
      */
     startTicking() {
-        const DELTA_T_SLOWDOWN_COEFFICIENT = 10000000;
+        const DELTA_T_SLOWDOWN_COEFFICIENT = 1000000;
 
         let onTick = (previousT) => {
             let now = process.hrtime()[1];
             let deltaT = now - previousT;
 
             this.__entities.forEach((entity) => {
+                // Синхронизируем с клиентом
+                this.__lastDt = deltaT / DELTA_T_SLOWDOWN_COEFFICIENT;
+
                 entity.think(deltaT / DELTA_T_SLOWDOWN_COEFFICIENT);
             });
 
@@ -93,5 +97,9 @@ module.exports = class EntityManager {
 
         this.__sequences.set(sequenceName, 1);
         return 1;
+    }
+
+    get lastDt() {
+        return this.__lastDt;
     }
 };
