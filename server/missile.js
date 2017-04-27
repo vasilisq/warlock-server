@@ -41,13 +41,16 @@ module.exports = class Missile extends Entity {
     }
 
     onCollide(entity) {
-        console.log(this.name, 'removed by', entity.name, 'at', this.x, ';', this.y);
+        destruct(entity);
+    }
+
+    destruct(killer) {
+        super.destruct(killer);
+        
         this.server.broadcast('missileEndMove', {
             id: this.id,
             x: this.x,
             y: this.y
         });
-
-        this.server.entityMgr.remove(this);
     }
 };

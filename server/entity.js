@@ -96,5 +96,6 @@ module.exports = class Entity {
      */
     destruct(killer) {
         this.server.entityMgr.remove(this);
+        console.log(this.name, 'removed by', killer.name, 'at', this.x, ';', this.y);
     }
 };
