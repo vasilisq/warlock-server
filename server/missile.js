@@ -1,9 +1,11 @@
 let Entity = require('./entity');
 let Vector2 = require('./vector2');
 let World = require('./world');
+let Player = require('./player');
 
 const MISSILE_SIZE = 15;
 const MISSILE_SPEED = 30;
+const DAMAGE_TO_PLAYER = 10;
 
 module.exports = class Missile extends Entity {
     constructor(direction, parent) {
@@ -41,7 +43,11 @@ module.exports = class Missile extends Entity {
     }
 
     onCollide(entity) {
-        destruct(entity);
+        if(entity instanceof Player) {
+            entity.doDamage(DAMAGE_TO_PLAYER);
+        }
+
+        this.destruct(entity);
     }
 
     destruct(killer) {
