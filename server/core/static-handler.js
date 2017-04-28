@@ -2,7 +2,7 @@ module.exports = function (request, response) {
     let fs = require('fs');
 
     let fileResponse = (filename) => {
-        fs.readFile(__dirname + '/../' + filename, (error, data) => {
+        fs.readFile(__dirname + '/../../' + filename, (error, data) => {
             if (error) {
                 response.writeHead(404);
                 response.end('Not found');
