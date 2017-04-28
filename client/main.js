@@ -1,8 +1,10 @@
 import Vue from 'vue'
-import App from './App.vue'
+import App from './components/App/App.vue'
 import Konva from 'konva'
 import io from 'socket.io-client'
+import playersStore from './store/playersStore.js'
 
+// TODO: вытащить сокеты в отдельный модуль
 let socket = io('http://localhost:8080'),
     stage,
     layer,
@@ -176,3 +178,9 @@ $('#canvas-container').on('contextmenu', function(e) {
 $('#canvas-container').on('click', function(e) {
     e.preventDefault();
 });
+
+
+// как вызывать action-ы
+//store.dispatch('addPlayers', [{id: 1 }, { id: 2, score: 200 }, { id: 3, score: 1 }]);
+//store.dispatch('changePlayer', { id: 1, newValues: { score: 10 } });
+//console.log(store);
