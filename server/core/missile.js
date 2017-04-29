@@ -46,9 +46,9 @@ module.exports = class Missile extends Entity {
         super.move(this.__direction, this.speed * deltaT);
     }
 
-    onCollide(entity) {
-        this.hurt(entity);
-        this.destruct(entity);
+    onCollide(collidedWithEntity) {
+        this.hurt(collidedWithEntity);
+        this.destruct(collidedWithEntity);
     }
 
     destruct(killer) {

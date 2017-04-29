@@ -1,7 +1,7 @@
 let Vector2 = require('../core/vector2');
 let Entity = require('../core/entity');
-let Missile = require('../core/missile');
-let Freeze = require('../effects/freeze');
+let DamageSpell = require('../core/damage-spell');
+let EffectSpell = require('../core/effect-spell');
 
 // Размеры игрока
 const PLAYER_SIZE = 30;
@@ -29,11 +29,11 @@ module.exports = class Player extends Entity {
         });
 
         playerSocket.on('left', (data) => {
-            new Missile(new Vector2(data.a, data.b), this);
+            new DamageSpell(new Vector2(data.a, data.b), this);
         });
 
         playerSocket.on('right', (data) => {
-            new Missile(new Vector2(data.a, data.b), this);
+            new EffectSpell(new Vector2(data.a, data.b), this);
         });
     }
 
@@ -48,7 +48,7 @@ module.exports = class Player extends Entity {
     }
 
     onDamaged(damager, damage) {
-        super.onDamaged(damage, damager);
+        super.onDamaged(damager, damage);
 
         this.server.broadcast('playerDamaged', {
             id: this.id,

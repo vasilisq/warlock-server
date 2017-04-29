@@ -117,7 +117,7 @@ module.exports = class Entity {
      *
      * @param entity - сущность, с которой произошло столкновение
      */
-    onCollide(entity) {
+    onCollide(collidedWithEntity) {
 
     }
 
@@ -137,7 +137,7 @@ module.exports = class Entity {
      * @param damage
      */
     hurt(damagedEntity) {
-        
+
     }
 
     /**
