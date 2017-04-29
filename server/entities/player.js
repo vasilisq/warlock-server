@@ -53,7 +53,8 @@ module.exports = class Player extends Entity {
         this.server.broadcast('playerDamaged', {
             id: this.id,
             damage: damage,
-            hp: this.health
+            hp: this.health,
+            damagerId: damager.creator.id
         });
 
         if(this.health <= 0) {
@@ -65,7 +66,8 @@ module.exports = class Player extends Entity {
         super.destruct(killer);
         
         this.server.broadcast('playerDied', {
-            id: this.id
+            id: this.id,
+            killerId: killer.creator.id
         });
     }
 };
