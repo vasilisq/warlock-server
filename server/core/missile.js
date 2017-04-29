@@ -16,6 +16,7 @@ module.exports = class Missile extends Entity {
 
         this.__direction = direction;
         this.speed = MISSILE_SPEED;
+        this.__creator = parent;
 
         console.log(this.__direction);
 
@@ -35,6 +36,10 @@ module.exports = class Missile extends Entity {
             speed: this.speed,
             dT: this.server.entityMgr.lastDt
         });
+    }
+
+    get creator() {
+        return this.__creator;
     }
 
     /**
