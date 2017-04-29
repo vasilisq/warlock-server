@@ -136,11 +136,16 @@ module.exports = class Entity {
      *
      * @param damage
      */
-    hurt(damage, damager) {
-        this.__health -= damage;
+    hurt(damagedEntity, damage) {
+        damagedEntity.onDamaged(this, damage);
+    }
 
-        if(this.__health <= 0) {
-            this.destruct(damager);
-        }
+    /**
+     * получение урона от сущности
+     *
+     * @param damage
+     */
+    onDamaged(damager, damage) {
+        this.__health -= damage;
     }
 };

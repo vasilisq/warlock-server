@@ -48,10 +48,6 @@ module.exports = class Missile extends Entity {
     }
 
     onCollide(entity) {
-        if(entity instanceof Player) {
-            entity.hurt(DAMAGE_TO_PLAYER);
-        }
-
         this.destruct(entity);
     }
 
