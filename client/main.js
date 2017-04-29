@@ -93,7 +93,8 @@ socket.on('moved', function(data) {
 
 socket.on('disconnected', function(data) {
     console.log('Disconnected:', data);
-    layer.findOne('#object' + data.Player.id).remove();
+    playersStore.dispatch('deletePlayer', data.id);
+    layer.findOne('#object' + data.id).remove();
     layer.draw();
 });
 

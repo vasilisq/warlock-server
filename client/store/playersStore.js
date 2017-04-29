@@ -54,12 +54,8 @@ const store = new Vuex.Store({
             }
         },
 
-        deletePlayers({ commit }, player) {
-            if (Array.isArray(player)) {
-                commit('DELETE_PLAYERS', player);
-            } else {
-                player && commit('DELETE_PLAYER', player);
-            }
+        deletePlayer({ commit }, id) {
+            id && commit('DELETE_PLAYER', id);
         }
     },
     mutations: {
@@ -74,12 +70,8 @@ const store = new Vuex.Store({
             });
         },
         
-        DELETE_PLAYER (context, player) {
-            context.players.push(player);
-        },
-
-        DELETE_PLAYERS (context, players) {
-            context.players = context.players.concat(players);
+        DELETE_PLAYER (context, id) {
+            deletePlayer(context.players, id);
         },
 
         /**
@@ -120,6 +112,10 @@ function addPlayer(state, newPlayer) {
             score: newPlayer.__score || 10,
             speed: newPlayer.__speed || 10
         });
+}
+
+function deletePlayer(arr, id) {
+    arr.splice(arr.findIndex( (item) => id === id.item), 1);
 }
 
 export default store;
