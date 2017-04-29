@@ -8,12 +8,33 @@ const store = new Vuex.Store({
         players: []
     },
     actions: {
-        addPlayers({ commit }, player) {
-            if (Array.isArray(player)) {
-                commit('ADD_PLAYERS', player);
-            } else {
-                player && commit('ADD_PLAYER', player);
-            }
+        /**
+        *
+        * Добавление нового игрока
+        * 
+        * player {Object}
+        * player.__id {Number}
+        * player.__position {Object}
+        * player.__position.x {Number}
+        * player.__position.y {Number}
+        * player.__dimentions {Number}
+        * player.__speed {Number}
+        * player.__hp ?
+        * player.__score ?
+        */
+        addPlayer({ commit }, player) {
+            player && commit('ADD_PLAYER', player);
+        },
+
+        /**
+        *
+        * ВНИМАНИЕ! этот экшн полностью перезаписывает массив всех игроков
+        * не предназначен для частого использования(!не бродкастить!), только в целях синхронизации
+        *
+        * players {Array} массив новых игроков
+        */
+        allPlayers({ commit }, players) {
+            Array.isArray(players) && commit('ALL_PLAYERS', players);
         },
 
         /**
@@ -43,11 +64,14 @@ const store = new Vuex.Store({
     },
     mutations: {
         ADD_PLAYER (context, player) {
-            context.players.push(player);
+            addPlayer(context.players, player);
         },
 
-        ADD_PLAYERS (context, players) {
-            context.players = context.players.concat(players);
+        ALL_PLAYERS (context, players) {
+            context.players = [];
+            players.forEach((item) => {
+                addPlayer(context.players, item);
+            });
         },
         
         DELETE_PLAYER (context, player) {
@@ -78,5 +102,24 @@ const store = new Vuex.Store({
         }
     }
 });
+
+function findPlayerById(arr, id) {
+    return arr.find((item) => id === item.id);
+}
+
+function addPlayer(state, newPlayer) {
+    findPlayerById(state, newPlayer.__id) ||
+        state.push( {
+            id: newPlayer.__id || newPlayer.id,
+            pos: newPlayer.__position && {
+                x: newPlayer.__position.x,
+                y: newPlayer.__position.y
+            },
+            size: newPlayer.__dimentions,
+            hp: newPlayer.__hp || 10,
+            score: newPlayer.__score || 10,
+            speed: newPlayer.__speed || 10
+        });
+}
 
 export default store;

@@ -62,14 +62,17 @@ layer = new Konva.Layer();
 stage.add(layer);
 
 socket.on('players', function(players) {
-    players.Players.forEach( (item) => {
-        drawPlayer(item.id, item.position, item.dimensions);
+    console.log(players);
+    playersStore.dispatch('allPlayers', players);
+    players.forEach( (item) => {
+        drawPlayer(item.__id, item.__position, item.__dimensions);
     });
 });
 
 socket.on('connected', function(data) {
     console.log('Connected new user:', data);
-    drawPlayer(data.Player.id, {});
+    playersStore.dispatch('addPlayer', data);
+    drawPlayer(data.id, {});
     currentLocation = {
         x: data.Vector.x || 0,
         y: data.Vector.y || 0
