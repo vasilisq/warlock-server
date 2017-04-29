@@ -115,7 +115,7 @@ function addPlayer(state, newPlayer) {
 }
 
 function deletePlayer(arr, id) {
-    arr.splice(arr.findIndex( (item) => id === id.item), 1);
+    arr.splice(arr.findIndex( (item) => id === item.id), 1);
 }
 
 export default store;
