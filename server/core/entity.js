@@ -136,8 +136,8 @@ module.exports = class Entity {
      *
      * @param damage
      */
-    hurt(damagedEntity, damage) {
-        damagedEntity.onDamaged(this, damage);
+    hurt(damagedEntity) {
+        
     }
 
     /**

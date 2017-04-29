@@ -4,7 +4,6 @@ let World = require('../entities/world');
 
 const MISSILE_SIZE = 15;
 const MISSILE_SPEED = 30;
-const DAMAGE_TO_PLAYER = 10;
 
 /**
  * Базовый класс для скиллов
@@ -48,6 +47,7 @@ module.exports = class Missile extends Entity {
     }
 
     onCollide(entity) {
+        this.hurt(entity);
         this.destruct(entity);
     }
 
