@@ -1,12 +1,13 @@
 let Vector2 = require('../core/vector2');
 let Entity = require('../core/entity');
-let Missile = require('../core/missile');
-let Freeze = require('../effects/freeze');
+let DamageSpell = require('../core/damage-spell');
+let EffectSpell = require('../core/effect-spell');
 
 // Размеры игрока
 const PLAYER_SIZE = 30;
 // Скорость бега
 const PLAYER_MOVE_SPEED = 10;
+const PLAYER_START_HEALTH = 30;
 
 /**
  * Сущность игрока
@@ -16,6 +17,8 @@ const PLAYER_MOVE_SPEED = 10;
 module.exports = class Player extends Entity {
     constructor(playerSocket) {
         super(PLAYER_SIZE);
+
+        this.__health = PLAYER_START_HEALTH;
         this.speed = PLAYER_MOVE_SPEED;
 
         this.server.broadcast('connected', {id: this.__id});
@@ -26,14 +29,20 @@ module.exports = class Player extends Entity {
         });
 
         playerSocket.on('left', (data) => {
-            new Missile(new Vector2(data.a, data.b), this);
+            new DamageSpell(new Vector2(data.a, data.b), this);
         });
 
         playerSocket.on('right', (data) => {
-            new Missile(new Vector2(data.a, data.b), this);
+            new EffectSpell(new Vector2(data.a, data.b), this);
         });
     }
 
+    /**
+     * Двигаем объект, проверяем коллизию
+     *
+     * @param {Vector2} direction Направление
+     * @param {Number} factor Скорость
+     */
     move(direction) {
         super.move(direction, this.speed);
 
@@ -41,6 +50,41 @@ module.exports = class Player extends Entity {
             id: this.id,
             x: this.x,
             y: this.y
+        });
+    }
+
+    /**
+     * Действия при получении урона сущностью
+     *
+     * @param {Entity} damager - кто нанёс урон
+     * @param {Number} damage - количество урона
+     */
+    onDamaged(damager, damage) {
+        super.onDamaged(damager, damage);
+
+        this.server.broadcast('playerDamaged', {
+            id: this.id,
+            damage: damage,
+            hp: this.health,
+            damagerId: damager.creator.id
+        });
+
+        if(this.health <= 0) {
+            this.destruct(damager);
+        }
+    }
+
+    /**
+     * Удаление сущности
+     *
+     * @param {Entity} killer - сущность, которая вызвала удаление текущей сущности
+     */
+    destruct(killer) {
+        super.destruct(killer);
+        
+        this.server.broadcast('playerDied', {
+            id: this.id,
+            killerId: killer.creator.id
         });
     }
 };
