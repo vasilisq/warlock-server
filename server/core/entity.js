@@ -15,6 +15,12 @@ module.exports = class Entity {
         this.server.entityMgr.add(this);
     }
 
+    /**
+     * Двигаем объект, проверяем коллизию
+     *
+     * @param {Vector2} direction Направление
+     * @param {Number} factor Скорость
+     */
     move(direction, factor = 1) {
         if (!this.server.entityMgr.movePossible(this, direction, factor))
             return;
@@ -26,7 +32,7 @@ module.exports = class Entity {
     /**
      * Физическая логика обрабатывается здесь
      *
-     * @param deltaT
+     * @param {number} deltaT
      */
     think(deltaT) {
 
@@ -35,14 +41,23 @@ module.exports = class Entity {
     /**
      * Возможно ли движение относительно данной сущности
      *
-     * @param entity
-     * @param direction
-     * @param factor
+     * @param {Entity} entity Сущность, пытающаяся двигаться
+     * @param {Vector2} direction Направление ее движения
+     * @param {Number} factor Скорость
      * @returns {boolean}
      */
     movePossibleAgainst(entity, direction, factor) {
         return Math.abs(entity.x + direction.x * factor - this.x) < (this.dimensions / 2 + entity.dimensions / 2) &&
             Math.abs(entity.y + direction.y * factor - this.y) < (this.dimensions / 2 + entity.dimensions / 2);
+    }
+
+    /**
+     * обработка коллизий движущейся сущностью
+     *
+     * @param {Entity} entity Сущность, с которой произошло столкновение
+     */
+    onCollide(entity) {
+
     }
 
     get x() {
@@ -74,7 +89,7 @@ module.exports = class Entity {
     }
 
     get server() {
-        return require('./warlock-server');
+        return require('../warlock-server');
     }
 
     get id() {

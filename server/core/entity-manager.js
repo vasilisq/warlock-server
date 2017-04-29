@@ -1,8 +1,13 @@
-let World = require('./world');
+let World = require('../entities/world');
 let Entity = require('./entity');
-let Player = require('./player');
+let Player = require('../entities/player');
 let Missile = require('./missile');
 
+/**
+ * Менеджер сущностей
+ *
+ * @type {EntityManager}
+ */
 module.exports = class EntityManager {
     constructor() {
         this.__entities = new Map();
@@ -37,14 +42,32 @@ module.exports = class EntityManager {
         onTick(process.hrtime()[1]);
     }
 
+    /**
+     * Добавить сущность на сцену
+     *
+     * @param {Entity} entity
+     */
     add(entity) {
         this.__entities.set(entity.name, entity);
     }
 
+    /**
+     * Удалить сущность из сцены
+     *
+     * @param {Entity} entity
+     */
     remove(entity) {
         this.__entities.delete(entity.name);
     }
 
+    /**
+     * Может ли сущность совершить движение
+     *
+     * @param {Entity} movingOne Движущаяся сущность
+     * @param {Vector2} direction Направление
+     * @param {Number} factor
+     * @returns {boolean}
+     */
     movePossible(movingOne, direction, factor) {
         let collisionDetected = false;
 
@@ -71,6 +94,7 @@ module.exports = class EntityManager {
     getAllBeginningWith(string) {
         let all = [];
 
+        // TODO: Поиск по классу объекта
         this.__entities.forEach(function (entity, name) {
             if (name.substr(0, string.length) === string) {
                 all.push(entity);
@@ -83,7 +107,7 @@ module.exports = class EntityManager {
     /**
      * Auto-increment для имен сущностей
      *
-     * @param entity
+     * @param {Entity} entity сущность
      * @returns int
      */
     incrementSequenceOf(entity) {

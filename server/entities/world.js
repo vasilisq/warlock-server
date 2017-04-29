@@ -1,8 +1,13 @@
-let Entity = require('./entity');
+let Entity = require('../core/entity');
 
 // Размеры мира
 const WORLD_SIZE = 1000;
 
+/**
+ * Сущность мира
+ *
+ * @type {World}
+ */
 module.exports = class World extends Entity {
     constructor() {
         super(WORLD_SIZE);
@@ -11,9 +16,9 @@ module.exports = class World extends Entity {
     /**
      * Возможно ли движение относительно данной сущности
      *
-     * @param entity - сущность, которая проверяется
-     * @param direction - направление этой сущности
-     * @param factor - коэф. скорости сущности
+     * @param {Entity} entity Сущность, которая проверяется
+     * @param {Vector2} direction Направление этой сущности
+     * @param {Number} factor Скорость сущности
      * @returns {boolean}
      */
     movePossibleAgainst(entity, direction, factor) {

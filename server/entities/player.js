@@ -1,7 +1,7 @@
-let Vector2 = require('./vector2');
-let Entity = require('./entity');
-let Missile = require('./missile');
-let Freeze = require('./effects/freeze');
+let Vector2 = require('../core/vector2');
+let Entity = require('../core/entity');
+let Missile = require('../core/missile');
+let Freeze = require('../effects/freeze');
 
 // Размеры игрока
 const PLAYER_SIZE = 30;
@@ -9,6 +9,11 @@ const PLAYER_SIZE = 30;
 const PLAYER_MOVE_SPEED = 10;
 const PLAYER_START_HEALTH = 30;
 
+/**
+ * Сущность игрока
+ *
+ * @type {Player}
+ */
 module.exports = class Player extends Entity {
     constructor(playerSocket) {
         super(PLAYER_SIZE);
