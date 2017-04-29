@@ -54,9 +54,9 @@ module.exports = class Entity {
     /**
      * обработка коллизий движущейся сущностью
      *
-     * @param {Entity} entity Сущность, с которой произошло столкновение
+     * @param {Entity} collidedWithEntity Сущность, с которой произошло столкновение
      */
-    onCollide(entity) {
+    onCollide(collidedWithEntity) {
 
     }
 
@@ -113,15 +113,6 @@ module.exports = class Entity {
     }
 
     /**
-     * обработка коллизий движущейся сущностью
-     *
-     * @param entity - сущность, с которой произошло столкновение
-     */
-    onCollide(collidedWithEntity) {
-
-    }
-
-    /**
      * удаление сущности
      *
      * @param killer
@@ -134,7 +125,7 @@ module.exports = class Entity {
     /**
      * нанесение урона сущности
      *
-     * @param damage
+     * @param damagedEntity - сущность, которой будет нанесён урон
      */
     hurt(damagedEntity) {
 
@@ -143,7 +134,8 @@ module.exports = class Entity {
     /**
      * получение урона от сущности
      *
-     * @param damage
+     * @param damager - кто нанёс урон
+     * @param damage - количество урона
      */
     onDamaged(damager, damage) {
         this.__health -= damage;
