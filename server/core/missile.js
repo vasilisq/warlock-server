@@ -6,11 +6,15 @@ const MISSILE_SIZE = 15;
 const MISSILE_SPEED = 30;
 
 /**
- * Базовый класс для скиллов
+ * Базовый класс для всех скиллов
  *
  * @type {Missile}
  */
 module.exports = class Missile extends Entity {
+    /**
+     * @param {Number} direction - направление движения
+     * @param {Player} parent - игрок, который создал этот missile
+     */
     constructor(direction, parent) {
         super(MISSILE_SIZE);
 
@@ -45,17 +49,27 @@ module.exports = class Missile extends Entity {
     /**
      * Физическая логика обрабатывается здесь
      *
-     * @param deltaT
+     * @param {Number} deltaT
      */
     think(deltaT) {
         super.move(this.__direction, this.speed * deltaT);
     }
 
+    /**
+     * Обработка коллизий движущейся сущностью
+     *
+     * @param {Entity} collidedWithEntity - Сущность, с которой произошло столкновение
+     */
     onCollide(collidedWithEntity) {
         this.hurt(collidedWithEntity);
         this.destruct(collidedWithEntity);
     }
 
+    /**
+     * Удаление сущности
+     *
+     * @param {Entity} killer - сущность, которая вызвала удаление текущей сущности
+     */
     destruct(killer) {
         super.destruct(killer);
         

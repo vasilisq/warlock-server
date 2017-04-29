@@ -3,6 +3,9 @@ let Vector2 = require('./vector2');
 const ENTITY_START_HEALTH = 10;
 
 module.exports = class Entity {
+    /**
+     * @param {Number} dimensions - размер сущности
+     */
     constructor(dimensions) {
         this.__position = new Vector2(0, 0);
         this.__dimensions = dimensions; // Размер объекта
@@ -52,9 +55,9 @@ module.exports = class Entity {
     }
 
     /**
-     * обработка коллизий движущейся сущностью
+     * Обработка коллизий движущейся сущностью
      *
-     * @param {Entity} collidedWithEntity Сущность, с которой произошло столкновение
+     * @param {Entity} collidedWithEntity - Сущность, с которой произошло столкновение
      */
     onCollide(collidedWithEntity) {
 
@@ -113,9 +116,9 @@ module.exports = class Entity {
     }
 
     /**
-     * удаление сущности
+     * Удаление сущности
      *
-     * @param killer
+     * @param {Entity} killer - сущность, которая вызвала удаление текущей сущности
      */
     destruct(killer) {
         this.server.entityMgr.remove(this);
@@ -125,17 +128,17 @@ module.exports = class Entity {
     /**
      * нанесение урона сущности
      *
-     * @param damagedEntity - сущность, которой будет нанесён урон
+     * @param {Entity} damagedEntity - сущность, которой будет нанесён урон
      */
     hurt(damagedEntity) {
 
     }
 
     /**
-     * получение урона от сущности
+     * Действия при получении урона сущностью
      *
-     * @param damager - кто нанёс урон
-     * @param damage - количество урона
+     * @param {Entity} damager - кто нанёс урон
+     * @param {Number} damage - количество урона
      */
     onDamaged(damager, damage) {
         this.__health -= damage;

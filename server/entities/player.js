@@ -37,6 +37,12 @@ module.exports = class Player extends Entity {
         });
     }
 
+    /**
+     * Двигаем объект, проверяем коллизию
+     *
+     * @param {Vector2} direction Направление
+     * @param {Number} factor Скорость
+     */
     move(direction) {
         super.move(direction, this.speed);
 
@@ -47,6 +53,12 @@ module.exports = class Player extends Entity {
         });
     }
 
+    /**
+     * Действия при получении урона сущностью
+     *
+     * @param {Entity} damager - кто нанёс урон
+     * @param {Number} damage - количество урона
+     */
     onDamaged(damager, damage) {
         super.onDamaged(damager, damage);
 
@@ -62,6 +74,11 @@ module.exports = class Player extends Entity {
         }
     }
 
+    /**
+     * Удаление сущности
+     *
+     * @param {Entity} killer - сущность, которая вызвала удаление текущей сущности
+     */
     destruct(killer) {
         super.destruct(killer);
         

@@ -3,7 +3,6 @@
  *
  * @type {Effect}
  */
-
 module.exports = class Effect {
     constructor() {
         this.__duration = 0; // Длительность в секундах

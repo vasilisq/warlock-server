@@ -1,14 +1,13 @@
-/**
- * Заморозка. Должен уменьшить скорость
- *
- * @type {Freeze}
- */
-
 let Effect = require('../core/effect');
 
 const FREEZE_DURATION = 5;
 const FREEZE_SLOW_FACTOR = 2;
 
+/**
+ * Заморозка. Должен уменьшить скорость
+ *
+ * @type {Freeze}
+ */
 module.exports = class Freeze extends Effect {
     constructor() {
         super();
