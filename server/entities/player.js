@@ -47,14 +47,18 @@ module.exports = class Player extends Entity {
         });
     }
 
-    hurt(damage, damager) {
-        super.destruct(damage, damager);
+    onDamaged(damager, damage) {
+        super.onDamaged(damage, damager);
 
         this.server.broadcast('playerDamaged', {
             id: this.id,
             damage: damage,
             hp: this.health
         });
+
+        if(this.health <= 0) {
+            this.destruct(damager);
+        }
     }
 
     destruct(killer) {
