@@ -12,11 +12,18 @@ module.exports = class Effect {
     /**
      * Применить эффект к сущности
      *
-     * @param {Player} entity
+     * @param {Entity} entity
      */
     applyTo(entity) {
         this.__applicant = entity;
         this.influence();
+
+        this.server.broadcast('effectApplied', {
+            applicantId: entity.id,
+            applicantClass: entity.constructor.name.toLowerCase(),
+            effect: this.constructor.name.toLowerCase(),
+            duration: this.duration
+        });
     }
 
     /**
@@ -53,5 +60,9 @@ module.exports = class Effect {
 
     get applicant() {
         return this.__applicant;
+    }
+
+    get server() {
+        return require('../warlock-server');
     }
 };
