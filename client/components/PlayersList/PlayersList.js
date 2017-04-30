@@ -1,5 +1,5 @@
 import store from '../../store/playersStore.js';
-window.x = store;
+
 export default {
     name: 'players-list',
     store,
