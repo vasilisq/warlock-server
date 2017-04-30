@@ -15,9 +15,10 @@ const PLAYER_START_HEALTH = 30;
  * @type {Player}
  */
 module.exports = class Player extends Entity {
-    constructor(playerSocket) {
+    constructor(playerSocket, nick) {
         super(PLAYER_SIZE);
 
+        this.__nickname = nick;
         this.__health = PLAYER_START_HEALTH;
         this.speed = PLAYER_MOVE_SPEED;
 
@@ -35,6 +36,10 @@ module.exports = class Player extends Entity {
         playerSocket.on('right', (data) => {
             new EffectSpell(new Vector2(data.a, data.b), this);
         });
+    }
+
+    get nickname() {
+        return this.__nickname;
     }
 
     /**
