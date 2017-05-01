@@ -3,6 +3,7 @@ let EntityManager = require('./core/entity-manager');
 let app = require('http').createServer(require('./core/static-handler'));
 let io = require('socket.io')(app);
 let World = require('./entities/world');
+let PlayerMessages = require('./messages/player');
 
 class WarlockServer {
     constructor(io) {
@@ -21,12 +22,16 @@ class WarlockServer {
         let currentPlayer = new Player(socket);
 
         // Transmit players list
-        socket.emit('players', this.__entityMgr.getAllBeginningWith('player'));
+        (new PlayerMessages.Players(
+            this.__entityMgr.getAllBeginningWith('player')
+        )).send(socket);
 
         socket.on('disconnect', (reason) => {
             console.log('Player', currentPlayer.id, 'disconnected, reason:', reason);
 
-            this.broadcast('disconnected', {id: currentPlayer.id});
+            (new PlayerMessages.Disconnected())
+                .withPlayer(currentPlayer)
+                .send();
 
             // Remove player from scene
             this.__entityMgr.remove(currentPlayer);

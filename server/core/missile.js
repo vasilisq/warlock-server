@@ -1,6 +1,7 @@
 let Entity = require('./entity');
 let Vector2 = require('./vector2');
 let World = require('../entities/world');
+let MissileMessages = require('../messages/missile');
 
 const MISSILE_SIZE = 15;
 const MISSILE_SPEED = 30;
@@ -28,22 +29,10 @@ module.exports = class Missile extends Entity {
         this.x = parent.x + parent.dimensions * 2 * this.__direction.x;
         this.y = parent.y + parent.dimensions * 2 * this.__direction.y;
 
-        this.server.broadcast('missileStartMove', {
-            id: this.id,
-            x: this.x,
-            y: this.y,
-            dimensions: MISSILE_SIZE,
-            direction: {
-                x: this.__direction.x,
-                y: this.__direction.y
-            },
-            speed: this.speed,
-            dT: this.server.entityMgr.lastDt
-        });
-    }
-
-    get creator() {
-        return this.__creator;
+        (new MissileMessages.startMove())
+            .withMissile(this)
+            .withDt(this.server.entityMgr.lastDt)
+            .send();
     }
 
     /**
@@ -72,11 +61,18 @@ module.exports = class Missile extends Entity {
      */
     destruct(killer) {
         super.destruct(killer);
-        
-        this.server.broadcast('missileEndMove', {
-            id: this.id,
-            x: this.x,
-            y: this.y
-        });
+
+        (new MissileMessages.endMove())
+            .withEntity(this)
+            .withVector(this.position)
+            .send();
+    }
+
+    get creator() {
+        return this.__creator;
+    }
+
+    get direction() {
+        return this.__direction;
     }
 };

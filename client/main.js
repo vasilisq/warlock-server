@@ -16,12 +16,13 @@ new Vue({
 
 //TODO: создать для инстанса игрока отдельный компонент или класс
 // и переместить туда эту функцию
-function drawPlayer(id, { __x: x = 0, __y: y = 0 }, size = 30) {
-    layer.findOne('#object' + id) || 
+function drawPlayer(id, { x: x = 0, y: y = 0}, size = 30) {
+    console.log(x, y);
+    layer.findOne('#object' + id) ||
         layer.add(
             new Konva.Rect({
-                x: x - size * 0.5,
-                y: y - size * 0.5,
+                x: x,
+                y: y,
                 width: size,
                 height: size,
                 fill: '#0f0',
@@ -59,35 +60,35 @@ layer = new Konva.Layer();
 stage.add(layer);
 
 socket.on('players', function(players) {
-    console.log(players);
-    players.forEach( (item) => {
-        drawPlayer(item.__id, item.__position, item.__dimensions);
+    players.Players.forEach( (item) => {
+        drawPlayer(item.id, item.position, item.dimensions);
     });
 });
 
 socket.on('connected', function(data) {
     console.log('Connected new user:', data);
-    drawPlayer(data.id, {});
+    drawPlayer(data.Player.id, {});
     currentLocation = {
-        x: data.x || 0,
-        y: data.y || 0
+        x: data.Vector.x || 0,
+        y: data.Vector.y || 0
     };
 })
 
 
 socket.on('moved', function(data) {
-    console.log('New position:', data);
-    layer.findOne('#object' + data.id).setAbsolutePosition({ x: data.x - size * 0.5, y: data.y - size * 0.5 });
+    console.log('New position:', data.Vector);
+    layer.findOne('#object' + data.Player.id).setAbsolutePosition({ x: data.Vector.x, y: data.Vector.y});
     layer.draw();
+
     currentLocation = {
-        x: data.x || 0,
-        y: data.y || 0
+        x: data.Vector.x || 0,
+        y: data.Vector.y || 0
     };
 });
 
 socket.on('disconnected', function(data) {
     console.log('Disconnected:', data);
-    layer.findOne('#object' + data.id).remove();
+    layer.findOne('#object' + data.Player.id).remove();
     layer.draw();
 });
 
@@ -108,18 +109,18 @@ socket.on('disconnected', function(data) {
 */
 socket.on('missileStartMove', function(data) {
     let skill = new Konva.Rect({
-        x: data.x || 0,
-        y: data.y || 0,
-        width: data.dimensions,
-        height: data.dimensions,
+        x: data.Vector.x || 0,
+        y: data.Vector.y || 0,
+        width: data.With.dimensions,
+        height: data.With.dimensions,
         fill: '#f00',
         id: 'missile' + data.id,
     });
     layer.add(skill);
 
     skill.timerId = setInterval(() => {
-        let x = data.direction.x * data.speed * data.dT * 100, // todo: ????
-            y = data.direction.y * data.speed * data.dT * 100;
+        let x = data.Direction.x * data.Speed * data.dt * 100, // todo: ????
+            y = data.Direction.y * data.Speed * data.dt * 100;
 
             skill.move({
                 x: x,
@@ -137,8 +138,8 @@ socket.on('missileStartMove', function(data) {
 * @param data.id {Number} id объекта Missile
 */
 socket.on('missileEndMove', function(data) {
-    console.log('missile', data.id,' died');
-    let skill = layer.findOne('#missile' + data.id);
+    console.log('missile', data.With.id,' died');
+    let skill = layer.findOne('#missile' + data.With.id);
     if(skill) {
         clearInterval(skill.timerId);
         skill.remove();
