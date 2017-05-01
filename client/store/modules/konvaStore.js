@@ -74,10 +74,18 @@ const state = {
 
         DELETE_PLAYER (context, id) {
             console.log('Konva DELETE_PLAYER');
+            context.layerPlayers.findOne('#object' + id).remove();
+            
+            context.layerPlayers.draw();
         },
 
         MOVE_PLAYER (context, data) {
             console.log('Konva MOVE_PLAYER');
+            context.layerPlayers
+                .findOne('#object' + data.id)
+                .setAbsolutePosition({ x: data.pos.x, y: data.pos.y});
+
+            context.layerPlayers.draw();
         }
     },
     getters = { }
