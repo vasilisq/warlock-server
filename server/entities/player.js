@@ -2,6 +2,7 @@ let Vector2 = require('../core/vector2');
 let Entity = require('../core/entity');
 let DamageSpell = require('../core/damage-spell');
 let EffectSpell = require('../core/effect-spell');
+let PlayerMessages = require('../messages/player');
 
 // Размеры игрока
 const PLAYER_SIZE = 30;
@@ -21,7 +22,10 @@ module.exports = class Player extends Entity {
         this.__health = PLAYER_START_HEALTH;
         this.speed = PLAYER_MOVE_SPEED;
 
-        this.server.broadcast('connected', {id: this.__id});
+        (new PlayerMessages.Connected())
+            .withPlayer(this)
+            .withVector(this.position)
+            .send();
 
         // Subscribe to player's events
         playerSocket.on('move', (move) => {
@@ -41,16 +45,14 @@ module.exports = class Player extends Entity {
      * Двигаем объект, проверяем коллизию
      *
      * @param {Vector2} direction Направление
-     * @param {Number} factor Скорость
      */
     move(direction) {
         super.move(direction, this.speed);
 
-        this.server.broadcast('moved', {
-            id: this.id,
-            x: this.x,
-            y: this.y
-        });
+        (new PlayerMessages.Moved())
+            .withPlayer(this)
+            .withVector(this.position)
+            .send();
     }
 
     /**
@@ -62,12 +64,10 @@ module.exports = class Player extends Entity {
     onDamaged(damager, damage) {
         super.onDamaged(damager, damage);
 
-        this.server.broadcast('playerDamaged', {
-            id: this.id,
-            damage: damage,
-            hp: this.health,
-            damagerId: damager.creator.id
-        });
+        (new PlayerMessages.Damaged())
+            .withPlayer(this)
+            .withDamage(damage, damager)
+            .send();
 
         if(this.health <= 0) {
             this.destruct(damager);
@@ -82,9 +82,9 @@ module.exports = class Player extends Entity {
     destruct(killer) {
         super.destruct(killer);
         
-        this.server.broadcast('playerDied', {
-            id: this.id,
-            killerId: killer.creator.id
-        });
+        (new PlayerMessages.Died())
+            .withPlayer(this)
+            .withEntity(killer)
+            .send();
     }
 };
