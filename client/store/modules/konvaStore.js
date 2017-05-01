@@ -1,4 +1,5 @@
 import Konva from 'konva'
+import socket from '../../api/socket'
 
 const state = {
         konva: {},
@@ -17,6 +18,8 @@ const state = {
         initKonva({ state, commit, rootState }, data) {
             commit('INIT', data);
 
+            // TODO @dyadyaJora: по хорошему нужно подписываться на обычний клик и чекать клик по конве
+            // иначе возможны различные баги и артефакты по поводу того как тригерится именно этот contentClick
             state.konva.on('contentClick', function(e) {
                 let curPos = state.layerPlayers.findOne('#object' + rootState.currentPlayer).getAbsolutePosition();
                 let data = calcSkillVector(
@@ -49,14 +52,14 @@ const state = {
                 width: data.width,
                 height: data.height
             });
-            //context.layerMapSprite = new Konva.Layer();
-            //context.konva.add(context.layerMapSprite);
+            context.layerMapSprite = new Konva.Layer();
+            context.konva.add(context.layerMapSprite);
 
             context.layerPlayers = new Konva.Layer();
             context.konva.add(context.layerPlayers);
 
-            //context.layerMissile = new Konva.Layer();
-            //context.konva.add(context.layerMissile);
+            context.layerMissile = new Konva.Layer();
+            context.konva.add(context.layerMissile);
         },
 
         ADD_PLAYER(context, data) {
@@ -110,7 +113,7 @@ function drawNewPlayer(layer, data) {
             new Konva.Rect({
                 x: data.position.x,
                 y: data.position.y,
-                // TODO: разобраться почему не прокидывается dimentions и выпилить
+                // TODO @dyadyaJora: разобраться почему не прокидывается dimentions и выпилить
                 width: data.position.dimentions || 30, 
                 height: data.position.dimentions || 30,
                 fill: '#0f0',

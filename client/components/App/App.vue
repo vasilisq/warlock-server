@@ -1,7 +1,6 @@
 <template>
     <div id="app">
         <h1> {{ msg }} </h1>
-        <!-- не забыть добавить здесь!! -->
         <canvas-container></canvas-container>
         <players-list></players-list>
     </div>
