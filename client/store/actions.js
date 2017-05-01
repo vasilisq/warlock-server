@@ -39,11 +39,7 @@ const actions = {
     * data.pos.y {Number}
     */
     movePlayer({ commit }, data) {
-        commit('MOVE_PLAYER', {
-            id: data.id,
-            x: data.pos.x,
-            y: data.pos.y
-        });
+        commit('MOVE_PLAYER', data);
     },
 
     deletePlayer({ commit }, id) {

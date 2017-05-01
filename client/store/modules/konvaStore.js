@@ -49,7 +49,7 @@ const state = {
         },
 
         MOVE_PLAYER (context, data) {
-            console.log('Players MOVE_PLAYER');
+            console.log('Konva MOVE_PLAYER');
         }
     },
     getters = { }

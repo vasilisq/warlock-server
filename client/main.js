@@ -93,6 +93,13 @@ socket.on('connected', function(data) {
 
 socket.on('moved', function(data) {
     console.log('New position:', data.Vector);
+    mainStore.dispatch('movePlayer', {
+        id: data.Player.id,
+        pos: {
+            x: data.Vector.x,
+            y: data.Vector.y
+        }
+    });
     layer.findOne('#object' + data.Player.id).setAbsolutePosition({ x: data.Vector.x, y: data.Vector.y});
     layer.draw();
 

@@ -50,8 +50,19 @@ const state = {
             player && (player.score = data.score);
         },
 
+        /**
+        *
+        * data {Object}
+        * data.id {Number}
+        * data.pos {Object}
+        * data.pos.x {Number}
+        * data.pos.y {Number}
+        */
         MOVE_PLAYER (context, data) {
             console.log('Players MOVE_PLAYER');
+            let player = findPlayerById(context.players, data.id);
+            player.pos.x = data.pos.x;
+            player.pos.y = data.pos.y;
         }
     },
     getters = {
@@ -65,7 +76,7 @@ function findPlayerById(arr, id) {
 }
 
 function addPlayer(state, newPlayer) {
-    if (findPlayerById(state, newPlayer.__id)) return false;
+    if (findPlayerById(state, newPlayer.id)) return false;
 
     state.push( {
         id: newPlayer.id,
