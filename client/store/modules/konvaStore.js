@@ -1,19 +1,9 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
-import Konva from 'konva';
-
-
-Vue.use(Vuex);
-const store = new Vuex.Store({
-    state: {
+const state = {
         konva: {},
         layerMapSprite: {},
-        layerEntities: [],
-        // TODO: @dyadyaJora не уверен, что лучше здесь кешровать
-        // ID или полностью объект Player-a
-        currentPlayerId: 0  
+        layerEntities: []
     },
-    actions: {
+    actions = {
         /**
         *
         * data {Object}
@@ -25,7 +15,7 @@ const store = new Vuex.Store({
             commit('INIT', data);
         }
     },
-    mutations: {
+    mutations = {
         /**
         *
         * data {Object}
@@ -46,16 +36,28 @@ const store = new Vuex.Store({
             context.konva.add(context.layerEntities);
         },
 
-        ADD_NEW_PLAYER(context, data) {
-            console.log('Konva new Player!!');
+        ADD_PLAYER(context, data) {
+            console.log('Konva ADD_PLAYER');
+        },
+
+        ALL_PLAYERS(context, data) {
+            console.log('Konva ALL_PLAYERS');
+        },
+
+        DELETE_PLAYER (context, id) {
+            console.log('Konva DELETE_PLAYER');
+        },
+
+        MOVE_PLAYER (context, data) {
+            console.log('Players MOVE_PLAYER');
         }
     },
-    getters: {
-        getKonvaObject(state) {
-            return state.konva;
-        }
-    }
-});
+    getters = { }
 
 
-export default store;
+export default {
+    state,
+    actions,
+    mutations,
+    getters
+};

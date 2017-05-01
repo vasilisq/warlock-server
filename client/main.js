@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './components/App/App.vue'
 import Konva from 'konva'
 import io from 'socket.io-client'
-import playersStore from './store/playersStore.js'
+import mainStore from './store'
 
 // TODO: вытащить сокеты в отдельный модуль
 let socket = io('http://localhost:8080'),
@@ -59,11 +59,15 @@ stage = new Konva.Stage({
     height: window.innerHeight
 });
 layer = new Konva.Layer();
+// для дебага
+// НЕ ЗАБЫТЬ ВЫПИЛИТЬ!!!!
+window.l = layer;
+window.s = mainStore;
 stage.add(layer);
 
 socket.on('players', function(players) {
     console.log(players);
-    playersStore.dispatch('allPlayers', players);
+    mainStore.dispatch('allPlayers', players);
     players.forEach( (item) => {
         drawPlayer(item.__id, item.__position, item.__dimensions);
     });
@@ -71,7 +75,7 @@ socket.on('players', function(players) {
 
 socket.on('connected', function(data) {
     console.log('Connected new user:', data);
-    playersStore.dispatch('addPlayer', data);
+    mainStore.dispatch('addPlayer', data);
     drawPlayer(data.id, {});
     currentLocation = {
         x: data.Vector.x || 0,
@@ -93,7 +97,7 @@ socket.on('moved', function(data) {
 
 socket.on('disconnected', function(data) {
     console.log('Disconnected:', data);
-    playersStore.dispatch('deletePlayer', data.id);
+    mainStore.dispatch('deletePlayer', data.id);
     layer.findOne('#object' + data.id).remove();
     layer.draw();
 });

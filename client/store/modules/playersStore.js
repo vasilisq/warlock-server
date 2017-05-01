@@ -1,43 +1,7 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
-import konvaStore from './konvaStore.js';
-
-
-Vue.use(Vuex);
-const store = new Vuex.Store({
-    state: {
+const state = {
         players: []
     },
-    actions: {
-        /**
-        *
-        * Добавление нового игрока
-        * 
-        * player {Object}
-        * player.__id {Number}
-        * player.__position {Object}
-        * player.__position.x {Number}
-        * player.__position.y {Number}
-        * player.__dimentions {Number}
-        * player.__speed {Number}
-        * player.__hp ?
-        * player.__score ?
-        */
-        addPlayer({ commit }, player) {
-            player && commit('ADD_PLAYER', player);
-        },
-
-        /**
-        *
-        * ВНИМАНИЕ! этот экшн полностью перезаписывает массив всех игроков
-        * не предназначен для частого использования(!не бродкастить!), только в целях синхронизации
-        *
-        * players {Array} массив новых игроков
-        */
-        allPlayers({ commit }, players) {
-            Array.isArray(players) && commit('ALL_PLAYERS', players);
-        },
-
+    actions = {
         /**
         *
         * {} {Object} mutation type
@@ -46,26 +10,24 @@ const store = new Vuex.Store({
         * data.newValues {Object}
         */
         changePlayer({ commit }, data) {
+            console.log('changePlayer own');
             for(let key in data.newValues) {
                 switch (key) {
-                    case 'position': commit('MOVE_PLAYER', { id: data.id, position: data.newValues[key] }); break;
                     case 'score': commit('CHANGE_SCORE', { id: data.id, score: data.newValues[key] }); break;
                     case 'hp': commit('CHANGE_HP', { id: data.id, hp: data.newValues[key] }); break;
+                    // case еще что-нибудь : ...
                 }
             }
-        },
-
-        deletePlayer({ commit }, id) {
-            id && commit('DELETE_PLAYER', id);
         }
     },
-    mutations: {
+    mutations = {
         ADD_PLAYER (context, player) {
-            if (addPlayer(context.players, player))
-                konvaStore.commit('ADD_NEW_PLAYER', player);
+            console.log('Players ADD_PLAYER');
+            addPlayer(context.players, player)
         },
 
         ALL_PLAYERS (context, players) {
+            console.log('Players ALL_PLAYERS');
             context.players = [];
             players.forEach((item) => {
                 addPlayer(context.players, item);
@@ -73,6 +35,7 @@ const store = new Vuex.Store({
         },
         
         DELETE_PLAYER (context, id) {
+            console.log('Players DELETE_PLAYER');
             deletePlayer(context.players, id);
         },
 
@@ -85,17 +48,17 @@ const store = new Vuex.Store({
         CHANGE_SCORE (context, data) {
             let player = context.players.find( (item) => data.id === item.id);
             player && (player.score = data.score);
+        },
+
+        MOVE_PLAYER (context, data) {
+            console.log('Players MOVE_PLAYER');
         }
     },
-    getters: {
+    getters = {
         getPlayer: (state) => (id) => {
             return state.players.find( (item) => id === item.id );
-        },
-        getPlayers (state) {
-            return state.players;
         }
-    }
-});
+    };
 
 function findPlayerById(arr, id) {
     return arr.find((item) => id === item.id);
@@ -123,4 +86,9 @@ function deletePlayer(arr, id) {
     arr.splice(arr.findIndex( (item) => id === item.id), 1);
 }
 
-export default store;
+export default {
+    state,
+    actions,
+    mutations,
+    getters
+};

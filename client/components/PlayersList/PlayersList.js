@@ -1,4 +1,4 @@
-import store from '../../store/playersStore.js';
+import store from '../../store';
 
 export default {
     name: 'players-list',
