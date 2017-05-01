@@ -5,10 +5,7 @@ import io from 'socket.io-client'
 import mainStore from './store'
 
 // TODO: вытащить сокеты в отдельный модуль
-let socket = io('http://localhost:8080'),
-    stage,
-    layer,
-    currentLocation = {x: 0, y: 0}; //temp
+let socket = io('http://localhost:8080');
 const size = 30;
 
 new Vue({
@@ -17,66 +14,19 @@ new Vue({
 });
 
 mainStore.dispatch('initKonva', {
-    container: 'test-container',
+    container: 'canvas-container',
     width: 1000,
     height: 1000
 });
 
-//TODO: создать для инстанса игрока отдельный компонент или класс
-// и переместить туда эту функцию
-function drawPlayer(id, { x: x = 0, y: y = 0}, size = 30) {
-    console.log(x, y);
-    layer.findOne('#object' + id) ||
-        layer.add(
-            new Konva.Rect({
-                x: x,
-                y: y,
-                width: size,
-                height: size,
-                fill: '#0f0',
-                stroke: 'black',
-                strokeWidth: 4,
-                id: 'object' + id
-            })
-        );
-    layer.draw();
-}
-
-// TODO вынести методом в инстанс Playera?
-function calcSkillVector(point1, point2) {
-    let rx = (point1.x - point2.x) * -1,
-        ry = (point1.y - point2.y) * -1,
-        r = Math.sqrt(Math.pow(rx, 2) + Math.pow(ry, 2));
-
-    return {
-        a: rx / r,
-        b: ry / r
-    }
-}
-
-// TODO вынести в инстанс Missile
-function calcNewMissilePosition() {
-
-}
-
-stage = new Konva.Stage({
-    container: 'canvas-container',
-    width: window.innerWidth,
-    height: window.innerHeight
-});
-layer = new Konva.Layer();
 // для дебага
 // НЕ ЗАБЫТЬ ВЫПИЛИТЬ!!!!
-window.l = layer;
 window.s = mainStore;
-stage.add(layer);
+//stage.add(layer);
 
 socket.on('players', function(players) {
     console.log(players);
     mainStore.dispatch('allPlayers', players.Players);
-    players.Players.forEach( (item) => {
-        drawPlayer(item.id, item.position, item.dimensions);
-    });
 });
 
 socket.on('connected', function(data) {
@@ -89,11 +39,6 @@ socket.on('connected', function(data) {
         },
         dimentions: 30, //?????????????????????????????/
     });
-    drawPlayer(data.Player.id, {});
-    currentLocation = {
-        x: data.Vector.x || 0,
-        y: data.Vector.y || 0
-    };
 })
 
 
@@ -106,20 +51,11 @@ socket.on('moved', function(data) {
             y: data.Vector.y
         }
     });
-    layer.findOne('#object' + data.Player.id).setAbsolutePosition({ x: data.Vector.x, y: data.Vector.y});
-    layer.draw();
-
-    currentLocation = {
-        x: data.Vector.x || 0,
-        y: data.Vector.y || 0
-    };
 });
 
 socket.on('disconnected', function(data) {
     console.log('Disconnected:', data);
     mainStore.dispatch('deletePlayer', data.Player.id);
-    layer.findOne('#object' + data.Player.id).remove();
-    layer.draw();
 });
 
 /**
@@ -146,7 +82,8 @@ socket.on('missileStartMove', function(data) {
         fill: '#f00',
         id: 'missile' + data.id,
     });
-    layer.add(skill);
+    //layer.add(skill);
+    mainStore.stage.konvaStore.layerPlayers.add(skill);
 
     skill.timerId = setInterval(() => {
         let x = data.Direction.x * data.Speed * data.dt * 100, // todo: ????
@@ -157,7 +94,7 @@ socket.on('missileStartMove', function(data) {
                 y: y,
             });
 
-        layer.draw();
+        mainStore.stage.konvaStore.layerPlayers.draw();
     }, 1); // todo: recalc dt
 
 });
@@ -169,11 +106,11 @@ socket.on('missileStartMove', function(data) {
 */
 socket.on('missileEndMove', function(data) {
     console.log('missile', data.With.id,' died');
-    let skill = layer.findOne('#missile' + data.With.id);
+    let skill = mainStore.stage.konvaStore.layerPlayers.findOne('#missile' + data.With.id);
     if(skill) {
         clearInterval(skill.timerId);
         skill.remove();
-        layer.draw();
+        mainStore.stage.konvaStore.layerPlayers.draw();
     }
 });
 
@@ -184,19 +121,7 @@ window.addEventListener('keypress', function(e) {
         case 'KeyS': socket.emit('move', { x: 0, y: 1}); break;
         case 'KeyD': socket.emit('move', { x: 1, y: 0}); break;
     }
-    layer.draw();
-});
-
-stage.on('contentClick', function(e) {
-    let data = calcSkillVector(currentLocation, stage.getPointerPosition());
-    console.log(data);
-    //если левая кнопка мышки
-    if (e.evt.button == 0 ) {
-        socket.emit('left', data);
-    // если правая
-    } else if (e.evt.button == 2) {
-        socket.emit('right', data);
-    }
+    //layer.draw();
 });
 
 $('#canvas-container').on('contextmenu', function(e) {

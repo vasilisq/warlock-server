@@ -66,7 +66,10 @@ const state = {
 
         ALL_PLAYERS(context, players) {
             console.log('Konva ALL_PLAYERS');
-            context.layerPlayers.children = Konva.Collection.toCollection([]);
+            
+            context.layerPlayers.clear();
+            context.layerPlayers = new Konva.Layer();
+            context.konva.add(context.layerPlayers);
             players.forEach((item) => {
                 drawNewPlayer(context.layerPlayers, item);
             });

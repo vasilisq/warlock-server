@@ -2,8 +2,7 @@
     <div id="app">
         <h1> {{ msg }} </h1>
         <!-- не забыть добавить здесь!! -->
-        <div id="canvas-container"></div>
-        <div id="test-container"></div>
+        <canvas-container></canvas-container>
         <players-list></players-list>
     </div>
 </template>
