@@ -3,6 +3,8 @@ let Entity = require('./entity');
 let Player = require('../entities/player');
 let Missile = require('./missile');
 
+const DELTA_T_MINIMUM = 0.1;
+
 /**
  * Менеджер сущностей
  *
@@ -25,14 +27,16 @@ module.exports = class EntityManager {
 
         let onTick = (previousT) => {
             let now = process.hrtime()[1];
-            let deltaT = now - previousT;
+            this.__lastDt += (now - previousT) / DELTA_T_SLOWDOWN_COEFFICIENT;
 
-            this.__entities.forEach((entity) => {
-                // Синхронизируем с клиентом
-                this.__lastDt = deltaT / DELTA_T_SLOWDOWN_COEFFICIENT;
+            if(this.__lastDt >= DELTA_T_MINIMUM) {
+                this.__entities.forEach((entity) => {
+                    entity.think(this.__lastDt);
+                });
 
-                entity.think(deltaT / DELTA_T_SLOWDOWN_COEFFICIENT);
-            });
+                // Обнуляем
+                this.__lastDt = 0;
+            }
 
             setImmediate(() => {
                 onTick(process.hrtime()[1]);
