@@ -6,9 +6,12 @@ import Konva from 'konva';
 Vue.use(Vuex);
 const store = new Vuex.Store({
     state: {
-        konva,
-        layerMapSprite,
-        layerEntities
+        konva: {},
+        layerMapSprite: {},
+        layerEntities: [],
+        // TODO: @dyadyaJora не уверен, что лучше здесь кешровать
+        // ID или полностью объект Player-a
+        currentPlayerId: 0  
     },
     actions: {
         /**
@@ -41,6 +44,10 @@ const store = new Vuex.Store({
 
             context.layerEntities = new Konva.Layer();
             context.konva.add(context.layerEntities);
+        },
+
+        ADD_NEW_PLAYER(context, data) {
+            console.log('Konva new Player!!');
         }
     },
     getters: {
