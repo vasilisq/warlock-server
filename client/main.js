@@ -67,16 +67,23 @@ stage.add(layer);
 
 socket.on('players', function(players) {
     console.log(players);
-    mainStore.dispatch('allPlayers', players);
-    players.forEach( (item) => {
-        drawPlayer(item.__id, item.__position, item.__dimensions);
+    mainStore.dispatch('allPlayers', players.Players);
+    players.Players.forEach( (item) => {
+        drawPlayer(item.id, item.position, item.dimensions);
     });
 });
 
 socket.on('connected', function(data) {
     console.log('Connected new user:', data);
-    mainStore.dispatch('addPlayer', data);
-    drawPlayer(data.id, {});
+    mainStore.dispatch('addPlayer', {
+        id: data.Player.id,
+        position: {
+            x: data.Vector.x,
+            y: data.Vector.y
+        },
+        dimensions: 30, //?????????????????????????????/
+    });
+    drawPlayer(data.Player.id, {});
     currentLocation = {
         x: data.Vector.x || 0,
         y: data.Vector.y || 0
@@ -97,8 +104,8 @@ socket.on('moved', function(data) {
 
 socket.on('disconnected', function(data) {
     console.log('Disconnected:', data);
-    mainStore.dispatch('deletePlayer', data.id);
-    layer.findOne('#object' + data.id).remove();
+    mainStore.dispatch('deletePlayer', data.Player.id);
+    layer.findOne('#object' + data.Player.id).remove();
     layer.draw();
 });
 

@@ -68,15 +68,15 @@ function addPlayer(state, newPlayer) {
     if (findPlayerById(state, newPlayer.__id)) return false;
 
     state.push( {
-        id: newPlayer.__id || newPlayer.id,
-        pos: newPlayer.__position && {
-            x: newPlayer.__position.x,
-            y: newPlayer.__position.y
+        id: newPlayer.id,
+        pos: newPlayer.position && {
+            x: newPlayer.position.x,
+            y: newPlayer.position.y
         },
-        size: newPlayer.__dimentions,
-        hp: newPlayer.__hp || 10,
-        score: newPlayer.__score || 10,
-        speed: newPlayer.__speed || 10
+        size: newPlayer.dimentions,
+        hp: newPlayer.hp || 10,
+        score: newPlayer.score || 10,
+        speed: newPlayer.speed || 10
     });
 
     return true;

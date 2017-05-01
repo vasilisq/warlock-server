@@ -4,14 +4,14 @@ const actions = {
     * Добавление нового игрока
     * 
     * player {Object}
-    * player.__id {Number}
-    * player.__position {Object}
-    * player.__position.x {Number}
-    * player.__position.y {Number}
-    * player.__dimentions {Number}
-    * player.__speed {Number}
-    * player.__hp ?
-    * player.__score ?
+    * player.id {Number}
+    * player.position {Object}
+    * player.position.x {Number}
+    * player.position.y {Number}
+    * player.dimentions {Number}
+    * player.speed {Number}
+    * player.hp ?
+    * player.score ?
     */
     addPlayer({ commit }, player) {
         player && commit('ADD_PLAYER', player);
