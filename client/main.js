@@ -119,8 +119,8 @@ socket.on('missileStartMove', function(data) {
     layer.add(skill);
 
     skill.timerId = setInterval(() => {
-        let x = data.Direction.x * data.Speed * data.dt * 100, // todo: ????
-            y = data.Direction.y * data.Speed * data.dt * 100;
+        let x = data.Direction.x * data.Speed / 100,
+            y = data.Direction.y * data.Speed / 100;
 
             skill.move({
                 x: x,
@@ -128,7 +128,7 @@ socket.on('missileStartMove', function(data) {
             });
 
         layer.draw();
-    }, 1); // todo: recalc dt
+    }, 10);
 
 });
 
