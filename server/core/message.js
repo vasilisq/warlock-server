@@ -22,6 +22,7 @@ module.exports = class Message {
         this.__dto.With = {
             id: entity.id,
             entityClass: entity.constructor.name.toLowerCase(),
+            dimensions: entity.dimensions
         };
 
         return this;

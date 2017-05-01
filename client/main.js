@@ -109,18 +109,18 @@ socket.on('disconnected', function(data) {
 */
 socket.on('missileStartMove', function(data) {
     let skill = new Konva.Rect({
-        x: data.x || 0,
-        y: data.y || 0,
-        width: data.dimensions,
-        height: data.dimensions,
+        x: data.Vector.x || 0,
+        y: data.Vector.y || 0,
+        width: data.With.dimensions,
+        height: data.With.dimensions,
         fill: '#f00',
         id: 'missile' + data.id,
     });
     layer.add(skill);
 
     skill.timerId = setInterval(() => {
-        let x = data.direction.x * data.speed * data.dT * 100, // todo: ????
-            y = data.direction.y * data.speed * data.dT * 100;
+        let x = data.Direction.x * data.Speed * data.dt * 100, // todo: ????
+            y = data.Direction.y * data.Speed * data.dt * 100;
 
             skill.move({
                 x: x,
@@ -138,8 +138,8 @@ socket.on('missileStartMove', function(data) {
 * @param data.id {Number} id объекта Missile
 */
 socket.on('missileEndMove', function(data) {
-    console.log('missile', data.id,' died');
-    let skill = layer.findOne('#missile' + data.id);
+    console.log('missile', data.With.id,' died');
+    let skill = layer.findOne('#missile' + data.With.id);
     if(skill) {
         clearInterval(skill.timerId);
         skill.remove();

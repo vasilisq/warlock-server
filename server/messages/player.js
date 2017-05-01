@@ -1,5 +1,8 @@
 let Message = require('../core/message');
 
+/**
+ * Сообщения игрока
+ */
 module.exports = {
     Connected: class ConnectedMessage extends Message {
         constructor() {
@@ -23,6 +26,8 @@ module.exports = {
 
             // Включить информацию о здоровье
             super.DTO.Player.health = player.health;
+
+            return this;
         }
     },
 
