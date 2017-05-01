@@ -17,12 +17,17 @@ class WarlockServer {
     }
 
     handleConnection(socket) {
+
         // Add current player to scene
-        let currentPlayer = new Player(socket);
+        let currentPlayer;
 
-        // Transmit players list
-        socket.emit('players', this.__entityMgr.getAllBeginningWith('player'));
+        socket.on('authenticate', (player) => {
+            currentPlayer = new Player(socket, player.nickname);
 
+            socket.emit('connected', this.__entityMgr.getAllBeginningWith('player'));
+        });
+
+        // TODO: переписать с учётом authenticate и connected
         socket.on('disconnect', (reason) => {
             console.log('Player', currentPlayer.id, 'disconnected, reason:', reason);
 
