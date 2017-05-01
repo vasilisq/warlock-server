@@ -87,3 +87,38 @@ let PlayerMessages = require('../messages/player');
     } 
 }
 ```
+
+Можно расширять методы сообщения или добавлять свои, например:
+
+```js
+    class DamagedMessage extends Message {
+        constructor() {
+            super('playerDamaged');
+        }
+
+        /*
+         * Переопределяем этот метод, чтобы добавить в DTO
+         * информацию о здоровье игрока
+         */
+        withPlayer(player) {
+            super.withPlayer(player);
+
+            // Включить информацию о здоровье
+            super.DTO.Player.health = player.health;
+
+            return this;
+        }
+    },
+```
+
+Таким образом:
+```json
+{ 
+    Player: { 
+      id: 1,
+      health: 100
+    }, 
+    
+    // ...
+}
+```
