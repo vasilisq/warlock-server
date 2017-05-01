@@ -3,6 +3,7 @@
         <h1> {{ msg }} </h1>
         <!-- не забыть добавить здесь!! -->
         <div id="canvas-container"></div>
+        <div id="test-container"></div>
         <players-list></players-list>
     </div>
 </template>

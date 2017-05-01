@@ -24,8 +24,11 @@ const actions = {
     *
     * players {Array} массив новых игроков
     */
-    allPlayers({ commit }, players) {
-        Array.isArray(players) && commit('ALL_PLAYERS', players);
+    allPlayers({ state, commit }, players) {
+        if (Array.isArray(players)) {
+            commit('ALL_PLAYERS', players);
+            state.currentPlayer = players[players.length - 1].id;
+        }
     },
 
     /**

@@ -16,6 +16,12 @@ new Vue({
     render: h => h(App)
 });
 
+mainStore.dispatch('initKonva', {
+    container: 'test-container',
+    width: 1000,
+    height: 1000
+});
+
 //TODO: создать для инстанса игрока отдельный компонент или класс
 // и переместить туда эту функцию
 function drawPlayer(id, { x: x = 0, y: y = 0}, size = 30) {
@@ -81,7 +87,7 @@ socket.on('connected', function(data) {
             x: data.Vector.x,
             y: data.Vector.y
         },
-        dimensions: 30, //?????????????????????????????/
+        dimentions: 30, //?????????????????????????????/
     });
     drawPlayer(data.Player.id, {});
     currentLocation = {
