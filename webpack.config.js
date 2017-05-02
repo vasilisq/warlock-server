@@ -25,6 +25,12 @@ module.exports = {
                 }
             },
             {
+                enforce: 'pre',
+                test: /\.js$/,
+                include: path.join(__dirname, 'client'),
+                loader: "eslint-loader",
+            },
+            {
                 test: /\.js$/,
                 loader: 'babel-loader',
                 include: path.join(__dirname, 'client'),
