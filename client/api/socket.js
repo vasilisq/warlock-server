@@ -72,8 +72,8 @@ socket.on('missileStartMove', function(data) {
     mainStore.state.konvaStore.layerPlayers.add(skill);
 
     skill.timerId = setInterval(() => {
-        let x = data.Direction.x * data.Speed * data.dt * 100, // todo: ????
-            y = data.Direction.y * data.Speed * data.dt * 100;
+        let x = data.Direction.x * data.Speed / 100, // todo: Выяснить что это за коэффициент, и почему он именно такой
+            y = data.Direction.y * data.Speed / 100;
 
             skill.move({
                 x: x,
@@ -81,7 +81,7 @@ socket.on('missileStartMove', function(data) {
             });
 
         mainStore.state.konvaStore.layerPlayers.draw();
-    }, 1); // todo: recalc dt
+    }, 10); // todo: recalc dt
 
 });
 

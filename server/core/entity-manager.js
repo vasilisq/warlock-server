@@ -3,8 +3,6 @@ let Entity = require('./entity');
 let Player = require('../entities/player');
 let Missile = require('./missile');
 
-const DELTA_T_MINIMUM = 0.1;
-
 /**
  * Менеджер сущностей
  *
@@ -14,7 +12,6 @@ module.exports = class EntityManager {
     constructor() {
         this.__entities = new Map();
         this.__sequences = new Map();
-        this.__lastDt = 0;
 
         this.startTicking();
     }
@@ -23,27 +20,26 @@ module.exports = class EntityManager {
      * Вызываем think у всех сущностей, считая dT
      */
     startTicking() {
-        const DELTA_T_SLOWDOWN_COEFFICIENT = 1000000;
+        const DELTA_T_SLOWDOWN_COEFFICIENT = 1e9; // 1000000000
+        let dt, now, prevTime = process.hrtime();
 
-        let onTick = (previousT) => {
-            let now = process.hrtime()[1];
-            this.__lastDt += (now - previousT) / DELTA_T_SLOWDOWN_COEFFICIENT;
+        let onTick = (time) => {
+            now = time[0] + time[1] / DELTA_T_SLOWDOWN_COEFFICIENT;
+            dt = now - prevTime;
 
-            if(this.__lastDt >= DELTA_T_MINIMUM) {
-                this.__entities.forEach((entity) => {
-                    entity.think(this.__lastDt);
-                });
+            this.__entities.forEach((entity) => {
+                entity.think(dt);
+            });
 
-                // Обнуляем
-                this.__lastDt = 0;
-            }
+            prevTime = now;
 
             setImmediate(() => {
-                onTick(process.hrtime()[1]);
+                onTick(process.hrtime());
             });
         };
 
-        onTick(process.hrtime()[1]);
+        prevTime = prevTime[0] + prevTime[1] / DELTA_T_SLOWDOWN_COEFFICIENT;
+        onTick(process.hrtime());
     }
 
     /**

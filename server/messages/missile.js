@@ -27,17 +27,6 @@ module.exports = {
 
             return this;
         }
-
-        /**
-         * Включаем dt
-         *
-         * @param {Number} dt
-         */
-        withDt(dt) {
-            this.DTO.dt = dt;
-
-            return this;
-        }
     },
 
     endMove: class EndMoveMessage extends Message {

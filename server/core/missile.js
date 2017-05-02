@@ -31,7 +31,6 @@ module.exports = class Missile extends Entity {
 
         (new MissileMessages.startMove())
             .withMissile(this)
-            .withDt(this.server.entityMgr.lastDt)
             .send();
     }
 
