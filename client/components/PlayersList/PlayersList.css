@@ -1,0 +1,17 @@
+.players-list
+{
+    font-family: 'Comic-Sans', cursive;
+    display: inline-block;
+    width: 200px;
+    position: fixed;
+    padding: 10px;
+    top: 20px;
+    right: 20px;
+    border-radius: 10px;
+    background: rgba(146, 49, 11, 0.71);
+}
+
+.players-list__block
+{
+    padding-left: 20px;
+}
