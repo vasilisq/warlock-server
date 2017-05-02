@@ -1,10 +1,9 @@
-import Vue from 'vue'
-import App from './components/App/App.vue'
-import Konva from 'konva'
-import mainStore from './store'
-import socket from './api/socket'
+import Vue from 'vue';
+import App from './components/App/App.vue';
+import mainStore from './store';
+import socket from './api/socket';
 
-const size = 30;
+//const size = 30;
 
 new Vue({
     el: '#app',
@@ -34,6 +33,7 @@ window.addEventListener('keypress', function(e) {
     //layer.draw();
 });
 
+/* eslint-disable no-undef */
 $('#canvas-container').on('contextmenu', function(e) {
     e.preventDefault();
 });
@@ -41,7 +41,7 @@ $('#canvas-container').on('contextmenu', function(e) {
 $('#canvas-container').on('click', function(e) {
     e.preventDefault();
 });
-
+/* eslint-disable no-undef */
 // END TODO
 
 

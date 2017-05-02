@@ -3,15 +3,16 @@ const actions = {
     *
     * Добавление нового игрока
     * 
-    * player {Object}
-    * player.id {Number}
-    * player.position {Object}
-    * player.position.x {Number}
-    * player.position.y {Number}
-    * player.dimentions {Number}
-    * player.speed {Number}
+    * @param {object} player объект игрока
+    * @param {number} player.id id
+    * @param {object} player.position положение
+    * @param {number} player.position.x  координата x
+    * @param {number} player.position.x  координата y
+    * @param {number} player.dimentions размеры
+    * @param  {number} player.speed скорость
     * player.hp ?
     * player.score ?
+    * @returns {void}
     */
     addPlayer({ commit }, player) {
         player && commit('ADD_PLAYER', player);
@@ -22,7 +23,8 @@ const actions = {
     * ВНИМАНИЕ! этот экшн полностью перезаписывает массив всех игроков
     * не предназначен для частого использования(!не бродкастить!), только в целях синхронизации
     *
-    * players {Array} массив новых игроков
+    * @param {array} players массив новых игроков
+    * @returns {void}
     */
     allPlayers({ state, commit }, players) {
         if (Array.isArray(players)) {
@@ -35,11 +37,12 @@ const actions = {
     *
     * Перемещение игрока
     *
-    * data {Object}
-    * data.id {Number}
-    * data.pos {Object}
-    * data.pos.x {Number}
-    * data.pos.y {Number}
+    * @param {object} data данные игрока
+    * @param {number} data.id id
+    * @param {object} data.pos объект положения
+    * @param {number} data.pos.x координата x
+    * @param {number} data.pos.y координата y
+    * @returns {void}
     */
     movePlayer({ commit }, data) {
         commit('MOVE_PLAYER', data);

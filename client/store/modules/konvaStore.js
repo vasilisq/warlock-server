@@ -1,5 +1,5 @@
-import Konva from 'konva'
-import socket from '../../api/socket'
+import Konva from 'konva';
+import socket from '../../api/socket';
 
 const state = {
         konva: {},
@@ -10,10 +10,11 @@ const state = {
     actions = {
         /**
         *
-        * data {Object}
-        * data.container {String}
-        * data.width {Number}
-        * data.height {Number}
+        * @param {object} data данные
+        * @param {string} data.container контейнер
+        * @param {number} data.width ширина
+        * @param {number} data.height высота
+        * @returns {void}
         */
         initKonva({ state, commit, rootState }, data) {
             commit('INIT', data);
@@ -21,12 +22,13 @@ const state = {
             // TODO @dyadyaJora: по хорошему нужно подписываться на обычний клик и чекать клик по конве
             // иначе возможны различные баги и артефакты по поводу того как тригерится именно этот contentClick
             state.konva.on('contentClick', function(e) {
-                let curPos = state.layerPlayers.findOne('#object' + rootState.currentPlayer).getAbsolutePosition();
-                let data = calcSkillVector(
+                let curPos = state.layerPlayers.findOne('#object' + rootState.currentPlayer).getAbsolutePosition(),
+                    data = calcSkillVector(
                         // воооот здесь могут быть баги =)
                         curPos,
                         state.konva.getPointerPosition()
                     );
+
                 console.log('KONVA CLICK',data);
                 //если левая кнопка мышки
                 if (e.evt.button == 0 ) {
@@ -41,10 +43,12 @@ const state = {
     mutations = {
         /**
         *
-        * data {Object}
-        * data.container {String}
-        * data.width {Number}
-        * data.height {Number}
+        * @param {object} context объект конвы из хранилища
+        * @param {object} data данные
+        * @param {string} data.container контейнер
+        * @param {number} data.width ширина
+        * @param {number} data.height высота
+        * @returns {void}
         */
         INIT(context, data) {
             context.konva = new Konva.Stage({
@@ -81,6 +85,7 @@ const state = {
         DELETE_PLAYER (context, id) {
             console.log('Konva DELETE_PLAYER');
             let obj = context.layerPlayers.findOne('#object' + id);
+
             obj && obj.remove();
 
             context.layerPlayers.draw();
@@ -89,12 +94,13 @@ const state = {
         MOVE_PLAYER (context, data) {
             console.log('Konva MOVE_PLAYER');
             let obj = context.layerPlayers.findOne('#object' + data.id);
+
             obj && obj.setAbsolutePosition({ x: data.pos.x, y: data.pos.y});
 
             context.layerPlayers.draw();
         }
     },
-    getters = { }
+    getters = { };
 
 function calcSkillVector(point1, point2) {
     let rx = (point1.x - point2.x) * -1,
@@ -104,7 +110,7 @@ function calcSkillVector(point1, point2) {
     return {
         a: rx / r,
         b: ry / r
-    }
+    };
 }
 
 function drawNewPlayer(layer, data) {

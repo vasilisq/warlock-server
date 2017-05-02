@@ -8,17 +8,17 @@ import konvaStore from './modules/konvaStore.js';
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-	state: {
+    state: {
         // TODO: @dyadyaJora не уверен, что лучше здесь кешровать
         // ID или полностью объект Player-a
 
         // доступен в rootState
-		currentPlayer: 0
-	},
-	actions,
-	getters,
-	modules: {
-		playersStore,
-		konvaStore
-	}
+        currentPlayer: 0
+    },
+    actions,
+    getters,
+    modules: {
+        playersStore,
+        konvaStore
+    }
 });

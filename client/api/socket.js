@@ -2,14 +2,14 @@
 *
 * Модуль, отвечающий за работу с сокетами
 */
-import io from 'socket.io-client'
-import mainStore from '../store'
+import io from 'socket.io-client';
+import mainStore from '../store';
+import Konva from 'konva';
 
 // TODO @dyadyaJora: может прикрутить конфиг,
 // чтобы брать из него глобальные настройки?
 // например урл
 let socket = io('http://localhost:8080');
-
 
 socket.on('players', function(players) {
     console.log(players);
@@ -69,16 +69,17 @@ socket.on('missileStartMove', function(data) {
         fill: '#f00',
         id: 'missile' + data.id,
     });
+
     mainStore.state.konvaStore.layerPlayers.add(skill);
 
     skill.timerId = setInterval(() => {
         let x = data.Direction.x * data.Speed / 100, // todo: Выяснить что это за коэффициент, и почему он именно такой
             y = data.Direction.y * data.Speed / 100;
 
-            skill.move({
-                x: x,
-                y: y,
-            });
+        skill.move({
+            x: x,
+            y: y,
+        });
 
         mainStore.state.konvaStore.layerPlayers.draw();
     }, 10); // todo: recalc dt
@@ -93,6 +94,7 @@ socket.on('missileStartMove', function(data) {
 socket.on('missileEndMove', function(data) {
     console.log('missile', data.With.id,' died');
     let skill = mainStore.state.konvaStore.layerPlayers.findOne('#missile' + data.With.id);
+
     if(skill) {
         clearInterval(skill.timerId);
         skill.remove();
