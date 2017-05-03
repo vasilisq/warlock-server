@@ -1,3 +1,5 @@
+let EffectMessages = require('../messages/effect');
+
 /**
  * Базовый класс для баффов/дебаффов
  *
@@ -18,12 +20,10 @@ module.exports = class Effect {
         this.__applicant = entity;
         this.influence();
 
-        this.server.broadcast('effectApplied', {
-            applicantId: entity.id,
-            applicantClass: entity.constructor.name.toLowerCase(),
-            effect: this.constructor.name.toLowerCase(),
-            duration: this.duration
-        });
+        (new EffectMessages.effectApplied())
+            .withEntity(entity)
+            .withEffect(this)
+            .send();
     }
 
     /**
