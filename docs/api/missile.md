@@ -8,23 +8,23 @@
 **Структура**:
 ```
 {
-    With: {
-        id: 1,
-        entityClass: 'entity',
-        dimensions: 10
-    },
+  With: {
+    id: 1,
+    entityClass: 'entity',
+    dimensions: 10
+  },
 
-    Vector: {
-        x: 0,
-        y: 0
-    },
+  Vector: {
+    x: 0,
+    y: 0
+  },
 
-    Direction: {
-        x: 1,
-        y: 1
-    },
+  Direction: {
+    x: 1,
+    y: 1
+  },
 
-    Speed: 10
+  Speed: 10
 }
 ```
 
@@ -36,16 +36,15 @@
 **Структура**:
 ```
 {
-    With: {
-        id: 1,
-        entityClass: 'entity',
-        dimensions: 10
-    },
+  With: {
+    id: 1,
+    entityClass: 'entity',
+    dimensions: 10
+  },
 
-    Vector: {
-        x: 0,
-        y: 0
-    }
+  Vector: {
+    x: 0,
+    y: 0
+  }
 }
 ```
-
