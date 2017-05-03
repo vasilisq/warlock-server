@@ -10,18 +10,18 @@ module.exports = {
         }
 
         /**
-         * Включить эффект в сообщение
-         *
-         * @param {Effect} effect
-         * @returns {Message}
-         */
-        withEffect(effect) {
-            this.DTO.Effect = {
-                effectClass: effect.constructor.name.toLowerCase(),
-                duration: effect.duration
-            };
+     	 * Включить эффект в сообщение
+    	 *
+    	 * @param {Effect} effect
+    	 * @returns {Message}
+    	 */
+    	withEffect(effect) {
+        	this.DTO.Effect = {
+            	effectClass: effect.constructor.name.toLowerCase(),
+            	duration: effect.duration
+        	};
 
-            return this;
-        }
+        	return this;
+    	}
     }
 };
