@@ -61,8 +61,4 @@ module.exports = class Effect {
     get applicant() {
         return this.__applicant;
     }
-
-    get server() {
-        return require('../warlock-server');
-    }
 };

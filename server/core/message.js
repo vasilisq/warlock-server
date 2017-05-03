@@ -93,7 +93,6 @@ module.exports = class Message {
         return require('../warlock-server');
     }
 
-
     get DTO() {
         return this.__dto;
     }
