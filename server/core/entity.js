@@ -9,13 +9,13 @@ module.exports = class Entity {
     constructor(dimensions) {
         this.__position = new Vector2(0, 0);
         this.__dimensions = dimensions; // Размер объекта
-        this.__id = this.server.entityMgr.incrementSequenceOf(this);
+        this.__id = this.entityManager.incrementSequenceOf(this);
 
         this.__health = ENTITY_START_HEALTH;
         this.__speed = 0; // Скорость перемещения
 
         // Регистрируем обьект
-        this.server.entityMgr.add(this);
+        this.entityManager.add(this);
     }
 
     /**
@@ -25,7 +25,7 @@ module.exports = class Entity {
      * @param {Number} factor Скорость
      */
     move(direction, factor = 1) {
-        if (!this.server.entityMgr.movePossible(this, direction, factor))
+        if (!this.entityManager.movePossible(this, direction, factor))
             return;
 
         this.x = this.x + (direction.x * factor);
@@ -91,8 +91,9 @@ module.exports = class Entity {
         return this.__dimensions;
     }
 
-    get server() {
-        return require('../warlock-server');
+    get entityManager() {
+        let server = require('../warlock-server');
+        return server.entityMgr;
     }
 
     get id() {
@@ -121,7 +122,7 @@ module.exports = class Entity {
      * @param {Entity} killer - сущность, которая вызвала удаление текущей сущности
      */
     destruct(killer) {
-        this.server.entityMgr.remove(this);
+        this.entityManager.remove(this);
         console.log(this.name, 'removed by', killer.name, 'at', this.x, ';', this.y);
     }
 

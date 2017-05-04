@@ -8,3 +8,5 @@
 
 ## API
 - [Player](./docs/api/player.md)
+- [Effect](./docs/api/effect.md)
+- [Missile](./docs/api/missile.md)
