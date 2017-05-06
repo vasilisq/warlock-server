@@ -48,12 +48,19 @@ module.exports = class Player extends Entity {
         return this.__isDead;
     }
 
+    movePossibleAgainst(entity, direction, factor) {
+        if(this.isDead) return false;
+
+        return super.movePossibleAgainst(entity, direction, factor);
+    }
+
     /**
      * Двигаем объект, проверяем коллизию
      *
      * @param {Vector2} direction Направление
      */
     move(direction) {
+        if(this.isDead) return;
         super.move(direction, this.speed);
 
         (new PlayerMessages.Moved())
