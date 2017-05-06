@@ -20,6 +20,7 @@ module.exports = class Player extends Entity {
     constructor(playerSocket) {
         super(PLAYER_SIZE);
 
+        this.randomPosition();
         this.__isDead = false;
         this.__reSpawnTimeout = null;
         this.__health = PLAYER_START_HEALTH;
@@ -112,10 +113,7 @@ module.exports = class Player extends Entity {
     reSpawn() {
         this.__reSpawnTimeout = null;
 
-        // TODO: респаунить игроков в рандомные места
-        if(!this.entityManager.movePossible(this, new Vector2(0, 0), 1)) {
-            this.position = new Vector2(50, 50);
-        }
+        randomPosition();
 
         this.__health = PLAYER_START_HEALTH;
         this.__isDead = false;
@@ -136,5 +134,16 @@ module.exports = class Player extends Entity {
             clearTimeout(this.__reSpawnTimeout);
         }
         super.destruct(killer);
+    }
+
+    /**
+     * Задаёт новое случайное местоположение игрока
+     */
+    randomPosition() {
+        do {
+            this.x = Math.floor(Math.random() * (this.entityManager.worldSize - this.dimensions + 1));
+            this.y = Math.floor(Math.random() * (this.entityManager.worldSize - this.dimensions + 1));
+        } 
+        while(!this.entityManager.movePossible(this, new Vector2(0, 0), 1));
     }
 };
