@@ -30,7 +30,7 @@
     
 Запустить в другом терминале сервер в watch режиме
 
-    npm start:dev
+    npm run start:dev
 ### Запуск тестов
 to be continued
 
