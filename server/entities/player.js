@@ -18,11 +18,9 @@ const PLAYER_RESPAWN_TIME = 5; // seconds
  */
 module.exports = class Player extends Entity {
     constructor(playerSocket) {
-        super(PLAYER_SIZE);
+        super(PLAYER_SIZE, PLAYER_START_HEALTH);
 
         this.randomPosition();
-        this.__isDead = false;
-        this.__reSpawnTimeout = null;
         this.__health = PLAYER_START_HEALTH;
         this.speed = PLAYER_MOVE_SPEED;
 
@@ -45,23 +43,12 @@ module.exports = class Player extends Entity {
         });
     }
 
-    get isDead() {
-        return this.__isDead;
-    }
-
-    movePossibleAgainst(entity, direction, factor) {
-        if(this.isDead) return false;
-
-        return super.movePossibleAgainst(entity, direction, factor);
-    }
-
     /**
      * Двигаем объект, проверяем коллизию
      *
      * @param {Vector2} direction Направление
      */
     move(direction) {
-        if(this.isDead) return;
         super.move(direction, this.speed);
 
         (new PlayerMessages.Moved())
@@ -79,13 +66,11 @@ module.exports = class Player extends Entity {
     onDamaged(damager, damage) {
         super.onDamaged(damager, damage);
 
-        (new PlayerMessages.Damaged())
+        if(this.health > 0) {
+            (new PlayerMessages.Damaged())
             .withPlayer(this)
             .withDamage(damage, damager)
             .send();
-
-        if(this.health <= 0) {
-            this.onDeath(damager);
         }
     }
 
@@ -94,8 +79,8 @@ module.exports = class Player extends Entity {
      *
      * @param {Entity} killer
      */
-    onDeath(killer) {
-        this.__isDead = true;
+    onDeath(killer, damage) {
+        super.onDeath(killer);
 
         this.__reSpawnTimeout = setTimeout(() => {
             this.reSpawn();
@@ -103,7 +88,7 @@ module.exports = class Player extends Entity {
 
         (new PlayerMessages.Died())
             .withPlayer(this)
-            .withEntity(killer)
+            .withDamage(damage, killer)
             .send();
     }
 
@@ -111,39 +96,11 @@ module.exports = class Player extends Entity {
      * Действия при возрождении игрока
      */
     reSpawn() {
-        this.__reSpawnTimeout = null;
-
-        randomPosition();
-
-        this.__health = PLAYER_START_HEALTH;
-        this.__isDead = false;
+        super.reSpawn();
 
         (new PlayerMessages.Respawn())
             .withPlayer(this)
             .withVector(this.position)
             .send();
-    }
-
-    /**
-     * Удаление сущности
-     *
-     * @param {Entity} killer - сущность, которая вызвала удаление текущей сущности
-     */
-    destruct(killer) {
-        if(this.__reSpawnTimeout !== null) {
-            clearTimeout(this.__reSpawnTimeout);
-        }
-        super.destruct(killer);
-    }
-
-    /**
-     * Задаёт новое случайное местоположение игрока
-     */
-    randomPosition() {
-        do {
-            this.x = Math.floor(Math.random() * (this.entityManager.worldSize - this.dimensions + 1));
-            this.y = Math.floor(Math.random() * (this.entityManager.worldSize - this.dimensions + 1));
-        } 
-        while(!this.entityManager.movePossible(this, new Vector2(0, 0), 1));
     }
 };

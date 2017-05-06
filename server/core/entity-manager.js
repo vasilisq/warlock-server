@@ -75,7 +75,7 @@ module.exports = class EntityManager {
         // Проверяем на коллизию со всеми сущностями
         // TODO: Брать ближайшие в радиусе
         Array.from(this.__entities.values()).some((entity) => {
-            if (movingOne !== entity && entity.movePossibleAgainst(movingOne, direction, factor)) {
+            if (movingOne !== entity && !entity.isDead && entity.movePossibleAgainst(movingOne, direction, factor)) {
                 movingOne.onCollide(entity);
 
                 collisionDetected = true;

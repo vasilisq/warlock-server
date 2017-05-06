@@ -1,18 +1,20 @@
 let Vector2 = require('./vector2');
 
-const ENTITY_START_HEALTH = 10;
-
 module.exports = class Entity {
     /**
      * @param {Number} dimensions - размер сущности
      */
-    constructor(dimensions) {
+    constructor(dimensions, maxHP = 10) {
         this.__position = new Vector2(0, 0);
         this.__dimensions = dimensions; // Размер объекта
         this.__id = this.entityManager.incrementSequenceOf(this);
 
-        this.__health = ENTITY_START_HEALTH;
+        this.__health = maxHP;
+        this.__maxHealth = maxHP;
         this.__speed = 0; // Скорость перемещения
+
+        this.__isDead = false;
+        this.__reSpawnTimeout = null;
 
         // Регистрируем обьект
         this.entityManager.add(this);
@@ -25,7 +27,7 @@ module.exports = class Entity {
      * @param {Number} factor Скорость
      */
     move(direction, factor = 1) {
-        if (!this.entityManager.movePossible(this, direction, factor))
+        if (this.isDead || !this.entityManager.movePossible(this, direction, factor))
             return;
 
         this.x = this.x + (direction.x * factor);
@@ -116,12 +118,23 @@ module.exports = class Entity {
         this.__speed = value;
     }
 
+    get isDead() {
+        return this.__isDead;
+    }
+
+    get maxHealth() {
+        return this.__maxHealth;
+    }
+
     /**
      * Удаление сущности
      *
      * @param {Entity} killer - сущность, которая вызвала удаление текущей сущности
      */
     destruct(killer) {
+        if(this.__reSpawnTimeout !== null) {
+            clearTimeout(this.__reSpawnTimeout);
+        }
         this.entityManager.remove(this);
         console.log(this.name, 'removed by', killer.name, 'at', this.x, ';', this.y);
     }
@@ -143,5 +156,39 @@ module.exports = class Entity {
      */
     onDamaged(damager, damage) {
         this.__health -= damage;
+
+        if(this.health <= 0) {
+            this.onDeath(damager, damage);
+        }
+    }
+
+    /**
+     * Задаёт новое случайное местоположение сущности
+     */
+    randomPosition() {
+        do {
+            this.x = Math.floor(Math.random() * (this.entityManager.worldSize - this.dimensions + 1));
+            this.y = Math.floor(Math.random() * (this.entityManager.worldSize - this.dimensions + 1));
+        } 
+        while(!this.entityManager.movePossible(this, new Vector2(0, 0), 1));
+    }
+
+    /**
+     * Действия при смерти сущности
+     *
+     * @param {Entity} killer
+     */
+    onDeath(killer) {
+        this.__isDead = true;
+    }
+
+    /**
+     * Действия при возрождении сущности
+     */
+    reSpawn() {
+        this.__reSpawnTimeout = null;
+        this.__health = this.maxHealth;
+        this.randomPosition();
+        this.__isDead = false;
     }
 };

@@ -62,6 +62,26 @@
 }
 ```
 
+## PlayerDamaged
+**Имя события**: `playerDamaged`
+
+**Broadcast**: `+`
+
+**Структура**:
+```
+{ 
+  Player: { 
+    id: 1,
+    health: 10
+  },
+  Damage: 10,
+  Damager: {
+    id: 1,
+    entityClass: entity
+  }
+}
+```
+
 ## PlayerDied
 **Имя события**: `playerDied`
 
@@ -73,10 +93,10 @@
   Player: { 
     id: 1 
   },
-  With: {
+  Damage: 10,
+  Damager: {
     id: 1,
-    entityClass: entity,
-    dimensions: 10
+    entityClass: entity
   }
 }
 ```
