@@ -9,8 +9,8 @@ const actions = {
     * @param {number} player.position.x  координата x
     * @param {number} player.position.x  координата y
     * @param {number} player.dimensions размеры
-    * @param  {number} player.speed скорость
-    * player.hp ?
+    * @param {number} player.speed скорость
+    * @param {number} player.maxHP макс значение HP (оно же начальное)
     * player.score ?
     * @returns {void}
     */

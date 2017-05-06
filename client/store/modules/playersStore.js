@@ -88,7 +88,7 @@ function addPlayer(state, newPlayer) {
         },
         size: newPlayer.dimensions,
         hp: newPlayer.hp || 30,
-        maxHp: newPlayer.hp || 30,
+        maxHp: newPlayer.maxHP || 30,
         score: newPlayer.score || 10,
         speed: newPlayer.speed || 10
     });
