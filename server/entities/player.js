@@ -9,6 +9,7 @@ const PLAYER_SIZE = 30;
 // Скорость бега
 const PLAYER_MOVE_SPEED = 10;
 const PLAYER_START_HEALTH = 30;
+const PLAYER_RESPAWN_TIME = 5; // seconds
 
 /**
  * Сущность игрока
@@ -19,6 +20,8 @@ module.exports = class Player extends Entity {
     constructor(playerSocket) {
         super(PLAYER_SIZE);
 
+        this.__isDead = false;
+        this.__reSpawnTimeout = null;
         this.__health = PLAYER_START_HEALTH;
         this.speed = PLAYER_MOVE_SPEED;
 
@@ -39,6 +42,10 @@ module.exports = class Player extends Entity {
         playerSocket.on('right', (data) => {
             new EffectSpell(new Vector2(data.a, data.b), this);
         });
+    }
+
+    get isDead() {
+        return this.__isDead;
     }
 
     /**
@@ -70,8 +77,41 @@ module.exports = class Player extends Entity {
             .send();
 
         if(this.health <= 0) {
-            this.destruct(damager);
+            this.onDeath(damager);
         }
+    }
+
+    /**
+     * Действия при смерти игрока
+     *
+     * @param {Entity} killer
+     */
+    onDeath(killer) {
+        this.__isDead = true;
+
+        this.__reSpawnTimeout = setTimeout(() => {
+            this.reSpawn();
+        }, PLAYER_RESPAWN_TIME * 1000);
+
+        (new PlayerMessages.Died())
+            .withPlayer(this)
+            .withEntity(killer)
+            .send();
+    }
+
+    /**
+     * Действия при возрождении игрока
+     */
+    reSpawn() {
+        this.__reSpawnTimeout = null;
+
+        // TODO: респаунить игроков в рандомные места
+        if(!this.entityManager.movePossible(this, new Vector2(0, 0), 1)) {
+            this.position = new Vector2(50, 50);
+        }
+
+        this.__health = PLAYER_START_HEALTH;
+        this.__isDead = false;
     }
 
     /**
@@ -80,11 +120,9 @@ module.exports = class Player extends Entity {
      * @param {Entity} killer - сущность, которая вызвала удаление текущей сущности
      */
     destruct(killer) {
+        if(this.__reSpawnTimeout !== null) {
+            clearTimeout(this.__reSpawnTimeout);
+        }
         super.destruct(killer);
-        
-        (new PlayerMessages.Died())
-            .withPlayer(this)
-            .withEntity(killer)
-            .send();
     }
 };
