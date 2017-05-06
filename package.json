@@ -4,10 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "./node_modules/.bin/nodemon app.js",
+    "start:dev": "./node_modules/.bin/nodemon app.js",
+    "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "webpack-dev-server": "cross-env NODE_ENV=development webpack-dev-server --open --hot",
-    "dev": "cross-env NODE_ENV=development webpack --progress --hide-modules --watch",
+    "build:dev": "cross-env NODE_ENV=development webpack --progress --hide-modules --watch",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
     "lint:front": "./node_modules/.bin/eslint client/**/*.js"
   },
