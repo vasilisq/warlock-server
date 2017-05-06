@@ -8,6 +8,15 @@ module.exports = {
         constructor() {
             super('connected');
         }
+
+        withPlayer(player) {
+            super.withPlayer(player);
+
+            // Информация о максимальном здоровье игрока
+            super.DTO.Player.maxHP = player.maxHealth;
+
+            return this;
+        }
     },
 
     Moved: class MovedMessage extends Message {
