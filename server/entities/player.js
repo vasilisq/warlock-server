@@ -112,6 +112,11 @@ module.exports = class Player extends Entity {
 
         this.__health = PLAYER_START_HEALTH;
         this.__isDead = false;
+
+        (new PlayerMessages.Respawn())
+            .withPlayer(this)
+            .withVector(this.position)
+            .send();
     }
 
     /**

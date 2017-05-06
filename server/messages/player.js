@@ -37,6 +37,12 @@ module.exports = {
         }
     },
 
+    Respawn: class ReSpawnMessage extends Message {
+        constructor() {
+            super('playerRespawn');
+        }
+    },
+
     Disconnected: class DisconnectedMessage extends Message {
         constructor() {
             super('disconnected');
