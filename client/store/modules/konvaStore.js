@@ -102,9 +102,14 @@ const state = {
 
         MOVE_PLAYER (context, data) {
             console.log('Konva MOVE_PLAYER');
-            let obj = context.layerPlayers.findOne('#object' + data.id);
+            let obj = context.layerPlayers.findOne('#object' + data.id),
+                hpLine = context.layerPlayers.findOne('#hp' + data.id);
 
-            obj && obj.setAbsolutePosition({ x: data.pos.x, y: data.pos.y});
+            if (obj && hpLine) {
+                obj.setAbsolutePosition({ x: data.pos.x, y: data.pos.y});
+                hpLine.x(data.pos.x);
+                hpLine.y(data.pos.y - 5);
+            }
 
             context.layerPlayers.draw();
         },
@@ -141,6 +146,24 @@ const state = {
             context.animations.splice(index, 1);
             skill.remove();
             context.layerMissile.draw();
+        },
+
+        /**
+        *
+        * @param {object} context контекст
+        * @param {object} data данные
+        * @param {number} data.id id
+        * @param {number} data.hp новое hp 
+        * @param {number} data.maxHp максимальное значение hp
+        * @param {number} data.dimensions размеры игрока
+        * @returns {void}
+        */
+        CHANGE_HP (context, data) {
+            let hpLine = context.layerPlayers.findOne('#hp' + data.id),
+                val = data.dimensions * data.hp / data.maxHp;
+
+            hpLine.points([ 0, 0, val, 0]);
+            context.layerPlayers.draw();
         }
     },
     getters = { };
@@ -157,20 +180,29 @@ function calcSkillVector(point1, point2) {
 }
 
 function drawNewPlayer(layer, data) {
-    layer.findOne('#object' + data.id) ||
+    if (!layer.findOne('#object' + data.id)) {
         layer.add(
             new Konva.Rect({
                 x: data.position.x,
                 y: data.position.y,
-                // TODO @dyadyaJora: разобраться почему не прокидывается dimentions и выпилить
-                width: data.position.dimentions || 30, 
-                height: data.position.dimentions || 30,
+                width: data.dimensions, 
+                height: data.dimensions,
                 fill: '#0f0',
-                stroke: 'black',
-                strokeWidth: 4,
                 id: 'object' + data.id
             })
         );
+
+        layer.add(
+            new Konva.Line({
+                x: data.position.x,
+                y: data.position.y - 5,
+                points: [ 0, 0, data.dimensions, 0],
+                stroke: 'red',
+                strokeWidth: 5,
+                id: 'hp' + data.id
+            })
+        );
+    }
 
     layer.draw();
 }
