@@ -4,7 +4,6 @@
 */
 import io from 'socket.io-client';
 import mainStore from '../store';
-import Konva from 'konva';
 
 // TODO @dyadyaJora: может прикрутить конфиг,
 // чтобы брать из него глобальные настройки?
@@ -61,29 +60,8 @@ socket.on('disconnected', function(data) {
 * @param data.size {Number}
 */
 socket.on('missileStartMove', function(data) {
-    let skill = new Konva.Rect({
-        x: data.Vector.x || 0,
-        y: data.Vector.y || 0,
-        width: data.With.dimensions,
-        height: data.With.dimensions,
-        fill: '#f00',
-        id: 'missile' + data.id,
-    });
-
-    mainStore.state.konvaStore.layerPlayers.add(skill);
-
-    skill.timerId = setInterval(() => {
-        let x = data.Direction.x * data.Speed / 100, // todo: Выяснить что это за коэффициент, и почему он именно такой
-            y = data.Direction.y * data.Speed / 100;
-
-        skill.move({
-            x: x,
-            y: y,
-        });
-
-        mainStore.state.konvaStore.layerPlayers.draw();
-    }, 10); // todo: recalc dt
-
+    console.log(data);
+    mainStore.dispatch('missileStart', data);
 });
 
 /**
@@ -93,13 +71,7 @@ socket.on('missileStartMove', function(data) {
 */
 socket.on('missileEndMove', function(data) {
     console.log('missile', data.With.id,' died');
-    let skill = mainStore.state.konvaStore.layerPlayers.findOne('#missile' + data.With.id);
-
-    if(skill) {
-        clearInterval(skill.timerId);
-        skill.remove();
-        mainStore.state.konvaStore.layerPlayers.draw();
-    }
+    mainStore.dispatch('missileEnd', data.With.id);
 });
 
 export default socket;

@@ -5,7 +5,8 @@ const state = {
         konva: {},
         layerMapSprite: {},
         layerPlayers: {},
-        layerMissile: {}
+        layerMissile: {},
+        animations: []
     },
     actions = {
         /**
@@ -38,6 +39,14 @@ const state = {
                     socket.emit('right', data);
                 }
             });
+        },
+
+        missileStart({ commit }, data) {
+            commit('MISSILE_START', data);
+        },
+
+        missileEnd({ commit }, data) {
+            commit('MISSILE_END', data);
         }
     },
     mutations = {
@@ -98,6 +107,40 @@ const state = {
             obj && obj.setAbsolutePosition({ x: data.pos.x, y: data.pos.y});
 
             context.layerPlayers.draw();
+        },
+
+        MISSILE_START(context, data) {
+            let skill = new Konva.Rect({
+                    x: data.Vector.x || 0,
+                    y: data.Vector.y || 0,
+                    width: data.With.dimensions,
+                    height: data.With.dimensions,
+                    fill: '#f00',
+                    id: 'missile' + data.With.id,
+                }),
+                anim;
+
+            context.layerMissile.add(skill);
+            anim = new Konva.Animation(function(frame) {
+                skill.setPosition({
+                    x: data.Vector.x + data.Direction.x * data.Speed * frame.time / 1000,
+                    y: data.Vector.y + data.Direction.y * data.Speed * frame.time / 1000
+                });
+            }, context.layerMissile);
+            anim.missileId = data.With.id;
+            anim.start();  
+
+            context.animations.push(anim);
+        },
+
+        MISSILE_END (context, id) {
+            let index = context.animations.findIndex( (item) => id === item.missileId),
+                skill = context.layerMissile.findOne('#missile' + id);
+
+            context.animations[index].stop();
+            context.animations.splice(index, 1);
+            skill.remove();
+            context.layerMissile.draw();
         }
     },
     getters = { };
