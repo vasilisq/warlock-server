@@ -12,6 +12,7 @@ module.exports = class EntityManager {
     constructor() {
         this.__entities = new Map();
         this.__sequences = new Map();
+        this.__worldSize = null;
 
         this.startTicking();
     }
@@ -125,5 +126,13 @@ module.exports = class EntityManager {
 
     get lastDt() {
         return this.__lastDt;
+    }
+
+    get worldSize() {
+        return this.__worldSize;
+    }
+
+    set worldSize(size) {
+        this.__worldSize = size;
     }
 };
