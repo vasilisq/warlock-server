@@ -62,4 +62,40 @@
 }
 ```
 
+## PlayerDied
+**Имя события**: `playerDied`
 
+**Broadcast**: `+`
+
+**Структура**:
+```
+{ 
+  Player: { 
+    id: 1 
+  },
+  With: {
+    id: 1,
+    entityClass: entity,
+    dimensions: 10
+  }
+}
+```
+
+## PlayerRespawn
+**Имя события**: `playerRespawn`
+
+**Broadcast**: `+`
+
+**Структура**:
+```
+{ 
+  Player: { 
+    id: 1 
+  },
+  // Новая позиция игрока
+  Vector: { 
+    x: 0, 
+    y: 0 
+  } 
+}
+```
