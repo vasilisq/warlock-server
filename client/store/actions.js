@@ -10,6 +10,7 @@ const actions = {
     * @param {number} player.position.x  координата y
     * @param {number} player.dimentions размеры
     * @param  {number} player.speed скорость
+    * @param  {number} player.name никнэйм
     * player.hp ?
     * player.score ?
     * @returns {void}

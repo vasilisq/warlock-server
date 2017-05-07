@@ -4,7 +4,7 @@
         <ol class="players-list__block">
             <li v-for="player in players">
             <!-- TODO: выводить здесь еще и счет, очки , время подключения или еще что? -->
-                <span class="players-list__name">{{ player.name || ( 'Name_'  + player.id ) }}</span>
+                <span class="players-list__name">{{ player.name }}</span>
             </li>
         </ol>
     </div>
