@@ -107,10 +107,15 @@ const state = {
         MOVE_PLAYER (context, data) {
             console.log('Konva MOVE_PLAYER');
             let obj = context.layerPlayers.findOne('#object' + data.id),
-                hpLine = context.layerPlayers.findOne('#hp' + data.id);
+                hpLine = context.layerPlayers.findOne('#hp' + data.id),
+                text = context.layerPlayers.findOne('#name' + data.id);
 
-            if (obj && hpLine) {
+            if (obj && text && hpLine) {
                 obj.setAbsolutePosition({ x: data.pos.x, y: data.pos.y});
+
+                text.x(data.pos.x - (text.width() - obj.width()) / 2);
+                text.y(data.pos.y - 15);
+
                 hpLine.x(data.pos.x);
                 hpLine.y(data.pos.y - 5);
             }
@@ -206,6 +211,18 @@ function drawNewPlayer(layer, data) {
                 id: 'hp' + data.id
             })
         );
+
+        let nameText = new Konva.Text({
+            text: data.name || 'Name_' + data.id,
+            fill: 'black',
+            fontSize: 12,
+            fontFamily: 'cursive',
+            y: data.position.y - 15,
+            id: 'name' + data.id
+        });
+
+        nameText.x(data.position.x - (nameText.width() - (data.dimensions || 30)) / 2);
+        layer.add(nameText);
     }
 
     layer.draw();
