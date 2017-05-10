@@ -1,0 +1,12 @@
+@import '../../../node_modules/bootstrap/dist/css/bootstrap.css'
+
+.modal-body
+{
+	text-align: left;
+}
+
+.modal-backdrop
+{
+	background: url('../../assets/modalBG.png') blue;
+	background-size: cover;
+}

@@ -37,17 +37,23 @@ module.exports = {
                 exclude: /node_modules/
             },
             {
-                test: /\.(png|jpg|gif|svg)$/,
+                test: /\.(png|jpg|gif|svg|woff|woff2|ttf|eot)$/,
                 loader: 'file-loader',
                 options: {
                     name: '[name].[ext]?[hash]'
                 }
+            },
+            { 
+                test: /node_modules\/bootstrap\/dist\/js\//,
+                //include: path.join(__dirname, 'node_modules/bootstrap/dist/js'),
+                loader: 'imports?jQuery=jquery'
             }
         ]
     },
     resolve: {
         alias: {
-            'vue$': 'vue/dist/vue.esm.js'
+            'vue$': 'vue/dist/vue.esm.js',
+            'jquery': 'jquery/dist/jquery.js'
         }
     },
     devServer: {
@@ -65,7 +71,8 @@ module.exports = {
     devtool: 'source-map',
     plugins: [
         new webpack.ProvidePlugin({
-            '$': 'jquery'
+            '$': 'jquery',
+            'jQuery': 'jquery'
         }),
         new ExtractTextPlugin('style.css')
     ]

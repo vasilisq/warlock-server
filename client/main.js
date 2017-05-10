@@ -2,13 +2,22 @@ import Vue from 'vue';
 import App from './components/App/App.vue';
 import mainStore from './store';
 import socket from './api/socket';
+import bootstrap from 'bootstrap';
+
 
 //const size = 30;
 
 new Vue({
     el: '#app',
-    render: h => h(App)
+    render: h => h(App),
+    methods: {
+        x: function() {
+            return this.$refs.modalL;
+        }
+    }
 });
+
+window.jq = jQuery;
 
 mainStore.dispatch('initKonva', {
     container: 'canvas-container',

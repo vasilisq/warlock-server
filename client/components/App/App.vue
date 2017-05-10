@@ -3,6 +3,7 @@
         <h1> {{ msg }} </h1>
         <canvas-container></canvas-container>
         <players-list></players-list>
+        <login-screen></login-screen>
     </div>
 </template>
 
