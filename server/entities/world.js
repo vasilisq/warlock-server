@@ -11,6 +11,8 @@ const WORLD_SIZE = 1000;
 module.exports = class World extends Entity {
     constructor() {
         super(WORLD_SIZE);
+
+        this.entityManager.worldSize = WORLD_SIZE;
     }
 
     /**

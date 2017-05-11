@@ -8,6 +8,15 @@ module.exports = {
         constructor() {
             super('connected');
         }
+
+        withPlayer(player) {
+            super.withPlayer(player);
+
+            // Информация о максимальном здоровье игрока
+            super.DTO.Player.maxHP = player.maxHealth;
+
+            return this;
+        }
     },
 
     Moved: class MovedMessage extends Message {
@@ -34,6 +43,12 @@ module.exports = {
     Died: class DiedMessage extends Message {
         constructor() {
             super('playerDied');
+        }
+    },
+
+    Respawn: class ReSpawnMessage extends Message {
+        constructor() {
+            super('playerRespawn');
         }
     },
 

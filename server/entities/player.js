@@ -9,6 +9,7 @@ const PLAYER_SIZE = 30;
 // Скорость бега
 const PLAYER_MOVE_SPEED = 10;
 const PLAYER_START_HEALTH = 30;
+const PLAYER_RESPAWN_TIME = 5; // seconds
 
 /**
  * Сущность игрока
@@ -17,8 +18,9 @@ const PLAYER_START_HEALTH = 30;
  */
 module.exports = class Player extends Entity {
     constructor(playerSocket) {
-        super(PLAYER_SIZE);
+        super(PLAYER_SIZE, PLAYER_START_HEALTH);
 
+        this.randomPosition();
         this.__health = PLAYER_START_HEALTH;
         this.speed = PLAYER_MOVE_SPEED;
 
@@ -64,27 +66,41 @@ module.exports = class Player extends Entity {
     onDamaged(damager, damage) {
         super.onDamaged(damager, damage);
 
-        (new PlayerMessages.Damaged())
+        if(this.health > 0) {
+            (new PlayerMessages.Damaged())
             .withPlayer(this)
             .withDamage(damage, damager)
             .send();
-
-        if(this.health <= 0) {
-            this.destruct(damager);
         }
     }
 
     /**
-     * Удаление сущности
+     * Действия при смерти игрока
      *
-     * @param {Entity} killer - сущность, которая вызвала удаление текущей сущности
+     * @param {Entity} killer
      */
-    destruct(killer) {
-        super.destruct(killer);
-        
+    onDeath(killer, damage) {
+        super.onDeath(killer);
+
+        this.__reSpawnTimeout = setTimeout(() => {
+            this.reSpawn();
+        }, PLAYER_RESPAWN_TIME * 1000);
+
         (new PlayerMessages.Died())
             .withPlayer(this)
-            .withEntity(killer)
+            .withDamage(damage, killer)
+            .send();
+    }
+
+    /**
+     * Действия при возрождении игрока
+     */
+    reSpawn() {
+        super.reSpawn();
+
+        (new PlayerMessages.Respawn())
+            .withPlayer(this)
+            .withVector(this.position)
             .send();
     }
 };
