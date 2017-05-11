@@ -1,25 +1,7 @@
 const state = {
         players: []
     },
-    actions = {
-        /**
-        * 
-        * @param {object} data данные для изменения игрока
-        * @param {number} data.id id игрока
-        * @param {object} data.newValues новые данные
-        * @returns {void}
-        */
-        changePlayer({ commit }, data) {
-            console.log('changePlayer own');
-            for(let key in data.newValues) {
-                switch (key) {
-                    case 'score': commit('CHANGE_SCORE', { id: data.id, score: data.newValues[key] }); break;
-                    case 'hp': commit('CHANGE_HP', { id: data.id, hp: data.newValues[key] }); break;
-                    // case еще что-нибудь : ...
-                }
-            }
-        }
-    },
+    actions = { },
     mutations = {
         ADD_PLAYER (context, player) {
             console.log('Players ADD_PLAYER');
@@ -69,6 +51,20 @@ const state = {
 
             player.pos.x = data.pos.x;
             player.pos.y = data.pos.y;
+        },
+
+        /**
+        *
+        * @param {object} context контекст
+        * @param {object} data данные
+        * @param {number} data.id id
+        * @param {number} data.hp новое hp 
+        * @returns {void}
+        */
+        CHANGE_HP (context, data) {
+            let player = findPlayerById(context.players, data.id);
+
+            player && (player.hp = data.hp);
         }
     },
     getters = {
@@ -90,8 +86,9 @@ function addPlayer(state, newPlayer) {
             x: newPlayer.position.x,
             y: newPlayer.position.y
         },
-        size: newPlayer.dimentions,
-        hp: newPlayer.hp || 10,
+        size: newPlayer.dimensions,
+        hp: newPlayer.hp || 30,
+        maxHp: newPlayer.maxHP || 30,
         score: newPlayer.score || 10,
         speed: newPlayer.speed || 10
     });

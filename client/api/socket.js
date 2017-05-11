@@ -23,7 +23,8 @@ socket.on('connected', function(data) {
             x: data.Vector.x,
             y: data.Vector.y
         },
-        dimentions: 30, //?????????????????????????????/
+        dimensions: 30, //?????????????????????????????/
+        maxHP: data.maxHP
     });
 });
 
@@ -72,6 +73,16 @@ socket.on('missileStartMove', function(data) {
 socket.on('missileEndMove', function(data) {
     console.log('missile', data.With.id,' died');
     mainStore.dispatch('missileEnd', data.With.id);
+});
+
+socket.on('playerDamaged', function(data) {
+    console.log(data);
+    mainStore.dispatch('changePlayer', {
+        id: data.Player.id,
+        newValues: {
+            hp: data.Player.health
+        }
+    });
 });
 
 export default socket;

@@ -8,9 +8,9 @@ const actions = {
     * @param {object} player.position положение
     * @param {number} player.position.x  координата x
     * @param {number} player.position.x  координата y
-    * @param {number} player.dimentions размеры
-    * @param  {number} player.speed скорость
-    * player.hp ?
+    * @param {number} player.dimensions размеры
+    * @param {number} player.speed скорость
+    * @param {number} player.maxHP макс значение HP (оно же начальное)
     * player.score ?
     * @returns {void}
     */
@@ -50,6 +50,36 @@ const actions = {
 
     deletePlayer({ commit }, id) {
         id && commit('DELETE_PLAYER', id);
+    },
+    /**
+    * 
+    * @param {object} context контекст
+    * @param {object} data данные для изменения игрока
+    * @param {number} data.id id игрока
+    * @param {object} data.newValues новые данные
+    * @returns {void}
+    */
+    changePlayer(context, data) {
+        for(let key in data.newValues) {
+            let player;
+
+            switch (key) {
+                case 'score':
+                    context.commit('CHANGE_SCORE', { id: data.id, score: data.newValues[key] });
+                    break;
+                case 'hp':
+                    player = context.getters.getPlayer(data.id);
+
+                    context.commit('CHANGE_HP', {
+                        id: data.id,
+                        hp: data.newValues[key],
+                        maxHp: player.maxHp,
+                        dimensions: player.size
+                    });
+                    break;
+                // case еще что-нибудь : ...
+            }
+        }
     }
 };
 
