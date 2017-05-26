@@ -7,7 +7,6 @@ module.exports = {
     entry: './client/main.js',
     output: {
         path: path.resolve(__dirname, './build'),
-        //publicPath: './build/',
         filename: 'build.js'
     },
     module: {
@@ -21,7 +20,8 @@ module.exports = {
                             use: 'css-loader',
                             fallback: 'vue-style-loader'
                         })
-                    }
+                    },
+                    postcss: [ require('autoprefixer')() ]
                 }
             },
             {
