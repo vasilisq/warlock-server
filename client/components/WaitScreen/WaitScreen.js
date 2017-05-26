@@ -1,6 +1,5 @@
 import store from '../../store';
 
-
 export default {
     name: 'wait-screen',
     store,

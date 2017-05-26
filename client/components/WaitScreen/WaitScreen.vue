@@ -6,7 +6,7 @@
                     <h4 class='modal-title' id='myModalLabel'>Wait to respawn...</h4>
                 </div>
                 <div class='modal-body'>
-                    ...
+                    <div class="respawn-spinner"></div>
                     <div class="hidden">{{ waiting }}</div>
                 </div>
             </div>
