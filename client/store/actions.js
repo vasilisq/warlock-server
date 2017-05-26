@@ -11,7 +11,7 @@ const actions = {
     * @param {number} player.dimensions размеры
     * @param {number} player.speed скорость
     * @param {number} player.maxHP макс значение HP (оно же начальное)
-    * player.score ?
+    * @param {number} player.name никнэйм
     * @returns {void}
     */
     addPlayer({ commit }, player) {
