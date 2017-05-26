@@ -94,11 +94,13 @@ const state = {
         DELETE_PLAYER (context, id) {
             console.log('Konva DELETE_PLAYER');
             let obj = context.layerPlayers.findOne('#object' + id),
-                hpLine = context.layerPlayers.findOne('#hp' + id);
+                hpLine = context.layerPlayers.findOne('#hp' + id),
+                text = context.layerPlayers.findOne('#name' + id);
 
-            if (obj && hpLine) {
+            if (obj && text && hpLine) {
                 obj.remove();
                 hpLine.remove();
+                text.remove();
             }
 
             context.layerPlayers.draw();

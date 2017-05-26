@@ -85,4 +85,8 @@ socket.on('playerDamaged', function(data) {
     });
 });
 
+socket.on('playerDied', function(data) {
+    mainStore.dispatch('deletePlayer', data.Player.id);
+});
+
 export default socket;
