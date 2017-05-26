@@ -114,7 +114,7 @@ const state = {
                 obj.setAbsolutePosition({ x: data.pos.x, y: data.pos.y});
 
                 text.x(data.pos.x - (text.width() - obj.width()) / 2);
-                text.y(data.pos.y - 15);
+                text.y(data.pos.y - 20);
 
                 hpLine.x(data.pos.x);
                 hpLine.y(data.pos.y - 5);
@@ -217,7 +217,7 @@ function drawNewPlayer(layer, data) {
             fill: 'black',
             fontSize: 12,
             fontFamily: 'cursive',
-            y: data.position.y - 15,
+            y: data.position.y - 20,
             id: 'name' + data.id
         });
 
