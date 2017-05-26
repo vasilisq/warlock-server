@@ -11,7 +11,6 @@ export default {
     },
     computed: {
         waiting() {
-            console.log('waiting');
             if (this.$store.getters.getWaitingRespawnStatus) 
                 this.open();
             else 

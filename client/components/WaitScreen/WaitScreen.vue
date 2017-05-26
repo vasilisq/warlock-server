@@ -7,7 +7,7 @@
                 </div>
                 <div class='modal-body'>
                     ...
-                    {{ waiting }}
+                    <div class="hidden">{{ waiting }}</div>
                 </div>
             </div>
         </div>
