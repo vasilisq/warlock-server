@@ -55,14 +55,16 @@ const actions = {
     diePlayer({ state, commit }, id) {
         if (id) {
             commit('DELETE_PLAYER', id);
-            state.waitingRespawn = true;
+            if (id == state.currentPlayer)
+                state.waitingRespawn = true;
         } 
     },
 
     respawnPlayer({ state, commit }, player) {
         if (player) {
             commit('ADD_PLAYER', player);
-            state.waitingRespawn = false;
+            if (player.id && player.id == state.currentPlayer) 
+                state.waitingRespawn = false;
         }
     },
 
