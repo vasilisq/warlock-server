@@ -21,6 +21,9 @@ export default {
                 keyboard: false
             });
         },
+        closeLoginScreen: function() {
+            jQuery('#myModal').modal('hide');
+        },
         closeAlert: function() {
             jQuery('#error-alert').hide();
         }

@@ -7,6 +7,6 @@
 
 .modal-backdrop
 {
-	background: url('../../assets/modalBG.png') blue;
+	background: url('../../assets/modalBG.png');
 	background-size: cover;
 }

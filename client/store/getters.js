@@ -6,6 +6,10 @@ const getters = {
 
     getKonvaObj(state) {
         return state.konvaStore.obj;
+    },
+
+    getWaitingRespawnStatus(state) {
+        return state.waitingRespawn;
     }
 };
 

@@ -86,11 +86,11 @@ socket.on('playerDamaged', function(data) {
 });
 
 socket.on('playerDied', function(data) {
-    mainStore.dispatch('deletePlayer', data.Player.id);
+    mainStore.dispatch('diePlayer', data.Player.id);
 });
 
 socket.on('playerRespawn', function(data) {
-    mainStore.dispatch('addPlayer', {
+    mainStore.dispatch('respawnPlayer', {
         id: data.Player.id,
         position: {
             x: data.Vector.x,

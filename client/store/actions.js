@@ -51,6 +51,21 @@ const actions = {
     deletePlayer({ commit }, id) {
         id && commit('DELETE_PLAYER', id);
     },
+
+    diePlayer({ state, commit }, id) {
+        if (id) {
+            commit('DELETE_PLAYER', id);
+            state.waitingRespawn = true;
+        } 
+    },
+
+    respawnPlayer({ state, commit }, player) {
+        if (player) {
+            commit('ADD_PLAYER', player);
+            state.waitingRespawn = false;
+        }
+    },
+
     /**
     * 
     * @param {object} context контекст
