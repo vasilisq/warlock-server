@@ -13,7 +13,8 @@ export default new Vuex.Store({
         // ID или полностью объект Player-a
 
         // доступен в rootState
-        currentPlayer: 0
+        currentPlayer: 0,
+        waitingRespawn: false
     },
     actions,
     getters,

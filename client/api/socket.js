@@ -85,4 +85,20 @@ socket.on('playerDamaged', function(data) {
     });
 });
 
+socket.on('playerDied', function(data) {
+    mainStore.dispatch('diePlayer', data.Player.id);
+});
+
+socket.on('playerRespawn', function(data) {
+    mainStore.dispatch('respawnPlayer', {
+        id: data.Player.id,
+        position: {
+            x: data.Vector.x,
+            y: data.Vector.y
+        },
+        dimensions: 30, //?????????????????????????????/
+        maxHP: data.maxHP || 30
+    });
+});
+
 export default socket;

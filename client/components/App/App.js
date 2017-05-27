@@ -1,8 +1,9 @@
 import PlayersList from '../PlayersList/PlayersList.vue';
 import CanvasContainer from '../CanvasContainer/CanvasContainer.vue';
 import LoginScreen from '../LoginScreen/LoginScreen.vue';
+import WaitScreen from '../WaitScreen/WaitScreen.vue';
 
-window.ls = LoginScreen;
+window.ws = WaitScreen;
 export default {
     name: 'app',
     data () {
@@ -13,6 +14,7 @@ export default {
     components: {
         PlayersList,
         CanvasContainer,
-        LoginScreen
+        LoginScreen,
+        WaitScreen
     }
 };

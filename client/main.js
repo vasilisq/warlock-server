@@ -2,6 +2,7 @@ import Vue from 'vue';
 import App from './components/App/App.vue';
 import mainStore from './store';
 import socket from './api/socket';
+import ls from './components/LoginScreen/LoginScreen.vue';
 import bootstrap from 'bootstrap';
 
 
@@ -17,7 +18,8 @@ new Vue({
     }
 });
 
-window.jq = jQuery;
+window.ls = ls;
+
 
 mainStore.dispatch('initKonva', {
     container: 'canvas-container',

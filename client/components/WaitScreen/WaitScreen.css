@@ -1,0 +1,17 @@
+.respawn-spinner
+{
+	color: red;
+	background: url('../../assets/spinner.png') no-repeat center;
+	background-size: 100px;
+	height: 100px;
+	animation: spin 2s infinite normal;
+}
+
+@keyframes spin {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
