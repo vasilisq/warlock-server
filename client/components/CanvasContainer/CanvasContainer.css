@@ -1,0 +1,12 @@
+#canvas-container {
+    border: 5px solid #0a7ebf;
+    
+    width: 90%;
+    height: 70vh;
+    max-width: 1000px;
+    max-height: 1000px;
+    margin: 5vh auto;
+
+    background: #fff;
+    overflow: scroll;
+}
