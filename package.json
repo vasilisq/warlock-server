@@ -19,6 +19,7 @@
   "dependencies": {
     "bootstrap": "^3.3.7",
     "bootstrap-vue": "^0.15.6",
+    "cross-env": "^3.0.0",
     "jquery": "^3.2.1",
     "konva": "^1.6.0",
     "socket.io": "^1.7.3",
@@ -35,7 +36,6 @@
     "babel-preset-latest": "^6.0.0",
     "chai": "^4.0.0",
     "coveralls": "^2.13.1",
-    "cross-env": "^3.0.0",
     "css-loader": "^0.25.0",
     "eslint": "^3.19.0",
     "eslint-loader": "^1.7.1",
