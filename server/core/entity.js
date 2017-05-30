@@ -167,8 +167,8 @@ module.exports = class Entity {
      */
     randomPosition() {
         do {
-            this.x = Math.floor(Math.random() * (this.entityManager.worldSize - this.dimensions + 1));
-            this.y = Math.floor(Math.random() * (this.entityManager.worldSize - this.dimensions + 1));
+            this.x = Math.floor(Math.random() * (this.entityManager.worldSize - this.dimensions + 1) / 10) * 10;
+            this.y = Math.floor(Math.random() * (this.entityManager.worldSize - this.dimensions + 1) / 10) * 10;
         } 
         while(!this.entityManager.movePossible(this, new Vector2(0, 0), 1));
     }
