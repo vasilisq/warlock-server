@@ -8,7 +8,7 @@ import mainStore from '../store';
 // TODO @dyadyaJora: может прикрутить конфиг,
 // чтобы брать из него глобальные настройки?
 // например урл
-let socket = io('http://localhost:8080');
+let socket = io('http://' + window.location.hostname);
 
 socket.on('players', function(players) {
     console.log(players);

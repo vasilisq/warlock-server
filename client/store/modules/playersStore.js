@@ -49,8 +49,10 @@ const state = {
             console.log('Players MOVE_PLAYER');
             let player = findPlayerById(context.players, data.id);
 
-            player.pos.x = data.pos.x;
-            player.pos.y = data.pos.y;
+            if (player) {
+                player.pos.x = data.pos.x;
+                player.pos.y = data.pos.y;
+            }
         },
 
         /**
