@@ -17,12 +17,13 @@ const PLAYER_RESPAWN_TIME = 5; // seconds
  * @type {Player}
  */
 module.exports = class Player extends Entity {
-    constructor(playerSocket) {
+    constructor(playerSocket, nick) {
         super(PLAYER_SIZE, PLAYER_START_HEALTH);
 
         this.randomPosition();
         this.__health = PLAYER_START_HEALTH;
         this.speed = PLAYER_MOVE_SPEED;
+        this.__nickname = nick;
 
         (new PlayerMessages.Connected())
             .withPlayer(this)
@@ -111,8 +112,12 @@ module.exports = class Player extends Entity {
      */
     onCollide(collidedWithEntity) {
         // переписать этот говнокод
-        if(!(collidedWithEntity instanceof Player)){
+        if (!(collidedWithEntity instanceof Player)) {
             collidedWithEntity.onCollide(this);
         }
+    }
+
+    get nickname() {
+        return this.__nickname;
     }
 };
