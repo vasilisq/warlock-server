@@ -110,6 +110,9 @@ module.exports = class Player extends Entity {
      * @param {Entity} collidedWithEntity - Сущность, с которой произошло столкновение
      */
     onCollide(collidedWithEntity) {
-        collidedWithEntity.onCollide(this);
+        // переписать этот говнокод
+        if(!(collidedWithEntity instanceof Player)){
+            collidedWithEntity.onCollide(this);
+        }
     }
 };
