@@ -8,6 +8,11 @@ import bootstrap from 'bootstrap';
 
 //const size = 30;
 
+let KeyWDown = false;
+let KeyADown = false;
+let KeySDown = false;
+let KeyDDown = false;
+
 new Vue({
     el: '#app',
     render: h => h(App),
@@ -35,12 +40,19 @@ window.s = mainStore;
 // TODO @dyadyaJora: тригерить эти события для window не годиться
 // переподписать их для компонента CanvasComponent
 window.addEventListener('keypress', function(e) {
-    switch (e.code) {
-        case 'KeyW': socket.emit('move', { x: 0, y: -1}); break;
-        case 'KeyA': socket.emit('move', { x: -1, y: 0}); break;
-        case 'KeyS': socket.emit('move', { x: 0, y: 1}); break;
-        case 'KeyD': socket.emit('move', { x: 1, y: 0}); break;
-    }
+    /*
+        switch (e.code) {
+            case 'KeyW': socket.emit('move', { x: 0, y: -1}); break;
+            case 'KeyA': socket.emit('move', { x: -1, y: 0}); break;
+            case 'KeyS': socket.emit('move', { x: 0, y: 1}); break;
+            case 'KeyD': socket.emit('move', { x: 1, y: 0}); break;
+    */
+
+    if(KeyWDown){socket.emit('move', { x: 0, y: -1});}
+    if(KeySDown){socket.emit('move', { x: 0, y: 1}); }
+    if(KeyADown){socket.emit('move', { x: -1, y: 0});}
+    if(KeyDDown){socket.emit('move', { x: 1, y: 0}); }
+    
     //layer.draw();
 });
 
@@ -55,6 +67,19 @@ $('#canvas-container').on('click', function(e) {
 /* eslint-disable no-undef */
 // END TODO
 
+$(document).keyup(function (e) {
+    if(e.which == 87) KeyWDown = false;
+    if(e.which == 65) KeyADown = false;
+    if(e.which == 83) KeySDown = false;
+    if(e.which == 68) KeyDDown = false;
+})
+
+.keydown(function (e) {
+    if(e.which == 87) KeyWDown = true;
+    if(e.which == 65) KeyADown = true;
+    if(e.which == 83) KeySDown = true;
+    if(e.which == 68) KeyDDown = true;
+});
 
 // как вызывать action-ы
 //store.dispatch('addPlayers', [{id: 1 }, { id: 2, score: 200 }, { id: 3, score: 1 }]);
