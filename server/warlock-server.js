@@ -14,7 +14,7 @@ class WarlockServer {
             this.handleConnection(socket);
         });
 
-        app.listen(8080);
+        app.listen(process.env.PORT || 8080);
     }
 
     handleConnection(socket) {
