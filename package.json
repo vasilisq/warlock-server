@@ -15,6 +15,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bootstrap": "^3.3.7",
     "bootstrap-vue": "^0.15.6",
     "jquery": "^3.2.1",
     "konva": "^1.6.0",
