@@ -67,6 +67,16 @@ module.exports = class Missile extends Entity {
             .send();
     }
 
+    /**
+     * Действия при смерти сущности
+     *
+     * @param {Entity} killer
+     */
+    onDeath(killer) {
+        super.onDeath(killer);
+        this.destruct(killer);
+    }
+
     get creator() {
         return this.__creator;
     }

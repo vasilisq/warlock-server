@@ -103,4 +103,16 @@ module.exports = class Player extends Entity {
             .withVector(this.position)
             .send();
     }
+
+    /**
+     * Обработка коллизий движущейся сущностью
+     *
+     * @param {Entity} collidedWithEntity - Сущность, с которой произошло столкновение
+     */
+    onCollide(collidedWithEntity) {
+        // переписать этот говнокод
+        if(!(collidedWithEntity instanceof Player)){
+            collidedWithEntity.onCollide(this);
+        }
+    }
 };
