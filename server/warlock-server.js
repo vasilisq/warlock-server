@@ -18,23 +18,29 @@ class WarlockServer {
     }
 
     handleConnection(socket) {
-        // Add current player to scene
-        let currentPlayer = new Player(socket);
+        let currentPlayer = null;
 
-        // Transmit players list
-        (new PlayerMessages.Players(
-            this.__entityMgr.getAllBeginningWith('player')
-        )).send(socket);
+        socket.on('authenticate', (player) => {
+            // Add current player to scene
+            currentPlayer = new Player(socket, player.nickname);
+
+            // Transmit players list
+            (new PlayerMessages.Players(
+                this.__entityMgr.getAllBeginningWith('player')
+            )).send(socket);
+        });
 
         socket.on('disconnect', (reason) => {
             console.log('Player', currentPlayer.id, 'disconnected, reason:', reason);
 
-            (new PlayerMessages.Disconnected())
-                .withPlayer(currentPlayer)
-                .send();
+            if(currentPlayer !== null) {
+                (new PlayerMessages.Disconnected())
+                    .withPlayer(currentPlayer)
+                    .send();
 
-            // Remove player from scene
-            this.__entityMgr.remove(currentPlayer);
+                // Remove player from scene
+                this.__entityMgr.remove(currentPlayer);
+            }
         });
     }
 
