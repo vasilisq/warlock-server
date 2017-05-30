@@ -34,7 +34,7 @@ class WarlockServer {
                 .send();
 
             // Remove player from scene
-            this.__entityMgr.remove(currentPlayer);
+            currentPlayer.destruct({name: 'WarlockServer(disconnect)'});
         });
     }
 
