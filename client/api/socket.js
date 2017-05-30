@@ -8,7 +8,7 @@ import mainStore from '../store';
 // TODO @dyadyaJora: может прикрутить конфиг,
 // чтобы брать из него глобальные настройки?
 // например урл
-let socket = io('http://localhost:8080');
+let socket = io('http://' + window.location.hostname);
 
 socket.on('players', function(players) {
     console.log(players);
@@ -24,7 +24,8 @@ socket.on('connected', function(data) {
             y: data.Vector.y
         },
         dimensions: 30, //?????????????????????????????/
-        maxHP: data.maxHP
+        maxHP: data.maxHP,
+        name: data.Player.nickname
     });
 });
 
@@ -97,7 +98,8 @@ socket.on('playerRespawn', function(data) {
             y: data.Vector.y
         },
         dimensions: 30, //?????????????????????????????/
-        maxHP: data.maxHP || 30
+        maxHP: data.maxHP || 30,
+        name: data.Player.nickname
     });
 });
 

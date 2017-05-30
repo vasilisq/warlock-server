@@ -153,10 +153,12 @@ const state = {
             let index = context.animations.findIndex( (item) => id === item.missileId),
                 skill = context.layerMissile.findOne('#missile' + id);
 
-            context.animations[index].stop();
-            context.animations.splice(index, 1);
-            skill.remove();
-            context.layerMissile.draw();
+            if (skill && context && context.animations && context.animations.length) {
+                context.animations[index].stop();
+                context.animations.splice(index, 1);
+                skill.remove();
+                context.layerMissile.draw();
+            }
         },
 
         /**
@@ -215,7 +217,7 @@ function drawNewPlayer(layer, data) {
         );
 
         let nameText = new Konva.Text({
-            text: data.name || 'Name_' + data.id,
+            text: data.name || data.nickname || 'Name_' + data.id,
             fill: 'black',
             fontSize: 12,
             fontFamily: 'cursive',
