@@ -24618,10 +24618,12 @@ var state = {
         }),
             skill = context.layerMissile.findOne('#missile' + id);
 
-        context.animations[index].stop();
-        context.animations.splice(index, 1);
-        skill.remove();
-        context.layerMissile.draw();
+        if (skill && context && context.animations && context.animations.length) {
+            context.animations[index].stop();
+            context.animations.splice(index, 1);
+            skill.remove();
+            context.layerMissile.draw();
+        }
     },
 
 
@@ -24757,8 +24759,10 @@ var state = {
         console.log('Players MOVE_PLAYER');
         var player = findPlayerById(context.players, data.id);
 
-        player.pos.x = data.pos.x;
-        player.pos.y = data.pos.y;
+        if (player) {
+            player.pos.x = data.pos.x;
+            player.pos.y = data.pos.y;
+        }
     },
 
 
