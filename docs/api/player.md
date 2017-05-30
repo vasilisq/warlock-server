@@ -10,7 +10,8 @@
 { 
     Player: { 
       id: 1,
-      maxHP: 30
+      maxHP: 30,
+      nickname: 'unnamed'
     }, 
     // Позиция игрока
     Vector: { 
@@ -56,7 +57,8 @@
               x: 0,
               y: 0
             }, 
-            dimensions: 30 
+            dimensions: 30,
+            nickname: 'unnamed'
         },
         // ...
     ] 

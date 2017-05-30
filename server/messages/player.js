@@ -14,6 +14,8 @@ module.exports = {
 
             // Информация о максимальном здоровье игрока
             super.DTO.Player.maxHP = player.maxHealth;
+            // В сообщение добавляется поле с никнеймом игрока
+            this.DTO.Player.nickname = player.nickname;
 
             return this;
         }
@@ -75,7 +77,8 @@ module.exports = {
                         x: player.x,
                         y: player.y
                     },
-                    dimensions: player.dimensions
+                    dimensions: player.dimensions,
+                    nickname: player.nickname
                 });
             });
         }
