@@ -29,4 +29,8 @@ module.exports = class World extends Entity {
             (entity.y + direction.y * factor) > (this.y + this.dimensions / 2) ||
             (entity.y + direction.y * factor) < (this.y - this.dimensions / 2);
     }
+
+    onDamaged(damager, damage) {
+        return;
+    }
 };
