@@ -31,9 +31,9 @@ class WarlockServer {
         });
 
         socket.on('disconnect', (reason) => {
-            console.log('Player', currentPlayer.id, 'disconnected, reason:', reason);
-
             if(currentPlayer !== null) {
+                console.log('Player', currentPlayer.id, 'disconnected, reason:', reason);
+                
                 (new PlayerMessages.Disconnected())
                     .withPlayer(currentPlayer)
                     .send();
