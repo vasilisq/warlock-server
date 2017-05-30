@@ -11277,7 +11277,7 @@ module.exports = function(a, b){
 // TODO @dyadyaJora: может прикрутить конфиг,
 // чтобы брать из него глобальные настройки?
 // например урл
-var socket = __WEBPACK_IMPORTED_MODULE_0_socket_io_client___default()('http://localhost:8080');
+var socket = __WEBPACK_IMPORTED_MODULE_0_socket_io_client___default()('http://' + window.location.hostname);
 
 socket.on('players', function (players) {
     console.log(players);
@@ -11359,7 +11359,6 @@ socket.on('playerDied', function (data) {
 });
 
 socket.on('playerRespawn', function (data) {
-    console.log(data);
     __WEBPACK_IMPORTED_MODULE_1__store__["a" /* default */].dispatch('respawnPlayer', {
         id: data.Player.id,
         position: {
