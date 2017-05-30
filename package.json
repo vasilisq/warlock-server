@@ -25,9 +25,7 @@
     "socket.io": "^1.7.3",
     "socket.io-client": "^1.7.3",
     "vue": "^2.2.1",
-    "vuex": "^2.3.1"
-  },
-  "devDependencies": {
+    "vuex": "^2.3.1",
     "babel-core": "^6.24.1",
     "babel-eslint": "^7.2.3",
     "babel-loader": "^6.4.1",
@@ -54,5 +52,8 @@
     "vue-template-compiler": "^2.2.1",
     "webpack": "^2.2.0",
     "webpack-dev-server": "^2.2.0"
+  },
+  "devDependencies": {
+
   }
 }
