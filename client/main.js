@@ -23,14 +23,13 @@ new Vue({
     }
 });
 
-window.ls = ls;
-
-
 mainStore.dispatch('initKonva', {
     container: 'canvas-container',
     width: 1000,
     height: 1000
 });
+
+ls.methods.showLoginScreen();
 
 // для дебага
 // НЕ ЗАБЫТЬ ВЫПИЛИТЬ!!!!

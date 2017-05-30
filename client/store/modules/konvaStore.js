@@ -215,7 +215,7 @@ function drawNewPlayer(layer, data) {
         );
 
         let nameText = new Konva.Text({
-            text: data.name || 'Name_' + data.id,
+            text: data.name || data.nickname || 'Name_' + data.id,
             fill: 'black',
             fontSize: 12,
             fontFamily: 'cursive',

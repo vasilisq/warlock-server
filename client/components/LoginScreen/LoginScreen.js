@@ -13,7 +13,10 @@ export default {
                 $('#error-alert').show();
                 return;
             }
-            socket.emit('authenticate', this.name);
+            socket.on('players', (data) => {
+                this.closeLoginScreen();
+            });
+            socket.emit('authenticate', {nickname: this.name});
         },
         showLoginScreen: function() {
             jQuery('#myModal').modal({

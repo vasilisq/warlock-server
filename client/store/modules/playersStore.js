@@ -91,7 +91,7 @@ function addPlayer(state, newPlayer) {
         maxHp: newPlayer.maxHP || 30,
         score: newPlayer.score || 10,
         speed: newPlayer.speed || 10,
-        name: newPlayer.name || 'Name_' + newPlayer.id
+        name: newPlayer.name || newPlayer.nickname || 'Name_' + newPlayer.id
     });
 
     return true;

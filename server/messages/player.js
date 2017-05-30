@@ -52,6 +52,14 @@ module.exports = {
         constructor() {
             super('playerRespawn');
         }
+
+        withPlayer(player) {
+            super.withPlayer(player);
+
+            super.DTO.Player.nickname = player.nickname;
+
+            return this;
+        }
     },
 
     Disconnected: class DisconnectedMessage extends Message {
