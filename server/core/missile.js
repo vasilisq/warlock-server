@@ -3,8 +3,8 @@ let Vector2 = require('./vector2');
 let World = require('../entities/world');
 let MissileMessages = require('../messages/missile');
 
-const MISSILE_SIZE = 15;
-const MISSILE_SPEED = 30;
+const MISSILE_SIZE = 10;
+const MISSILE_SPEED = 100;
 
 /**
  * Базовый класс для всех скиллов
