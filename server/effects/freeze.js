@@ -1,6 +1,6 @@
 let Effect = require('../core/effect');
 
-const FREEZE_DURATION = 5;
+const FREEZE_DURATION = 10;
 const FREEZE_SLOW_FACTOR = 2;
 
 /**
