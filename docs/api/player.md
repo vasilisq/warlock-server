@@ -58,7 +58,8 @@
               y: 0
             }, 
             dimensions: 30,
-            nickname: 'unnamed'
+            nickname: 'unnamed',
+            deaths: 0
         },
         // ...
     ] 
@@ -94,7 +95,8 @@
 ```
 { 
   Player: { 
-    id: 1 
+    id: 1,
+    deaths: 0
   },
   Damage: 10,
   Damager: {
@@ -113,7 +115,8 @@
 ```
 { 
   Player: { 
-    id: 1 
+    id: 1,
+    deaths: 0
   },
   // Новая позиция игрока
   Vector: { 
