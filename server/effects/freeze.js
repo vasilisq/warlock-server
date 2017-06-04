@@ -12,7 +12,6 @@ module.exports = class Freeze extends Effect {
     constructor() {
         super();
         this.duration = FREEZE_DURATION;
-        this.__oldSpeed = null;
     }
 
     effect() {
@@ -24,6 +23,6 @@ module.exports = class Freeze extends Effect {
 
     endEffect() {
         // Возвращаем обратно
-        this.applicant.speed = this.__oldSpeed;
+        this.applicant.speed *= FREEZE_SLOW_FACTOR;
     }
 };
