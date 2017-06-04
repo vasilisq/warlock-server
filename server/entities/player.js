@@ -24,6 +24,7 @@ module.exports = class Player extends Entity {
         this.__health = PLAYER_START_HEALTH;
         this.speed = PLAYER_MOVE_SPEED;
         this.__nickname = nick;
+        this.__countOfDeaths = 0;
 
         (new PlayerMessages.Connected())
             .withPlayer(this)
@@ -83,6 +84,8 @@ module.exports = class Player extends Entity {
     onDeath(killer, damage) {
         super.onDeath(killer);
 
+        this.__countOfDeaths++;
+
         this.__reSpawnTimeout = setTimeout(() => {
             this.reSpawn();
         }, PLAYER_RESPAWN_TIME * 1000);
@@ -119,5 +122,9 @@ module.exports = class Player extends Entity {
 
     get nickname() {
         return this.__nickname;
+    }
+
+    get countOfDeaths() {
+        return this.__numberOfDeaths;
     }
 };
