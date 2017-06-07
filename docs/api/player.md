@@ -41,7 +41,7 @@
 ```
 
 ## Players
-Выдает список игркоов.
+Выдает список игроков.
 
 **Имя события**: `players`
 
@@ -59,7 +59,8 @@
             }, 
             dimensions: 30,
             nickname: 'unnamed',
-            deaths: 0
+            deaths: 0,
+            kills: 0
         },
         // ...
     ] 
@@ -87,6 +88,8 @@
 ```
 
 ## PlayerDied
+NOTE: В поле Damager.kills прийдёт новое кол-во убийств убийцы или -1, если убийца не игрок (Damager.entityClass соответственно будет не 'player').
+
 **Имя события**: `playerDied`
 
 **Broadcast**: `+`
@@ -101,7 +104,8 @@
   Damage: 10,
   Damager: {
     id: 1,
-    entityClass: entity
+    entityClass: entity,
+    kills: 1
   }
 }
 ```
@@ -116,7 +120,8 @@
 { 
   Player: { 
     id: 1,
-    deaths: 0
+    deaths: 0,
+    kills: 0
   },
   // Новая позиция игрока
   Vector: { 

@@ -54,6 +54,14 @@ module.exports = {
 
             return this;
         }
+
+        withDamage(damage, damager) {
+            super.withDamage(damage, damager);
+
+            this.DTO.Damager.kills = damager.countOfKills || -1;
+
+            return this;
+        }
     },
 
     Respawn: class ReSpawnMessage extends Message {
@@ -66,6 +74,7 @@ module.exports = {
 
             super.DTO.Player.nickname = player.nickname;
             this.DTO.Player.deaths = player.countOfDeaths;
+            this.DTO.Player.kills = player.countOfKills;
 
             return this;
         }
@@ -96,7 +105,8 @@ module.exports = {
                     },
                     dimensions: player.dimensions,
                     nickname: player.nickname,
-                    deaths: player.countOfDeaths
+                    deaths: player.countOfDeaths,
+                    kills: player.countOfKills
                 });
             });
         }

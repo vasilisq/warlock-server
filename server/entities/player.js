@@ -137,10 +137,10 @@ module.exports = class Player extends Entity {
     }
 
     get countOfDeaths() {
-        return this.__numberOfDeaths;
+        return this.__countOfDeaths;
     }
 
-    get countOfkills() {
+    get countOfKills() {
         return this.__countOfkills;
     }
 };
