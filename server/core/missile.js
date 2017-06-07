@@ -68,6 +68,15 @@ module.exports = class Missile extends Entity {
     }
 
     /**
+     * Действия при убийстве другой сущности
+     * 
+     * @param {Entity} prey - жертва, сущность, которая была убита этой сущностью
+     */
+    iKilled(prey) {
+        this.creator.iKilled(prey);
+    }
+
+    /**
      * Действия при смерти сущности
      *
      * @param {Entity} killer

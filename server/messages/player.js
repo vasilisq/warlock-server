@@ -46,6 +46,22 @@ module.exports = {
         constructor() {
             super('playerDied');
         }
+
+        withPlayer(player) {
+            super.withPlayer(player);
+
+            this.DTO.Player.deaths = player.countOfDeaths;
+
+            return this;
+        }
+
+        withDamage(damage, damager) {
+            super.withDamage(damage, damager);
+
+            this.DTO.Damager.kills = damager.countOfKills || -1;
+
+            return this;
+        }
     },
 
     Respawn: class ReSpawnMessage extends Message {
@@ -57,6 +73,8 @@ module.exports = {
             super.withPlayer(player);
 
             super.DTO.Player.nickname = player.nickname;
+            this.DTO.Player.deaths = player.countOfDeaths;
+            this.DTO.Player.kills = player.countOfKills;
 
             return this;
         }
@@ -86,7 +104,9 @@ module.exports = {
                         y: player.y
                     },
                     dimensions: player.dimensions,
-                    nickname: player.nickname
+                    nickname: player.nickname,
+                    deaths: player.countOfDeaths,
+                    kills: player.countOfKills
                 });
             });
         }

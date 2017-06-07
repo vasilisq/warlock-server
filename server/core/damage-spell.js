@@ -22,6 +22,6 @@ module.exports = class DamageSpell extends Missile {
      * @param {Entity} damagedEntity - сущность, которой будет нанесён урон
      */
     hurt(damagedEntity) {
-        damagedEntity.onDamaged(this, DAMAGE);
+        damagedEntity.onDamaged(this.creator, DAMAGE);
     }
 }

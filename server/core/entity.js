@@ -180,6 +180,7 @@ module.exports = class Entity {
      */
     onDeath(killer) {
         this.__isDead = true;
+        killer.iKilled(this);
     }
 
     /**
@@ -190,5 +191,14 @@ module.exports = class Entity {
         this.__health = this.maxHealth;
         this.randomPosition();
         this.__isDead = false;
+    }
+
+    /**
+     * Действия при убийстве другой сущности
+     * 
+     * @param {Entity} prey - жертва, сущность, которая была убита этой сущностью
+     */
+    iKilled(prey) {
+
     }
 };
