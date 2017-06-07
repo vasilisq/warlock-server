@@ -25,6 +25,7 @@ module.exports = class Player extends Entity {
         this.speed = PLAYER_MOVE_SPEED;
         this.__nickname = nick;
         this.__countOfDeaths = 0;
+        this.__countOfkills = 0;
 
         (new PlayerMessages.Connected())
             .withPlayer(this)
@@ -114,9 +115,20 @@ module.exports = class Player extends Entity {
      * @param {Entity} collidedWithEntity - Сущность, с которой произошло столкновение
      */
     onCollide(collidedWithEntity) {
-        // переписать этот говнокод
+        // переписать
         if (!(collidedWithEntity instanceof Player)) {
             collidedWithEntity.onCollide(this);
+        }
+    }
+
+    /**
+     * Действия при убийстве другой сущности
+     * 
+     * @param {Entity} prey - жертва, сущность, которая была убита этой сущностью
+     */
+    iKilled(prey) {
+        if(prey instanceof Player) {
+            this.__countOfkills++;
         }
     }
 
@@ -126,5 +138,9 @@ module.exports = class Player extends Entity {
 
     get countOfDeaths() {
         return this.__numberOfDeaths;
+    }
+
+    get countOfkills() {
+        return this.__countOfkills;
     }
 };
