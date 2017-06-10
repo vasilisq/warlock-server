@@ -4,6 +4,7 @@ let app = require('http').createServer(require('./core/static-handler'));
 let io = require('socket.io')(app);
 let World = require('./entities/world');
 let PlayerMessages = require('./messages/player');
+let HealthBox = require('./core/health-box');
 
 class WarlockServer {
     constructor(io) {
@@ -48,6 +49,10 @@ class WarlockServer {
         let world = new World();
         world.x = world.dimensions / 2;
         world.y = world.dimensions / 2;
+
+        new HealthBox();
+        new HealthBox();
+        new HealthBox();
     }
 
     broadcast(event, data) {

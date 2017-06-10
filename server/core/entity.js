@@ -191,4 +191,17 @@ module.exports = class Entity {
         this.randomPosition();
         this.__isDead = false;
     }
+
+    /**
+     * Действия при лечении сущности
+     *
+     * @param {Number} hp - кол-во восстанавливаемого здоровья
+     */
+    heal(hp){
+        if(hp + this.health < this.maxHealth) {
+            this.__health += hp;
+        } else {
+            this.__health = this.__maxHealth;
+        }
+    }
 };
