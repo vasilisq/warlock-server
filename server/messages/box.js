@@ -8,7 +8,7 @@ module.exports = {
         constructor() {
             super('boxPickUp');
         }
-    }
+    },
 
     BoxRespawn: class BoxRespawnMessage extends Message {
         constructor() {
